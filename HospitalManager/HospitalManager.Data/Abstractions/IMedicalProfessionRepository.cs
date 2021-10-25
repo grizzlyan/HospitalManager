@@ -11,6 +11,7 @@ namespace HospitalManager.Data.Abstractions
     {
         Task Create(MedicalProfession model);
         Task<MedicalProfession> Get(int id);
+        Task<IEnumerable<MedicalProfession>> GetAll();
         Task Update(MedicalProfession model);
         Task Delete(int id);
     }

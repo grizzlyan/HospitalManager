@@ -9,7 +9,7 @@ namespace HospitalManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MedicalProfessionController : ControllerBase
+    public class MedicalProfessionsController : ControllerBase
     {
     }
 }
