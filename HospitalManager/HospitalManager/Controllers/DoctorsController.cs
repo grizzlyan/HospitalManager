@@ -21,7 +21,7 @@ namespace HospitalManager.Controllers
         [HttpGet]
         public IEnumerable<DoctorsController> Get()
         {
-
+            return null;
         }
     }
 }
