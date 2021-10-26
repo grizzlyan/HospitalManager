@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalManager", "HospitalManager\HospitalManager.csproj", "{E682723E-A834-40CE-82AA-2959ED53DFA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalManager", "HospitalManager\HospitalManager.csproj", "{E682723E-A834-40CE-82AA-2959ED53DFA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalManager.Data", "HospitalManager.Data\HospitalManager.Data.csproj", "{CF964992-F28B-46D0-BAB2-C089235DD1AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalManager.Data", "HospitalManager.Data\HospitalManager.Data.csproj", "{CF964992-F28B-46D0-BAB2-C089235DD1AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HospitalManager.Services", "HospitalManager.Services\HospitalManager.Services.csproj", "{2A670E37-251F-41D2-A274-25362CE6B936}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalManager.Services", "HospitalManager.Services\HospitalManager.Services.csproj", "{2A670E37-251F-41D2-A274-25362CE6B936}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

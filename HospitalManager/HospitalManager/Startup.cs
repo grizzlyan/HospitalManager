@@ -1,7 +1,10 @@
+using HospitalManager.Data;
+using HospitalManager.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +29,16 @@ namespace HospitalManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration["ConnectionStrings:DefaultConnection"];
+
+            services.AddAutoMapper(cfg =>
+            {
+                cfg.AddProfile(new MapperProfile());
+            });
+
+            services.AddDbContext<HospitalManagerContext>(options => {
+                options.UseSqlServer(connectionString);
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

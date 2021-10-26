@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data.Abstractions
 {
-    public interface IMedicalProfessionRepository
+    public interface IMedicalProfessionsRepository
     {
         Task Create(MedicalProfession model);
         Task<MedicalProfession> Get(int id);

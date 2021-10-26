@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using HospitalManager.Models.ViewModels;
+using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,17 +15,63 @@ namespace HospitalManager.Controllers
     [Route("[controller]")]
     public class DoctorsController : ControllerBase
     {
-        private readonly ILogger<DoctorsController> _logger;
+        private readonly IDoctorsService _doctorsService;
+        private readonly IMapper _mapper;
 
-        public DoctorsController(ILogger<DoctorsController> logger)
+        public DoctorsController(IDoctorsService doctorsService, IMapper mapper)
         {
-            _logger = logger;
+            _doctorsService = doctorsService;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        public async Task<DoctorViewModel> Create(DoctorViewModel model)
+        {
+            var createModel = _mapper.Map<DoctorModel>(model);
+
+            var createdModel = await _doctorsService.Create(createModel);
+
+            return _mapper.Map<DoctorViewModel>(createdModel);
         }
 
         [HttpGet]
-        public IEnumerable<DoctorsController> Get()
+        [Route("{id}")]
+        public async Task<DoctorViewModel> GetById(int id)
         {
-            return null;
+            var doctor = await _doctorsService.Get(id);
+
+            return _mapper.Map<DoctorViewModel>(doctor);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<DoctorViewModel>> Get()
+        {
+            var doctors = await _doctorsService.GetAll();
+
+            var resultDoctors = new List<DoctorViewModel>();
+
+            foreach (var item in doctors)
+            {
+                var doctor = _mapper.Map<DoctorViewModel>(item);
+                resultDoctors.Add(doctor);
+            }
+
+            return resultDoctors;
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task Delete(int id)
+        {
+            await _doctorsService.Delete(id);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task Update (DoctorViewModel model)
+        {
+            var doctor = _mapper.Map<DoctorModel>(model);
+            await _doctorsService.Update(doctor);
         }
     }
 }

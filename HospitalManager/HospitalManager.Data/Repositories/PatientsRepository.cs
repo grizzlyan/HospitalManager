@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data.Repositories
 {
-    public class PatientRepository : IPatientRepository
+    public class PatientsRepository : IPatientsRepository
     {
         private readonly HospitalManagerContext _ctx;
 
-        public PatientRepository(HospitalManagerContext ctx)
+        public PatientsRepository(HospitalManagerContext ctx)
         {
             _ctx = ctx;
         }

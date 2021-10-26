@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data.Abstractions
 {
-    public interface IPatientRepository
+    public interface IDoctorsRepository
     {
-        Task Create(Patient model);
-        Task<Patient> Get(int id);
-        Task<IEnumerable<Patient>> GetAll();
-        Task Update(Patient model);
+        Task Create(Doctor model);
+        Task<Doctor> Get(int id);
+        Task<IEnumerable<Doctor>> GetAll();
+        Task Update(Doctor model);
         Task Delete(int id);
     }
 }
