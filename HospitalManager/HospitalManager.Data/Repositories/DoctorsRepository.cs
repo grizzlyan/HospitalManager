@@ -53,8 +53,6 @@ namespace HospitalManager.Data.Repositories
                 doctor.LastName = model.LastName;
                 doctor.EmploymentDate = model.EmploymentDate;
                 doctor.WorkExperience = model.WorkExperience;
-                doctor.Email = model.Email;
-                doctor.PhoneNumber = model.PhoneNumber;
                 doctor.MedicalProfessionId = model.MedicalProfessionId;
 
                 _ctx.Doctors.Update(doctor);

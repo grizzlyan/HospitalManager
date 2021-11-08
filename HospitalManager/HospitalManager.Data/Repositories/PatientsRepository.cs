@@ -50,8 +50,6 @@ namespace HospitalManager.Data.Repositories
             patient.FirstName = model.FirstName;
             patient.LastName = model.LastName;
             patient.City = model.City;
-            patient.Email = model.Email;
-            patient.PhoneNumber = model.PhoneNumber;
 
             _ctx.Update(patient);
             await _ctx.SaveChangesAsync();
