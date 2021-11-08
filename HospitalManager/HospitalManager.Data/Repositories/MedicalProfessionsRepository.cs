@@ -28,6 +28,7 @@ namespace HospitalManager.Data.Repositories
         {
             var profession = await _ctx.MedicalProfessions.FindAsync(id);
             _ctx.Remove(profession);
+            await _ctx.SaveChangesAsync();
         }
 
         public async Task<MedicalProfession> Get(int id)

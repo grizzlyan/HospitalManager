@@ -28,6 +28,7 @@ namespace HospitalManager.Data.Repositories
         {
             var patient = await _ctx.Patients.FindAsync(id);
             _ctx.Remove(patient);
+            await _ctx.SaveChangesAsync();
         }
 
         public async Task<Patient> Get(int id)
