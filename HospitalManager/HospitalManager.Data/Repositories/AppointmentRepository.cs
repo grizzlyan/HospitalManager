@@ -1,4 +1,5 @@
-﻿using HospitalManager.Data.Entities;
+﻿using HospitalManager.Data.Abstractions;
+using HospitalManager.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data.Repositories
 {
-    public class AppointmentRepository
+    public class AppointmentRepository : IAppointmentRepository
     {
         private readonly HospitalManagerContext _ctx;
 

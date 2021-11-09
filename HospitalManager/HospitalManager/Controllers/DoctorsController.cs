@@ -2,6 +2,7 @@
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,6 +26,7 @@ namespace HospitalManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Manager")]
         public async Task<DoctorViewModel> Create(DoctorViewModel model)
         {
             var createModel = _mapper.Map<DoctorModel>(model);
@@ -61,6 +63,7 @@ namespace HospitalManager.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task Delete(int id)
         {
             await _doctorsService.Delete(id);
@@ -68,6 +71,7 @@ namespace HospitalManager.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Manager, Doctor")]
         public async Task Update (DoctorViewModel model)
         {
             var doctor = _mapper.Map<DoctorModel>(model);

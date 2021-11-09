@@ -2,6 +2,7 @@
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -36,6 +37,7 @@ namespace HospitalManager.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles = "Manager, Doctor")]
         public async Task<PatientViewModel> GetById(int id)
         {
             var patient = await _patientsService.Get(id);
@@ -44,6 +46,7 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Manager")]
         public async Task<IEnumerable<PatientViewModel>> Get()
         {
             var patients = await _patientsService.GetAll();
@@ -61,6 +64,7 @@ namespace HospitalManager.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task Delete(int id)
         {
             await _patientsService.Delete(id);

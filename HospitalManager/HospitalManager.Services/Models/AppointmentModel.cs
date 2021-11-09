@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace HospitalManager.Models.ViewModels
+namespace HospitalManager.Services.Models
 {
-    public class AppointmentViewModel
+    public class AppointmentModel
     {
         public int Id { get; set; }
 
@@ -14,9 +15,9 @@ namespace HospitalManager.Models.ViewModels
         public TimeSpan AppointmentDuration { get; set; }
 
         public int DoctorId { get; set; }
-        public DoctorViewModel Doctor { get; set; }
+        public DoctorModel Doctor { get; set; }
 
         public int PatientId { get; set; }
-        public PatientViewModel Patient { get; set; }
+        public PatientModel Patient { get; set; }
     }
 }

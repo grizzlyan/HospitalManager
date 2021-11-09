@@ -16,20 +16,24 @@ namespace HospitalManager.Mapper
             //PL
 
             CreateMap<DoctorViewModel, DoctorModel>();
-            CreateMap<MedicalProfessionViewModel, MedicalProfessionModel>();
-            CreateMap<PatientViewModel, PatientModel>();
             CreateMap<DoctorModel, DoctorViewModel>();
+            CreateMap<MedicalProfessionViewModel, MedicalProfessionModel>();
             CreateMap<MedicalProfessionModel, MedicalProfessionViewModel>();
+            CreateMap<PatientViewModel, PatientModel>();
             CreateMap<PatientModel, PatientViewModel>();
+            CreateMap<AppointmentModel, AppointmentViewModel>();
+            CreateMap<AppointmentViewModel, AppointmentModel>();
 
             //BL
 
             CreateMap<DoctorModel, Doctor>();
-            CreateMap<MedicalProfessionModel, MedicalProfession>();
-            CreateMap<PatientModel, Patient>();
             CreateMap<Doctor, DoctorModel>();
+            CreateMap<MedicalProfessionModel, MedicalProfession>();
             CreateMap<MedicalProfession, MedicalProfessionModel>();
+            CreateMap<PatientModel, Patient>();
             CreateMap<Patient, PatientModel>();
+            CreateMap<Appointment, AppointmentModel>();
+            CreateMap<AppointmentModel, Appointment>();
         }
     }
 }
