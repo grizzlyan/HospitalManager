@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using HospitalManager.Data.Entities;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

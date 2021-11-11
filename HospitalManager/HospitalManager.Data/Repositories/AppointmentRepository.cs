@@ -18,34 +18,39 @@ namespace HospitalManager.Data.Repositories
             _ctx = ctx;
         }
 
-        public async Task Create(Appointment model)
+        public async Task CreateAsync(Appointment model)
         {
-            _ctx.Appointments.Add(model);
-            await _ctx.SaveChangesAsync();
+            var appointmentDate = await _ctx.Appointments.AnyAsync(x => x.AppointmentDate == model.AppointmentDate);
+
+            if (!appointmentDate)
+            {
+                _ctx.Appointments.Add(model);
+                await _ctx.SaveChangesAsync();
+            }
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             var appointment = await _ctx.Appointments.FindAsync(id);
             _ctx.Remove(appointment);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<Appointment> Get(int id)
+        public async Task<Appointment> GetByIdAsync(int id)
         {
             return await _ctx.Appointments
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Appointment>> GetAll()
+        public async Task<IEnumerable<Appointment>> GetAllAsync()
         {
             return await _ctx.Appointments
             .AsNoTracking()
             .ToListAsync();
         }
 
-        public async Task Update(Appointment model)
+        public async Task UpdateAsync(Appointment model)
         {
             var appointment = await _ctx.Appointments.FindAsync(model.Id);
             appointment.AppointmentDate = model.AppointmentDate;

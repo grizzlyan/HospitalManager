@@ -9,10 +9,10 @@ namespace HospitalManager.Data.Abstractions
 {
     public interface IPatientsRepository
     {
-        Task Create(Patient model);
-        Task<Patient> Get(int id);
-        Task<IEnumerable<Patient>> GetAll();
-        Task Update(Patient model);
-        Task Delete(int id);
+        Task CreateAsync(Patient model);
+        Task<Patient> GetByIdAsync(int id);
+        Task<IEnumerable<Patient>> GetAllAsync();
+        Task UpdateAsync(Patient model);
+        Task DeleteAsync(int id);
     }
 }

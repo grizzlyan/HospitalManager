@@ -18,20 +18,20 @@ namespace HospitalManager.Data.Repositories
             _ctx = ctx;
         }
 
-        public async Task Create(MedicalProfession model)
+        public async Task CreateAsync(MedicalProfession model)
         {
             _ctx.MedicalProfessions.Add(model);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             var profession = await _ctx.MedicalProfessions.FindAsync(id);
             _ctx.Remove(profession);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<MedicalProfession> Get(int id)
+        public async Task<MedicalProfession> GetByIdAsync(int id)
         {
             return await _ctx.MedicalProfessions
                 .Include(x => x.Doctors)
@@ -39,7 +39,7 @@ namespace HospitalManager.Data.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<MedicalProfession>> GetAll()
+        public async Task<IEnumerable<MedicalProfession>> GetAllAsync()
         {
             return await _ctx.MedicalProfessions
                .Include(x => x.Doctors)
@@ -47,7 +47,7 @@ namespace HospitalManager.Data.Repositories
                .ToListAsync();
         }
 
-        public async Task Update(MedicalProfession model)
+        public async Task UpdateAsync(MedicalProfession model)
         {
             var profession = await _ctx.MedicalProfessions.FindAsync(model.Id);
             profession.ProfessionName = model.ProfessionName;

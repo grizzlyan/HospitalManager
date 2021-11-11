@@ -10,10 +10,10 @@ namespace HospitalManager.Services.Models.AuthModels
     public enum RolesEnum
     {
         [Description("Manager")]
-        Admin = 1,
+        Manager = 1,
         [Description("Doctor")]
-        Manager = 2,
+        Doctor = 2,
         [Description("Patient")]
-        Customer = 3
+        Patient = 3
     }
 }

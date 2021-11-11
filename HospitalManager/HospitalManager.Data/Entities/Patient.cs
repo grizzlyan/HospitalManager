@@ -14,9 +14,10 @@ namespace HospitalManager.Data.Entities
 
         public string LastName { get; set; }
 
+        public DateTime DateOfBirth { get; set; }
+
         public string City { get; set; }
 
-        public int AppointmentId { get; set; }
         public IEnumerable<Appointment> Appointments { get; set; }
 
         public string UserId { get; set; }

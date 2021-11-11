@@ -27,7 +27,7 @@ namespace HospitalManager.Services.Services
         {
             var entity = _mapper.Map<Appointment>(model);
 
-            await _appointmentRepository.Create(entity);
+            await _appointmentRepository.CreateAsync(entity);
             model.Id = entity.Id;
 
             return model;
@@ -35,12 +35,12 @@ namespace HospitalManager.Services.Services
 
         public async Task Delete(int id)
         {
-            await _appointmentRepository.Delete(id);
+            await _appointmentRepository.DeleteAsync(id);
         }
 
         public async Task<AppointmentModel> Get(int id)
         {
-            var appointment = await _appointmentRepository.Get(id);
+            var appointment = await _appointmentRepository.GetByIdAsync(id);
 
             return _mapper.Map<AppointmentModel>(appointment);
         }
@@ -49,7 +49,7 @@ namespace HospitalManager.Services.Services
         {
             var resultAppointmentsList = new List<AppointmentModel>();
 
-            var appointments = await _appointmentRepository.GetAll();
+            var appointments = await _appointmentRepository.GetAllAsync();
 
             foreach (var item in appointments)
             {
@@ -63,7 +63,7 @@ namespace HospitalManager.Services.Services
         public async Task Update(AppointmentModel model)
         {
             var appointment = _mapper.Map<Appointment>(model);
-            await _appointmentRepository.Update(appointment);
+            await _appointmentRepository.UpdateAsync(appointment);
         }
     }
 }

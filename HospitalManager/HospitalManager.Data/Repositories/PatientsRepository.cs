@@ -18,34 +18,34 @@ namespace HospitalManager.Data.Repositories
             _ctx = ctx;
         }
 
-        public async Task Create(Patient model)
+        public async Task CreateAsync(Patient model)
         {
             _ctx.Patients.Add(model);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             var patient = await _ctx.Patients.FindAsync(id);
             _ctx.Remove(patient);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<Patient> Get(int id)
+        public async Task<Patient> GetByIdAsync(int id)
         {
             return await _ctx.Patients
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Patient>> GetAll()
+        public async Task<IEnumerable<Patient>> GetAllAsync()
         {
             return await _ctx.Patients
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public async Task Update(Patient model)
+        public async Task UpdateAsync(Patient model)
         {
             var patient = await _ctx.Patients.FindAsync(model.Id);
             patient.FirstName = model.FirstName;

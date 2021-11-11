@@ -18,7 +18,6 @@ namespace HospitalManager.Data.Entities
 
         public int WorkExperience { get; set; }
 
-        public int AppointmentId { get; set; }
         public IEnumerable<Appointment> Appointments { get; set; }
 
         public int MedicalProfessionId { get; set; }

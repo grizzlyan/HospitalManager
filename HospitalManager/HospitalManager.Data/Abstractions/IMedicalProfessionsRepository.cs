@@ -9,10 +9,10 @@ namespace HospitalManager.Data.Abstractions
 {
     public interface IMedicalProfessionsRepository
     {
-        Task Create(MedicalProfession model);
-        Task<MedicalProfession> Get(int id);
-        Task<IEnumerable<MedicalProfession>> GetAll();
-        Task Update(MedicalProfession model);
-        Task Delete(int id);
+        Task CreateAsync(MedicalProfession model);
+        Task<MedicalProfession> GetByIdAsync(int id);
+        Task<IEnumerable<MedicalProfession>> GetAllAsync();
+        Task UpdateAsync(MedicalProfession model);
+        Task DeleteAsync(int id);
     }
 }

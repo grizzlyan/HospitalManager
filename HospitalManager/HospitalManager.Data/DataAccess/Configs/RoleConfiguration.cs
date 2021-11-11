@@ -14,9 +14,9 @@ namespace HospitalManager.Data.DataAccess.Configs
         public void Configure(EntityTypeBuilder<IdentityRole> builder)
         {
             builder.HasData(
-                new IdentityRole("Admin"),
-                new IdentityRole("Customer"),
-                new IdentityRole("Manager"));
+                new IdentityRole("Manager"),
+                new IdentityRole("Doctor"),
+                new IdentityRole("Patient"));
         }
     }
 }

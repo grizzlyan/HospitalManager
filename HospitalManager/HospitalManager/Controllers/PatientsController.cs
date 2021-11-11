@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
+using HospitalManager.Data.Entities;
+using HospitalManager.Extensions;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
+using HospitalManager.Services.Models.AuthModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,21 +23,54 @@ namespace HospitalManager.Controllers
     {
         private readonly IPatientsService _patientsService;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public PatientsController(IPatientsService patientsService, IMapper mapper)
+        public PatientsController(
+            IPatientsService patientsService,
+            IMapper mapper,
+            UserManager<User> userManager)
         {
             _patientsService = patientsService;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<PatientViewModel> Create(PatientViewModel model)
+        [Route("Register")]
+        public async Task<IActionResult> Create(PatientViewModel model, UserDetails userDetails)
         {
+            if (!ModelState.IsValid || userDetails == null)
+            {
+                return new BadRequestObjectResult(new { Message = "User Registration Failed" });
+            }
+
+            var identityUser = new User() { UserName = userDetails.Username, Email = userDetails.Email };
+            var result = await _userManager.CreateAsync(identityUser, userDetails.Password);
+
+            userDetails.Role = RolesEnum.Patient;
+
+            var roleName = userDetails.Role.GetEnumDescription();
+
+            await _userManager.AddToRoleAsync(identityUser, roleName);
+
+            if (!result.Succeeded)
+            {
+                var dictionary = new ModelStateDictionary();
+                foreach (var error in result.Errors)
+                {
+                    dictionary.AddModelError(error.Code, error.Description);
+                }
+
+                return new BadRequestObjectResult(new { Message = "User Registration Failed", Errors = dictionary });
+            }
+
             var createModel = _mapper.Map<PatientModel>(model);
 
             var createdModel = await _patientsService.Create(createModel);
 
-            return _mapper.Map<PatientViewModel>(createdModel);
+            return Ok(new { Message = "User Reigstration Successful" });
+
+            //return _mapper.Map<PatientViewModel>(createdModel);
         }
 
         [HttpGet]
@@ -72,6 +110,7 @@ namespace HospitalManager.Controllers
 
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles = "Patient")]
         public async Task Update(PatientViewModel model)
         {
             var patient = _mapper.Map<PatientModel>(model);
