@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using HospitalManager.Data.Entities;
 using HospitalManager.Extensions;
+using HospitalManager.Models.PaginationsModels;
+using HospitalManager.Models.PostModels;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
 using HospitalManager.Services.Models.AuthModels;
+using HospitalManager.Services.Models.Pagination;
+using HospitalManager.Services.Models.Pagination.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +41,7 @@ namespace HospitalManager.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Create(DoctorViewModel model, UserDetails userDetails)
+        public async Task<IActionResult> Create(DoctorPostModel model, UserDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
             {
@@ -66,7 +70,7 @@ namespace HospitalManager.Controllers
 
             var createModel = _mapper.Map<DoctorModel>(model);
 
-            var createdModel = await _doctorsService.Create(createModel);
+            var createdModel = await _doctorsService.CreateAsync(createModel);
 
             return Ok(new { Message = "User Reigstration Successful" });
 
@@ -77,7 +81,7 @@ namespace HospitalManager.Controllers
         [Route("{id}")]
         public async Task<DoctorViewModel> GetById(int id)
         {
-            var doctor = await _doctorsService.Get(id);
+            var doctor = await _doctorsService.GetByIdAsync(id);
 
             return _mapper.Map<DoctorViewModel>(doctor);
         }
@@ -85,7 +89,7 @@ namespace HospitalManager.Controllers
         [HttpGet]
         public async Task<IEnumerable<DoctorViewModel>> Get()
         {
-            var doctors = await _doctorsService.GetAll();
+            var doctors = await _doctorsService.GetAllAsync();
 
             var resultDoctors = new List<DoctorViewModel>();
 
@@ -98,21 +102,53 @@ namespace HospitalManager.Controllers
             return resultDoctors;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetPaginationDoctors(
+            [FromQuery] DoctorFilterFieldsParametres doctorFilterFieldsParametres,
+            [FromQuery] SortFilterParametres<SortDoctorFieldEnum> sortFilterParametres,
+            [FromQuery] PagePaginationPostModel pagePagination)
+        {
+            var doctorFilter = _mapper.Map<DoctorFilterFieldsModel>(doctorFilterFieldsParametres);
+            var sortFilter = _mapper.Map<SortFilterModel<SortDoctorFieldEnum>>(sortFilterParametres);
+            var pagePaginationModel = _mapper.Map<PagePaginationModel>(pagePagination);
+
+            var doctors = await _doctorsService.GetPaginationsDoctorsAsync(doctorFilter, sortFilter, pagePaginationModel);
+
+            var resultDoctors = new List<DoctorViewModel>();
+
+            foreach (var item in doctors)
+            {
+                var doctor = _mapper.Map<DoctorViewModel>(item);
+                resultDoctors.Add(doctor);
+            }
+
+            var totalCountDoctors = await _doctorsService.GetTotalCountDoctorsAsync();
+
+            var pagePaginationViewModel = new PagePaginationViewModel
+            {
+                Page = pagePaginationModel.Page,
+                PageSize = pagePaginationModel.PageSize,
+                TotalCount = totalCountDoctors
+            };
+
+            return Ok(new { Doctors = resultDoctors, Pagination = pagePaginationViewModel });
+        }
+
         [HttpDelete]
         [Route("{id}")]
         [Authorize(Roles = "Manager")]
         public async Task Delete(int id)
         {
-            await _doctorsService.Delete(id);
+            await _doctorsService.DeleteAsync(id);
         }
 
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Manager, Doctor")]
-        public async Task Update (DoctorViewModel model)
+        public async Task Update (DoctorPostModel model)
         {
             var doctor = _mapper.Map<DoctorModel>(model);
-            await _doctorsService.Update(doctor);
+            await _doctorsService.UpdateAsync(doctor);
         }
     }
 }

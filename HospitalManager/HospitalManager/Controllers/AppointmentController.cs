@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HospitalManager.Data.Entities;
+using HospitalManager.Models.PostModels;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
@@ -27,11 +28,11 @@ namespace HospitalManager.Controllers
         }
 
         [HttpPost]
-        public async Task<AppointmentViewModel> Create(AppointmentViewModel model)
+        public async Task<AppointmentViewModel> Create(AppointmentPostModel model)
         {
             var createModel = _mapper.Map<AppointmentModel>(model);
 
-            var createdModel = await _appointmentsService.Create(createModel);
+            var createdModel = await _appointmentsService.CreateAsync(createModel);
 
             return _mapper.Map<AppointmentViewModel>(createdModel);
         }
@@ -40,7 +41,7 @@ namespace HospitalManager.Controllers
         [Route("{id}")]
         public async Task<AppointmentViewModel> GetById(int id)
         {
-            var appointment = await _appointmentsService.Get(id);
+            var appointment = await _appointmentsService.GetByIdAsync(id);
 
             return _mapper.Map<AppointmentViewModel>(appointment);
         }
@@ -48,7 +49,7 @@ namespace HospitalManager.Controllers
         [HttpGet]
         public async Task<IEnumerable<AppointmentViewModel>> Get()
         {
-            var appointments = await _appointmentsService.GetAll();
+            var appointments = await _appointmentsService.GetAllAsync();
 
             var resultAppointments = new List<AppointmentViewModel>();
 
@@ -65,15 +66,15 @@ namespace HospitalManager.Controllers
         [Route("{id}")]
         public async Task Delete(int id)
         {
-            await _appointmentsService.Delete(id);
+            await _appointmentsService.DeleteAsync(id);
         }
 
         [HttpPut]
         [Route("{id}")]
-        public async Task Update(AppointmentViewModel model)
+        public async Task Update(AppointmentPostModel model)
         {
             var appointment = _mapper.Map<AppointmentModel>(model);
-            await _appointmentsService.Update(appointment);
+            await _appointmentsService.UpdateAsync(appointment);
         }
     }
 }

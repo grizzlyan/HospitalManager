@@ -1,5 +1,6 @@
 ﻿using HospitalManager.Data.Abstractions;
 using HospitalManager.Data.Entities;
+using HospitalManager.Data.Entities.Pagination;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,40 @@ namespace HospitalManager.Data.Repositories
 
             _ctx.MedicalProfessions.Update(profession);
             await _ctx.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<MedicalProfession>> GetPaginationMedicalProffessions(
+            SortFilter<MedicalProfession> sortFilter,
+            PagePagination pagePagination)
+        {
+            var result = _ctx
+                .MedicalProfessions
+                .AsNoTracking();
+
+            if (sortFilter != null)
+            {
+                if (sortFilter.IsAscending)
+                {
+                    result = result.OrderBy(sortFilter.SortPredicate);
+                }
+                else
+                {
+                    result = result.OrderByDescending(sortFilter.SortPredicate);
+                }
+            }
+
+            var paginationMedicalProffession = await result
+                .Skip((pagePagination.Page - 1) * pagePagination.PageSize)
+                .Take(pagePagination.PageSize)
+                .ToListAsync();
+
+            return paginationMedicalProffession;
+        }
+
+        public async Task<int> GetCountMedicalProffessionsAsync()
+        {
+            var count = await _ctx.MedicalProfessions.CountAsync();
+            return count;
         }
     }
 }

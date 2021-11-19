@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using HospitalManager.Data.Abstractions;
 using HospitalManager.Data.Entities;
+using HospitalManager.Data.Entities.Pagination;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
+using HospitalManager.Services.Models.Pagination;
+using HospitalManager.Services.Models.Pagination.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +25,7 @@ namespace HospitalManager.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<DoctorModel> Create(DoctorModel model)
+        public async Task<DoctorModel> CreateAsync(DoctorModel model)
         {
             var entity = _mapper.Map<Doctor>(model);
 
@@ -32,19 +35,19 @@ namespace HospitalManager.Services.Services
             return model;
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             await _doctorRepository.DeleteAsync(id);
         }
 
-        public async Task<DoctorModel> Get(int id)
+        public async Task<DoctorModel> GetByIdAsync(int id)
         {
             var doctor = await _doctorRepository.GetByIdAsync(id);
 
             return _mapper.Map<DoctorModel>(doctor);
         }
 
-        public async Task<List<DoctorModel>> GetAll()
+        public async Task<List<DoctorModel>> GetAllAsync()
         {
             var resultDoctorsList = new List<DoctorModel>();
 
@@ -59,10 +62,40 @@ namespace HospitalManager.Services.Services
             return resultDoctorsList;
         }
 
-        public async Task Update(DoctorModel model)
+        public async Task UpdateAsync(DoctorModel model)
         {
             var doctor = _mapper.Map<Doctor>(model);
             await _doctorRepository.UpdateAsync(doctor);
+        }
+
+        public async Task<IEnumerable<DoctorModel>> GetPaginationsDoctorsAsync(
+            DoctorFilterFieldsModel doctorFilterFields,
+            SortFilterModel<SortDoctorFieldEnum> sortFilter,
+            PagePaginationModel pagePagination
+            )
+        {
+            var paginationFilter = _mapper.Map<PaginationFilters<Doctor>>(doctorFilterFields);
+            var doctorSortFilter = _mapper.Map<SortFilter<Doctor>>(sortFilter);
+            var pagePgination = _mapper.Map<PagePagination>(pagePagination);
+
+            var doctors = await _doctorRepository.GetPaginationDoctors(paginationFilter, doctorSortFilter, pagePgination);
+            
+            var resultDoctorsList = new List<DoctorModel>();
+
+            foreach (var item in doctors)
+            {
+                var doctor = _mapper.Map<DoctorModel>(item);
+                resultDoctorsList.Add(doctor);
+            }
+
+            return resultDoctorsList;
+        }
+
+        public async Task<int> GetTotalCountDoctorsAsync()
+        {
+            var countDoctors = await _doctorRepository.GetCountDoctorsAsync();
+
+            return countDoctors;
         }
     }
 }

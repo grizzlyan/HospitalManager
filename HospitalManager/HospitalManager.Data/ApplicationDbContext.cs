@@ -20,6 +20,7 @@ namespace HospitalManager.Data
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<MedicalProfession> MedicalProfessions { get; set; }
+        public DbSet<Manager> Managers { get; set; }
         public DbSet<RefreshToken> Tokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using HospitalManager.Data.Abstractions;
 using HospitalManager.Data.Entities;
+using HospitalManager.Data.Entities.Pagination;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
+using HospitalManager.Services.Models.Pagination;
+using HospitalManager.Services.Models.Pagination.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +25,7 @@ namespace HospitalManager.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<MedicalProfessionModel> Create(MedicalProfessionModel model)
+        public async Task<MedicalProfessionModel> CreateAsync(MedicalProfessionModel model)
         {
             var entity = _mapper.Map<MedicalProfession>(model);
 
@@ -32,19 +35,19 @@ namespace HospitalManager.Services.Services
             return model;
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             await _medicalProfessionRepository.DeleteAsync(id);
         }
 
-        public async Task<MedicalProfessionModel> Get(int id)
+        public async Task<MedicalProfessionModel> GetByIdAsync(int id)
         {
             var medicalProfession = await _medicalProfessionRepository.GetByIdAsync(id);
 
             return _mapper.Map<MedicalProfessionModel>(medicalProfession);
         }
 
-        public async Task<List<MedicalProfessionModel>> GetAll()
+        public async Task<List<MedicalProfessionModel>> GetAllAsync()
         {
             var resultMedicalProfessionsList = new List<MedicalProfessionModel>();
 
@@ -59,10 +62,39 @@ namespace HospitalManager.Services.Services
             return resultMedicalProfessionsList;
         }
 
-        public async Task Update(MedicalProfessionModel model)
+        public async Task UpdateAsync(MedicalProfessionModel model)
         {
             var medicalProfession = _mapper.Map<MedicalProfession>(model);
             await _medicalProfessionRepository.UpdateAsync(medicalProfession);
+        }
+
+        public async Task<IEnumerable<MedicalProfessionModel>> GetPaginationMadicalProffesionsAsync (
+            SortFilterModel<SortMedicalProffessionFieldEnum> sortFilter,
+            PagePaginationModel pagePagination)
+        {
+            var medicalProffessionSortFilter = _mapper.Map<SortFilter<MedicalProfession>>(sortFilter);
+            var pagePgination = _mapper.Map<PagePagination>(pagePagination);
+
+            var doctors = await _medicalProfessionRepository.GetPaginationMedicalProffessions(
+                medicalProffessionSortFilter, 
+                pagePgination);
+
+            var resultMedicalProffession = new List<MedicalProfessionModel>();
+
+            foreach (var item in resultMedicalProffession)
+            {
+                var medicalProffession = _mapper.Map<MedicalProfessionModel>(item);
+                resultMedicalProffession.Add(medicalProffession);
+            }
+
+            return resultMedicalProffession;
+        }
+
+        public async Task<int> GetTotalCountMedicalProffessionAsync()
+        {
+            var countDoctors = await _medicalProfessionRepository.GetCountMedicalProffessionsAsync();
+
+            return countDoctors;
         }
     }
 }

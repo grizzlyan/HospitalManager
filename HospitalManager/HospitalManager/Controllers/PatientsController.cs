@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HospitalManager.Data.Entities;
 using HospitalManager.Extensions;
+using HospitalManager.Models.PostModels;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
@@ -37,7 +38,7 @@ namespace HospitalManager.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Create(PatientViewModel model, UserDetails userDetails)
+        public async Task<IActionResult> Create(PatientPostModel model, UserDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
             {
@@ -66,7 +67,7 @@ namespace HospitalManager.Controllers
 
             var createModel = _mapper.Map<PatientModel>(model);
 
-            var createdModel = await _patientsService.Create(createModel);
+            var createdModel = await _patientsService.CreateAsync(createModel);
 
             return Ok(new { Message = "User Reigstration Successful" });
 
@@ -78,7 +79,7 @@ namespace HospitalManager.Controllers
         [Authorize(Roles = "Manager, Doctor")]
         public async Task<PatientViewModel> GetById(int id)
         {
-            var patient = await _patientsService.Get(id);
+            var patient = await _patientsService.GetByIdAsync(id);
 
             return _mapper.Map<PatientViewModel>(patient);
         }
@@ -87,7 +88,7 @@ namespace HospitalManager.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IEnumerable<PatientViewModel>> Get()
         {
-            var patients = await _patientsService.GetAll();
+            var patients = await _patientsService.GetAllAsync();
 
             var resultPatients = new List<PatientViewModel>();
 
@@ -105,16 +106,16 @@ namespace HospitalManager.Controllers
         [Authorize(Roles = "Manager")]
         public async Task Delete(int id)
         {
-            await _patientsService.Delete(id);
+            await _patientsService.DeleteAsync(id);
         }
 
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Patient")]
-        public async Task Update(PatientViewModel model)
+        public async Task Update(PatientPostModel model)
         {
             var patient = _mapper.Map<PatientModel>(model);
-            await _patientsService.Update(patient);
+            await _patientsService.UpdateAsync(patient);
         }
     }
 }

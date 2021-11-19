@@ -4,6 +4,7 @@ using HospitalManager.Data.Entities;
 using HospitalManager.Data.Repositories;
 using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models;
+using HospitalManager.Services.Models.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace HospitalManager.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<AppointmentModel> Create(AppointmentModel model)
+        public async Task<AppointmentModel> CreateAsync(AppointmentModel model)
         {
             var entity = _mapper.Map<Appointment>(model);
 
@@ -33,19 +34,19 @@ namespace HospitalManager.Services.Services
             return model;
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             await _appointmentRepository.DeleteAsync(id);
         }
 
-        public async Task<AppointmentModel> Get(int id)
+        public async Task<AppointmentModel> GetByIdAsync(int id)
         {
             var appointment = await _appointmentRepository.GetByIdAsync(id);
 
             return _mapper.Map<AppointmentModel>(appointment);
         }
 
-        public async Task<List<AppointmentModel>> GetAll()
+        public async Task<List<AppointmentModel>> GetAllAsync()
         {
             var resultAppointmentsList = new List<AppointmentModel>();
 
@@ -60,7 +61,7 @@ namespace HospitalManager.Services.Services
             return resultAppointmentsList;
         }
 
-        public async Task Update(AppointmentModel model)
+        public async Task UpdateAsync(AppointmentModel model)
         {
             var appointment = _mapper.Map<Appointment>(model);
             await _appointmentRepository.UpdateAsync(appointment);

@@ -9,14 +9,14 @@ namespace HospitalManager.Services.Abstractions
 {
     public interface IAppointmentService
     {
-        public Task<AppointmentModel> Create(AppointmentModel model);
+        public Task<AppointmentModel> CreateAsync(AppointmentModel model);
 
-        public Task Delete(int id);
+        public Task DeleteAsync(int id);
 
-        public Task<AppointmentModel> Get(int id);
+        public Task<AppointmentModel> GetByIdAsync(int id);
 
-        public Task<List<AppointmentModel>> GetAll();
+        public Task<List<AppointmentModel>> GetAllAsync();
 
-        public Task Update(AppointmentModel model);
+        public Task UpdateAsync(AppointmentModel model);
     }
 }

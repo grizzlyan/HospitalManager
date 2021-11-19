@@ -1,4 +1,5 @@
 ﻿using HospitalManager.Data.Entities;
+using HospitalManager.Data.Entities.Pagination;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,10 @@ namespace HospitalManager.Data.Abstractions
         Task<IEnumerable<Doctor>> GetAllAsync();
         Task UpdateAsync(Doctor model);
         Task DeleteAsync(int id);
+        Task<IEnumerable<Doctor>> GetPaginationDoctors(
+            PaginationFilters<Doctor> paginationFilters,
+            SortFilter<Doctor> sortFilter,
+            PagePagination pagePagination);
+        Task<int> GetCountDoctorsAsync();
     }
 }

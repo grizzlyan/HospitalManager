@@ -22,7 +22,7 @@ namespace HospitalManager.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<PatientModel> Create(PatientModel model)
+        public async Task<PatientModel> CreateAsync(PatientModel model)
         {
             var entity = _mapper.Map<Patient>(model);
 
@@ -32,19 +32,19 @@ namespace HospitalManager.Services.Services
             return model;
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             await _patientRepository.DeleteAsync(id);
         }
 
-        public async Task<PatientModel> Get(int id)
+        public async Task<PatientModel> GetByIdAsync(int id)
         {
             var medicalProfession = await _patientRepository.GetByIdAsync(id);
 
             return _mapper.Map<PatientModel>(medicalProfession);
         }
 
-        public async Task<List<PatientModel>> GetAll()
+        public async Task<List<PatientModel>> GetAllAsync()
         {
             var resultPatientsList = new List<PatientModel>();
 
@@ -59,7 +59,7 @@ namespace HospitalManager.Services.Services
             return resultPatientsList;
         }
 
-        public async Task Update(PatientModel model)
+        public async Task UpdateAsync(PatientModel model)
         {
             var patient = _mapper.Map<Patient>(model);
             await _patientRepository.UpdateAsync(patient);

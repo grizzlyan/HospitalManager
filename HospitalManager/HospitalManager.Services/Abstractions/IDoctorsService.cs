@@ -1,4 +1,6 @@
 ﻿using HospitalManager.Services.Models;
+using HospitalManager.Services.Models.Pagination;
+using HospitalManager.Services.Models.Pagination.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +11,14 @@ namespace HospitalManager.Services.Abstractions
 {
     public interface IDoctorsService
     {
-        public Task<DoctorModel> Create(DoctorModel model);
-        public Task Update(DoctorModel model);
-        public Task<DoctorModel> Get(int id);
-        public Task<List<DoctorModel>> GetAll();
-        public Task Delete(int id);
+        Task<DoctorModel> CreateAsync(DoctorModel model);
+        Task UpdateAsync(DoctorModel model);
+        Task<DoctorModel> GetByIdAsync(int id);
+        Task<List<DoctorModel>> GetAllAsync();
+        Task DeleteAsync(int id);
+        Task<IEnumerable<DoctorModel>> GetPaginationsDoctorsAsync(DoctorFilterFieldsModel doctorFilterFields,
+            SortFilterModel<SortDoctorFieldEnum> sortFilter,
+            PagePaginationModel pagePagination);
+        Task<int> GetTotalCountDoctorsAsync();
     }
 }

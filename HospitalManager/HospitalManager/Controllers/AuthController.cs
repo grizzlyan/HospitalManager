@@ -83,9 +83,8 @@ namespace HospitalManager.Controllers
                 {
                     AccessToken = token.AccessToken,
                     RefreshToken = token.RefreshToken,
-                    Username = "FIRST_NAME",
-                    Roles = new[] { "ROLE_ADMIN", "ROLE_MODERATOR" },
-                    Id = Guid.NewGuid().ToString()
+                    Username = identityUser.UserName,
+                    Roles = await _userManager.GetRolesAsync(identityUser),
                 });
         }
 

@@ -14,7 +14,6 @@ namespace HospitalManager.Data
         public HospitalManagerContext(DbContextOptions options)
             : base(options)
         {
-
         }
 
         public DbSet<MedicalProfession> MedicalProfessions { get; set; }
