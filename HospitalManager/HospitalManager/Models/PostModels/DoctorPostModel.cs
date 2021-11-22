@@ -15,6 +15,8 @@ namespace HospitalManager.Models.PostModels
 
         public int WorkExperience { get; set; }
 
+        public string PathToPhoto { get; set; }
+
         public int MedicalProfessionId { get; set; }
     }
 }

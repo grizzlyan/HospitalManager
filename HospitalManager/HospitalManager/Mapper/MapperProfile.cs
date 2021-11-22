@@ -51,8 +51,7 @@ namespace HospitalManager.Mapper
                     dest.PageSize = src.PageSize.HasValue ? src.PageSize.Value : 3;
 
                     return dest;
-                }); ;
-            CreateMap<PagePaginationModel, PagePaginationViewModel>();
+                });
 
             //BL
 

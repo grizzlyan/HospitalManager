@@ -66,33 +66,30 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPaginationMedicalProffessions(
+        public async Task<PaginationViewModel<MedicalProfessionViewModel>> GetPaginationMedicalProffessions(
             [FromQuery] SortFilterParametres<SortMedicalProffessionFieldEnum> sortFilterParametres,
             [FromQuery] PagePaginationPostModel pagePagination)
         {
             var sortFilter = _mapper.Map<SortFilterModel<SortMedicalProffessionFieldEnum>>(sortFilterParametres);
             var pagePaginationModel = _mapper.Map<PagePaginationModel>(pagePagination);
 
-            var medicalProffesions = await _medicalProfessionsService.GetPaginationMadicalProffesionsAsync(sortFilter, pagePaginationModel);
+            var medicalProffessionsPaginationModel = await _medicalProfessionsService.GetPaginationMadicalProffesionsAsync(sortFilter, pagePaginationModel);
 
-            var resultMedicalProffessions = new List<MedicalProfessionViewModel>();
+            var medicalProffessionsList = new List<MedicalProfessionViewModel>();
 
-            foreach (var item in medicalProffesions)
+            foreach (var item in medicalProffessionsPaginationModel.Data)
             {
                 var medicalProffession = _mapper.Map<MedicalProfessionViewModel>(item);
-                resultMedicalProffessions.Add(medicalProffession);
+                medicalProffessionsList.Add(medicalProffession);
             }
 
-            var totalCountDoctors = await _medicalProfessionsService.GetTotalCountMedicalProffessionAsync();
-
-            var pagePaginationViewModel = new PagePaginationViewModel
+            var medicalProffessionsData = new PaginationViewModel<MedicalProfessionViewModel>
             {
-                Page = pagePaginationModel.Page,
-                PageSize = pagePaginationModel.PageSize,
-                TotalCount = totalCountDoctors
+                DoctorsData = medicalProffessionsList,
+                TotalCount = medicalProffessionsPaginationModel.TotalCount
             };
 
-            return Ok(new { MedicalProffessions = resultMedicalProffessions, Pagination = pagePaginationViewModel });
+            return medicalProffessionsData;
         }
 
         [HttpDelete]

@@ -9,23 +9,26 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data
 {
-    public static class ManagerInitializer
+    public class ManagerInitializer
     {
-        public static async Task SeedManagerAsync(UserManager<User> userManager)
+        public async Task SeedManagerAsync(UserManager<User> userManager)
         {
             if (userManager.FindByEmailAsync("manager@manager.com").Result == null)
             {
                 var user = new User
                 {
                     UserName = "Manager",
-                    Email = "manager@manager.com"
+                    NormalizedUserName = "MANAGER",
+                    Email = "manager@manager.com",
+                    NormalizedEmail = "MANAGER@MANAGER.COM",
+                    EmailConfirmed = true,
                 };
 
                 var result = userManager.CreateAsync(user, "ManagerPassword").Result;
 
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    await userManager.AddToRoleAsync(user, "Manager");
                 }
             }
         }

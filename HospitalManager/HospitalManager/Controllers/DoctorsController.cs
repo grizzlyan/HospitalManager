@@ -51,12 +51,6 @@ namespace HospitalManager.Controllers
             var identityUser = new User() { UserName = userDetails.Username, Email = userDetails.Email };
             var result = await _userManager.CreateAsync(identityUser, userDetails.Password);
 
-            userDetails.Role = RolesEnum.Doctor;
-
-            var roleName = userDetails.Role.GetEnumDescription();
-
-            await _userManager.AddToRoleAsync(identityUser, roleName);
-
             if (!result.Succeeded)
             {
                 var dictionary = new ModelStateDictionary();
@@ -67,6 +61,12 @@ namespace HospitalManager.Controllers
 
                 return new BadRequestObjectResult(new { Message = "User Registration Failed", Errors = dictionary });
             }
+
+            userDetails.Role = RolesEnum.Doctor;
+
+            var roleName = userDetails.Role.GetEnumDescription();
+
+            await _userManager.AddToRoleAsync(identityUser, roleName);
 
             var createModel = _mapper.Map<DoctorModel>(model);
 
@@ -103,7 +103,7 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPaginationDoctors(
+        public async Task<PaginationViewModel<DoctorViewModel>> GetPaginationDoctors(
             [FromQuery] DoctorFilterFieldsParametres doctorFilterFieldsParametres,
             [FromQuery] SortFilterParametres<SortDoctorFieldEnum> sortFilterParametres,
             [FromQuery] PagePaginationPostModel pagePagination)
@@ -112,26 +112,23 @@ namespace HospitalManager.Controllers
             var sortFilter = _mapper.Map<SortFilterModel<SortDoctorFieldEnum>>(sortFilterParametres);
             var pagePaginationModel = _mapper.Map<PagePaginationModel>(pagePagination);
 
-            var doctors = await _doctorsService.GetPaginationsDoctorsAsync(doctorFilter, sortFilter, pagePaginationModel);
+            var doctorsPaginationModel = await _doctorsService.GetPaginationsDoctorsAsync(doctorFilter, sortFilter, pagePaginationModel);
 
-            var resultDoctors = new List<DoctorViewModel>();
+            var doctorsList = new List<DoctorViewModel>();
 
-            foreach (var item in doctors)
+            foreach (var item in doctorsPaginationModel.Data)
             {
                 var doctor = _mapper.Map<DoctorViewModel>(item);
-                resultDoctors.Add(doctor);
+                doctorsList.Add(doctor);
             }
 
-            var totalCountDoctors = await _doctorsService.GetTotalCountDoctorsAsync();
-
-            var pagePaginationViewModel = new PagePaginationViewModel
+            var doctorsData = new PaginationViewModel<DoctorViewModel>
             {
-                Page = pagePaginationModel.Page,
-                PageSize = pagePaginationModel.PageSize,
-                TotalCount = totalCountDoctors
+                DoctorsData = doctorsList,
+                TotalCount = doctorsPaginationModel.TotalCount
             };
 
-            return Ok(new { Doctors = resultDoctors, Pagination = pagePaginationViewModel });
+            return doctorsData;
         }
 
         [HttpDelete]

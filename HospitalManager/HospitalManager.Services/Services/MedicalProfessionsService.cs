@@ -68,33 +68,34 @@ namespace HospitalManager.Services.Services
             await _medicalProfessionRepository.UpdateAsync(medicalProfession);
         }
 
-        public async Task<IEnumerable<MedicalProfessionModel>> GetPaginationMadicalProffesionsAsync (
+        public async Task<PaginationModel<MedicalProfessionModel>> GetPaginationMadicalProffesionsAsync (
             SortFilterModel<SortMedicalProffessionFieldEnum> sortFilter,
             PagePaginationModel pagePagination)
         {
             var medicalProffessionSortFilter = _mapper.Map<SortFilter<MedicalProfession>>(sortFilter);
             var pagePgination = _mapper.Map<PagePagination>(pagePagination);
 
-            var doctors = await _medicalProfessionRepository.GetPaginationMedicalProffessions(
+            var medicalProffessions = await _medicalProfessionRepository.GetPaginationMedicalProffessions(
                 medicalProffessionSortFilter, 
                 pagePgination);
 
             var resultMedicalProffession = new List<MedicalProfessionModel>();
 
-            foreach (var item in resultMedicalProffession)
+            foreach (var item in medicalProffessions)
             {
                 var medicalProffession = _mapper.Map<MedicalProfessionModel>(item);
                 resultMedicalProffession.Add(medicalProffession);
             }
 
-            return resultMedicalProffession;
-        }
+            var countMedicalProffessions = await _medicalProfessionRepository.GetCountMedicalProffessionsAsync();
 
-        public async Task<int> GetTotalCountMedicalProffessionAsync()
-        {
-            var countDoctors = await _medicalProfessionRepository.GetCountMedicalProffessionsAsync();
+            var medicalProffessionsData = new PaginationModel<MedicalProfessionModel>
+            {
+                Data = resultMedicalProffession,
+                TotalCount = countMedicalProffessions
+            };
 
-            return countDoctors;
+            return medicalProffessionsData;
         }
     }
 }

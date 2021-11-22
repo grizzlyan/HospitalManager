@@ -68,7 +68,7 @@ namespace HospitalManager.Services.Services
             await _doctorRepository.UpdateAsync(doctor);
         }
 
-        public async Task<IEnumerable<DoctorModel>> GetPaginationsDoctorsAsync(
+        public async Task<PaginationModel<DoctorModel>> GetPaginationsDoctorsAsync(
             DoctorFilterFieldsModel doctorFilterFields,
             SortFilterModel<SortDoctorFieldEnum> sortFilter,
             PagePaginationModel pagePagination
@@ -88,14 +88,11 @@ namespace HospitalManager.Services.Services
                 resultDoctorsList.Add(doctor);
             }
 
-            return resultDoctorsList;
-        }
-
-        public async Task<int> GetTotalCountDoctorsAsync()
-        {
             var countDoctors = await _doctorRepository.GetCountDoctorsAsync();
 
-            return countDoctors;
+            var doctorsData = new PaginationModel<DoctorModel> { Data = resultDoctorsList, TotalCount = countDoctors };
+
+            return doctorsData;
         }
     }
 }

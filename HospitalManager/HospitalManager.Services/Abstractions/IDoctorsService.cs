@@ -16,9 +16,8 @@ namespace HospitalManager.Services.Abstractions
         Task<DoctorModel> GetByIdAsync(int id);
         Task<List<DoctorModel>> GetAllAsync();
         Task DeleteAsync(int id);
-        Task<IEnumerable<DoctorModel>> GetPaginationsDoctorsAsync(DoctorFilterFieldsModel doctorFilterFields,
+        Task<PaginationModel<DoctorModel>> GetPaginationsDoctorsAsync(DoctorFilterFieldsModel doctorFilterFields,
             SortFilterModel<SortDoctorFieldEnum> sortFilter,
             PagePaginationModel pagePagination);
-        Task<int> GetTotalCountDoctorsAsync();
     }
 }

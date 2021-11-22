@@ -48,12 +48,6 @@ namespace HospitalManager.Controllers
             var identityUser = new User() { UserName = userDetails.Username, Email = userDetails.Email };
             var result = await _userManager.CreateAsync(identityUser, userDetails.Password);
 
-            userDetails.Role = RolesEnum.Patient;
-
-            var roleName = userDetails.Role.GetEnumDescription();
-
-            await _userManager.AddToRoleAsync(identityUser, roleName);
-
             if (!result.Succeeded)
             {
                 var dictionary = new ModelStateDictionary();
@@ -64,6 +58,12 @@ namespace HospitalManager.Controllers
 
                 return new BadRequestObjectResult(new { Message = "User Registration Failed", Errors = dictionary });
             }
+
+            userDetails.Role = RolesEnum.Patient;
+
+            var roleName = userDetails.Role.GetEnumDescription();
+
+            await _userManager.AddToRoleAsync(identityUser, roleName);
 
             var createModel = _mapper.Map<PatientModel>(model);
 

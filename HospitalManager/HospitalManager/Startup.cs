@@ -57,6 +57,8 @@ namespace HospitalManager
                 //.AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddTransient<ManagerInitializer>();
+
             var jwtSection = Configuration.GetSection("JwtBearerTokenSettings");
             services.Configure<JwtBearerTokenSettings>(jwtSection);
             var jwtBearerTokenSettings = jwtSection.Get<JwtBearerTokenSettings>();
@@ -87,7 +89,7 @@ namespace HospitalManager
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager, ManagerInitializer managerInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -108,7 +110,8 @@ namespace HospitalManager
                 endpoints.MapControllers();
             });
 
-            ManagerInitializer.SeedManagerAsync(userManager);
+            managerInitializer.SeedManagerAsync(userManager).Wait();
+            //ManagerInitializer.SeedManagerAsync(userManager);
         }
     }
 }

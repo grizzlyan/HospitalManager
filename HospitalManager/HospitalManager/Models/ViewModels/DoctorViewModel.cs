@@ -17,6 +17,8 @@ namespace HospitalManager.Models.ViewModels
 
         public int WorkExperience { get; set; }
 
+        public string PathToPhoto { get; set; }
+
         public int MedicalProfessionId { get; set; }
         public MedicalProfessionViewModel MedicalProfession { get; set; }
     }
