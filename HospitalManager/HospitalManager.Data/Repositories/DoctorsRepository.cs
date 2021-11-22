@@ -35,7 +35,7 @@ namespace HospitalManager.Data.Repositories
         public async Task<Doctor> GetByIdAsync(int id)
         {
             return await _ctx.Doctors
-            .Include(x => x.MedicalProfession)
+            .Include(x => x.Specialization)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -43,7 +43,7 @@ namespace HospitalManager.Data.Repositories
         public async Task<IEnumerable<Doctor>> GetAllAsync()
         {
             return await _ctx.Doctors
-            .Include(x => x.MedicalProfession)
+            .Include(x => x.Specialization)
             .AsNoTracking()
             .ToListAsync();
         }
@@ -55,7 +55,7 @@ namespace HospitalManager.Data.Repositories
             doctor.LastName = model.LastName;
             doctor.EmploymentDate = model.EmploymentDate;
             doctor.WorkExperience = model.WorkExperience;
-            doctor.MedicalProfessionId = model.MedicalProfessionId;
+            doctor.SpecializationId = model.SpecializationId;
 
             _ctx.Doctors.Update(doctor);
             await _ctx.SaveChangesAsync();

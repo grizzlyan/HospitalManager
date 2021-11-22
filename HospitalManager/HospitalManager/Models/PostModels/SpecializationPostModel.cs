@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Models.PostModels
 {
-    public class MedicalProfessionPostModel
+    public class SpecializationPostModel
     {
-        public string ProfessionName { get; set; }
+        public string SpecializationName { get; set; }
     }
 }

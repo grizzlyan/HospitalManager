@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Services.Models.Pagination.Enums
 {
-    public enum SortMedicalProffessionFieldEnum
+    public enum SpecializationFieldEnum
     {
         Name = 1
     }

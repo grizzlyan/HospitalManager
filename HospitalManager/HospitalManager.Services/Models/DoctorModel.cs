@@ -20,7 +20,7 @@ namespace HospitalManager.Services.Models
 
         public string PathToPhoto { get; set; }
 
-        public int MedicalProfessionId { get; set; }
-        public MedicalProfessionModel MedicalProfession { get; set; }
+        public int SpecializationId { get; set; }
+        public SpecializationModel Specialization { get; set; }
     }
 }

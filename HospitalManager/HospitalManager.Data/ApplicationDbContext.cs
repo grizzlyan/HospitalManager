@@ -19,14 +19,14 @@ namespace HospitalManager.Data
 
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
-        public DbSet<MedicalProfession> MedicalProfessions { get; set; }
+        public DbSet<Specialization> Specializations { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<RefreshToken> Tokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new DoctorConfiguration());
-            modelBuilder.ApplyConfiguration(new MedicalProfessionConfiguration());
+            modelBuilder.ApplyConfiguration(new SpecializationConfiguration());
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());

@@ -22,8 +22,8 @@ namespace HospitalManager.Data.Entities
 
         public IEnumerable<Appointment> Appointments { get; set; }
 
-        public int MedicalProfessionId { get; set; }
-        public MedicalProfession MedicalProfession { get; set; }
+        public int SpecializationId { get; set; }
+        public Specialization Specialization { get; set; }
 
         public string UserId { get; set; }
         public User User { get; set; }

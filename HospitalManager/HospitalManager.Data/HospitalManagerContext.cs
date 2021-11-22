@@ -16,7 +16,7 @@ namespace HospitalManager.Data
         {
         }
 
-        public DbSet<MedicalProfession> MedicalProfessions { get; set; }
+        public DbSet<Specialization> Specialization { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
@@ -24,7 +24,7 @@ namespace HospitalManager.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new DoctorConfiguration());
-            modelBuilder.ApplyConfiguration(new MedicalProfessionConfiguration());
+            modelBuilder.ApplyConfiguration(new SpecializationConfiguration());
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
             modelBuilder.ApplyConfiguration(new AppointmentConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());

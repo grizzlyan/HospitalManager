@@ -18,9 +18,9 @@ namespace HospitalManager.Data.DataAccess.Configs
             builder.Property(p => p.EmploymentDate).IsRequired().HasColumnType("datetime(0)");
             builder.Property(p => p.WorkExperience).IsRequired();
 
-            builder.HasOne(d => d.MedicalProfession)
+            builder.HasOne(d => d.Specialization)
                 .WithMany(mp => mp.Doctors)
-                .HasForeignKey(d => d.MedicalProfessionId)
+                .HasForeignKey(d => d.SpecializationId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(d => d.User)

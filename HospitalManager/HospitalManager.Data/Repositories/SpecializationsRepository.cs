@@ -10,59 +10,59 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data.Repositories
 {
-    public class MedicalProfessionsRepository : IMedicalProfessionsRepository
+    public class SpecializationsRepository : ISpecializationsRepository
     {
         private readonly HospitalManagerContext _ctx;
 
-        public MedicalProfessionsRepository(HospitalManagerContext ctx)
+        public SpecializationsRepository(HospitalManagerContext ctx)
         {
             _ctx = ctx;
         }
 
-        public async Task CreateAsync(MedicalProfession model)
+        public async Task CreateAsync(Specialization model)
         {
-            _ctx.MedicalProfessions.Add(model);
+            _ctx.Specialization.Add(model);
             await _ctx.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var profession = await _ctx.MedicalProfessions.FindAsync(id);
-            _ctx.Remove(profession);
+            var specialization = await _ctx.Specialization.FindAsync(id);
+            _ctx.Remove(specialization);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<MedicalProfession> GetByIdAsync(int id)
+        public async Task<Specialization> GetByIdAsync(int id)
         {
-            return await _ctx.MedicalProfessions
+            return await _ctx.Specialization
                 .Include(x => x.Doctors)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<MedicalProfession>> GetAllAsync()
+        public async Task<IEnumerable<Specialization>> GetAllAsync()
         {
-            return await _ctx.MedicalProfessions
+            return await _ctx.Specialization
                .Include(x => x.Doctors)
                .AsNoTracking()
                .ToListAsync();
         }
 
-        public async Task UpdateAsync(MedicalProfession model)
+        public async Task UpdateAsync(Specialization model)
         {
-            var profession = await _ctx.MedicalProfessions.FindAsync(model.Id);
-            profession.ProfessionName = model.ProfessionName;
+            var specialization = await _ctx.Specialization.FindAsync(model.Id);
+            specialization.SpecializationName = model.SpecializationName;
 
-            _ctx.MedicalProfessions.Update(profession);
+            _ctx.Specialization.Update(specialization);
             await _ctx.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<MedicalProfession>> GetPaginationMedicalProffessions(
-            SortFilter<MedicalProfession> sortFilter,
+        public async Task<IEnumerable<Specialization>> GetPaginationSpecializationsAsync(
+            SortFilter<Specialization> sortFilter,
             PagePagination pagePagination)
         {
             var result = _ctx
-                .MedicalProfessions
+                .Specialization
                 .AsNoTracking();
 
             if (sortFilter != null)
@@ -77,17 +77,17 @@ namespace HospitalManager.Data.Repositories
                 }
             }
 
-            var paginationMedicalProffession = await result
+            var paginationSpecialization = await result
                 .Skip((pagePagination.Page - 1) * pagePagination.PageSize)
                 .Take(pagePagination.PageSize)
                 .ToListAsync();
 
-            return paginationMedicalProffession;
+            return paginationSpecialization;
         }
 
-        public async Task<int> GetCountMedicalProffessionsAsync()
+        public async Task<int> GetCountSpecializationsAsync()
         {
-            var count = await _ctx.MedicalProfessions.CountAsync();
+            var count = await _ctx.Specialization.CountAsync();
             return count;
         }
     }

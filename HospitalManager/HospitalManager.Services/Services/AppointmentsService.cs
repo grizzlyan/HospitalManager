@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Services.Services
 {
-    public class AppointmentService : IAppointmentService
+    public class AppointmentsService : IAppointmentService
     {
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IMapper _mapper;
 
-        public AppointmentService(IAppointmentRepository appointmentRepository, IMapper mapper)
+        public AppointmentsService(IAppointmentRepository appointmentRepository, IMapper mapper)
         {
             _appointmentRepository = appointmentRepository;
             _mapper = mapper;

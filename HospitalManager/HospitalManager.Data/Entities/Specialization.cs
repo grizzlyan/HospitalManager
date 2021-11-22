@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data.Entities
 {
-    public class MedicalProfession
+    public class Specialization
     {
         public int Id { get; set; }
 
-        public string ProfessionName { get; set; }
+        public string SpecializationName { get; set; }
 
         public IEnumerable<Doctor> Doctors { get; set; }
     }

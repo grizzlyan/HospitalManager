@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Models.ViewModels
 {
-    public class MedicalProfessionViewModel
+    public class SpecializationViewModel
     {
         public int Id { get; set; }
 
-        public string ProfessionName { get; set; }
+        public string SpecializationName { get; set; }
 
         public IEnumerable<DoctorViewModel> Doctors { get; set; }
     }

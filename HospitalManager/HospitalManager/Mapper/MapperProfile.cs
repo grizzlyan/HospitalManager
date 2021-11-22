@@ -24,8 +24,8 @@ namespace HospitalManager.Mapper
             CreateMap<DoctorPostModel, DoctorModel>();
             CreateMap<DoctorModel, DoctorViewModel>();
 
-            CreateMap<MedicalProfessionPostModel, MedicalProfessionModel>();
-            CreateMap<MedicalProfessionModel, MedicalProfessionViewModel>();
+            CreateMap<SpecializationPostModel, SpecializationModel>();
+            CreateMap<SpecializationModel, SpecializationViewModel>();
 
             CreateMap<PatientPostModel, PatientModel>();
             CreateMap<PatientModel, PatientViewModel>();
@@ -39,8 +39,8 @@ namespace HospitalManager.Mapper
             CreateMap<SortFilterParametres<SortDoctorFieldEnum>, SortFilterModel<SortDoctorFieldEnum>>();
             CreateMap<SortFilterModel<SortDoctorFieldEnum>, SortFilterParametres<SortDoctorFieldEnum>>();
 
-            CreateMap<SortFilterParametres<SortMedicalProffessionFieldEnum>, SortFilterModel<SortMedicalProffessionFieldEnum>>();
-            CreateMap<SortFilterModel<SortMedicalProffessionFieldEnum>, SortFilterParametres<SortMedicalProffessionFieldEnum>>();
+            CreateMap<SortFilterParametres<SortSpecializationFieldEnum>, SortFilterModel<SortSpecializationFieldEnum>>();
+            CreateMap<SortFilterModel<SortSpecializationFieldEnum>, SortFilterParametres<SortSpecializationFieldEnum>>();
 
             CreateMap<PagePaginationPostModel, PagePaginationModel>()
                 .ConvertUsing((src, dest, ctx) =>
@@ -58,8 +58,8 @@ namespace HospitalManager.Mapper
             CreateMap<DoctorModel, Doctor>();
             CreateMap<Doctor, DoctorModel>();
 
-            CreateMap<MedicalProfessionModel, MedicalProfession>();
-            CreateMap<MedicalProfession, MedicalProfessionModel>();
+            CreateMap<SpecializationModel, Specialization>();
+            CreateMap<Specialization, SpecializationModel>();
 
             CreateMap<PatientModel, Patient>();
             CreateMap<Patient, PatientModel>();
@@ -82,7 +82,7 @@ namespace HospitalManager.Mapper
                         switch (src.FilterDoctorField)
                         {
                             case FilterDoctorFieldEnum.MedicalProffession:
-                                dest.FilterPredicates.Add(x => x.MedicalProfessionId == src.MedicalProffessionId);
+                                dest.FilterPredicates.Add(x => x.SpecializationId == src.MedicalProffessionId);
                                 break;
                             default:
                                 break;
@@ -127,7 +127,7 @@ namespace HospitalManager.Mapper
                     return dest;
                 });
 
-            CreateMap<SortFilterModel<SortMedicalProffessionFieldEnum>, SortFilter<MedicalProfession>>()
+            CreateMap<SortFilterModel<SortSpecializationFieldEnum>, SortFilter<Specialization>>()
                 .ConvertUsing((src, dest, ctx) =>
                 {
                     if (!src.SortField.HasValue)
@@ -135,14 +135,14 @@ namespace HospitalManager.Mapper
                         return null;
                     }
 
-                    dest = dest ?? new SortFilter<MedicalProfession>();
+                    dest = dest ?? new SortFilter<Specialization>();
 
                     if (src.SortField.HasValue)
                     {
                         switch (src.SortField)
                         {
-                            case SortMedicalProffessionFieldEnum.Name:
-                                dest.SortPredicate = x => x.ProfessionName;
+                            case SortSpecializationFieldEnum.Name:
+                                dest.SortPredicate = x => x.SpecializationName;
                                 break;
                             default:
                                 break;

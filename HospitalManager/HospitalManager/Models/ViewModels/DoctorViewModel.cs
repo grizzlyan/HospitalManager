@@ -20,6 +20,6 @@ namespace HospitalManager.Models.ViewModels
         public string PathToPhoto { get; set; }
 
         public int MedicalProfessionId { get; set; }
-        public MedicalProfessionViewModel MedicalProfession { get; set; }
+        public SpecializationViewModel MedicalProfession { get; set; }
     }
 }
