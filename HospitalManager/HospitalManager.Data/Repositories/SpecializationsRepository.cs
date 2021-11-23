@@ -12,29 +12,29 @@ namespace HospitalManager.Data.Repositories
 {
     public class SpecializationsRepository : ISpecializationsRepository
     {
-        private readonly HospitalManagerContext _ctx;
+        private readonly ApplicationDbContext _ctx;
 
-        public SpecializationsRepository(HospitalManagerContext ctx)
+        public SpecializationsRepository(ApplicationDbContext ctx)
         {
             _ctx = ctx;
         }
 
         public async Task CreateAsync(Specialization model)
         {
-            _ctx.Specialization.Add(model);
+            _ctx.Specializations.Add(model);
             await _ctx.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var specialization = await _ctx.Specialization.FindAsync(id);
+            var specialization = await _ctx.Specializations.FindAsync(id);
             _ctx.Remove(specialization);
             await _ctx.SaveChangesAsync();
         }
 
         public async Task<Specialization> GetByIdAsync(int id)
         {
-            return await _ctx.Specialization
+            return await _ctx.Specializations
                 .Include(x => x.Doctors)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -42,7 +42,7 @@ namespace HospitalManager.Data.Repositories
 
         public async Task<IEnumerable<Specialization>> GetAllAsync()
         {
-            return await _ctx.Specialization
+            return await _ctx.Specializations
                .Include(x => x.Doctors)
                .AsNoTracking()
                .ToListAsync();
@@ -50,10 +50,10 @@ namespace HospitalManager.Data.Repositories
 
         public async Task UpdateAsync(Specialization model)
         {
-            var specialization = await _ctx.Specialization.FindAsync(model.Id);
+            var specialization = await _ctx.Specializations.FindAsync(model.Id);
             specialization.SpecializationName = model.SpecializationName;
 
-            _ctx.Specialization.Update(specialization);
+            _ctx.Specializations.Update(specialization);
             await _ctx.SaveChangesAsync();
         }
 
@@ -62,7 +62,7 @@ namespace HospitalManager.Data.Repositories
             PagePagination pagePagination)
         {
             var result = _ctx
-                .Specialization
+                .Specializations
                 .AsNoTracking();
 
             if (sortFilter != null)
@@ -87,7 +87,7 @@ namespace HospitalManager.Data.Repositories
 
         public async Task<int> GetCountSpecializationsAsync()
         {
-            var count = await _ctx.Specialization.CountAsync();
+            var count = await _ctx.Specializations.CountAsync();
             return count;
         }
     }

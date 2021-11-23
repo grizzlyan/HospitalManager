@@ -12,10 +12,15 @@ namespace HospitalManager.Services.Abstractions
     public interface ISpecializationsService
     {
         public Task<SpecializationModel> CreateAsync(SpecializationModel model);
+
         public Task UpdateAsync(SpecializationModel model);
+
         public Task<SpecializationModel> GetByIdAsync(int id);
-        public Task<List<SpecializationModel>> GetAllAsync();
+
+        public Task<IEnumerable<SpecializationModel>> GetAllAsync();
+
         public Task DeleteAsync(int id);
+
         Task<PaginationModel<SpecializationModel>> GetPaginationSpecializationsAsync(
             SortFilterModel<SortSpecializationFieldEnum> sortFilter,
             PagePaginationModel pagePagination);

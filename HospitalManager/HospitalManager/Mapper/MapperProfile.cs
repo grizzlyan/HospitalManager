@@ -32,7 +32,7 @@ namespace HospitalManager.Mapper
 
             CreateMap<AppointmentPostModel, AppointmentModel>();
             CreateMap<AppointmentModel, AppointmentViewModel>();
-            
+
             CreateMap<DoctorFilterFieldsParametres, DoctorFilterFieldsModel>();
             CreateMap<DoctorFilterFieldsModel, DoctorFilterFieldsParametres>();
 
@@ -107,19 +107,16 @@ namespace HospitalManager.Mapper
 
                     dest = dest ?? new SortFilter<Doctor>();
 
-                    if (src.SortField.HasValue)
+                    switch (src.SortField)
                     {
-                        switch (src.SortField)
-                        {
-                            case SortDoctorFieldEnum.LastName:
-                                dest.SortPredicate = x => x.LastName;
-                                break;
-                            case SortDoctorFieldEnum.FirstName:
-                                dest.SortPredicate = x => x.FirstName;
-                                break;
-                            default:
-                                break;
-                        }
+                        case SortDoctorFieldEnum.LastName:
+                            dest.SortPredicate = x => x.LastName;
+                            break;
+                        case SortDoctorFieldEnum.FirstName:
+                            dest.SortPredicate = x => x.FirstName;
+                            break;
+                        default:
+                            break;
                     }
 
                     dest.IsAscending = src.SortDirection == SortDirectionEnum.Ascending;
@@ -137,16 +134,13 @@ namespace HospitalManager.Mapper
 
                     dest = dest ?? new SortFilter<Specialization>();
 
-                    if (src.SortField.HasValue)
+                    switch (src.SortField)
                     {
-                        switch (src.SortField)
-                        {
-                            case SortSpecializationFieldEnum.Name:
-                                dest.SortPredicate = x => x.SpecializationName;
-                                break;
-                            default:
-                                break;
-                        }
+                        case SortSpecializationFieldEnum.Name:
+                            dest.SortPredicate = x => x.SpecializationName;
+                            break;
+                        default:
+                            break;
                     }
 
                     dest.IsAscending = src.SortDirection == SortDirectionEnum.Ascending;

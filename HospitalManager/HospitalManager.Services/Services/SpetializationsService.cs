@@ -47,7 +47,7 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<SpecializationModel>(specialization);
         }
 
-        public async Task<List<SpecializationModel>> GetAllAsync()
+        public async Task<IEnumerable<SpecializationModel>> GetAllAsync()
         {
             var resultSpecializationsList = new List<SpecializationModel>();
 

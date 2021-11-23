@@ -44,7 +44,7 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<PatientModel>(medicalProfession);
         }
 
-        public async Task<List<PatientModel>> GetAllAsync()
+        public async Task<IEnumerable<PatientModel>> GetAllAsync()
         {
             var resultPatientsList = new List<PatientModel>();
 

@@ -12,10 +12,15 @@ namespace HospitalManager.Services.Abstractions
     public interface IDoctorsService
     {
         Task<DoctorModel> CreateAsync(DoctorModel model);
+
         Task UpdateAsync(DoctorModel model);
+
         Task<DoctorModel> GetByIdAsync(int id);
-        Task<List<DoctorModel>> GetAllAsync();
+
+        Task<IEnumerable<DoctorModel>> GetAllAsync();
+
         Task DeleteAsync(int id);
+
         Task<PaginationModel<DoctorModel>> GetPaginationsDoctorsAsync(DoctorFilterFieldsModel doctorFilterFields,
             SortFilterModel<SortDoctorFieldEnum> sortFilter,
             PagePaginationModel pagePagination);

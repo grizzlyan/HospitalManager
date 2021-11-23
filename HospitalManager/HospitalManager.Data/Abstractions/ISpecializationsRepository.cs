@@ -11,13 +11,19 @@ namespace HospitalManager.Data.Abstractions
     public interface ISpecializationsRepository
     {
         Task CreateAsync(Specialization model);
+
         Task<Specialization> GetByIdAsync(int id);
+
         Task<IEnumerable<Specialization>> GetAllAsync();
+
         Task UpdateAsync(Specialization model);
+
         Task DeleteAsync(int id);
+
         Task<IEnumerable<Specialization>> GetPaginationSpecializationsAsync(
             SortFilter<Specialization> sortFilter,
             PagePagination pagePagination);
+
         Task<int> GetCountSpecializationsAsync();
     }
 }

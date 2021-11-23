@@ -12,9 +12,9 @@ namespace HospitalManager.Data.Repositories
 {
     public class DoctorsRepository : IDoctorsRepository
     {
-        private readonly HospitalManagerContext _ctx;
+        private readonly ApplicationDbContext _ctx;
 
-        public DoctorsRepository(HospitalManagerContext ctx)
+        public DoctorsRepository(ApplicationDbContext ctx)
         {
             _ctx = ctx;
         }

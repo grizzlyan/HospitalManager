@@ -15,6 +15,8 @@ namespace HospitalManager.Data.Abstractions
 
         public Task<Appointment> GetByIdAsync(int id);
 
+        Task<IEnumerable<Appointment>> GetAllByDoctorIdAsync(int doctorId);
+
         public Task<IEnumerable<Appointment>> GetAllAsync();
 
         public Task UpdateAsync(Appointment model);

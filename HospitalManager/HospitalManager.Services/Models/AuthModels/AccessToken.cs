@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Services.Models.AuthModels
 {
-    public class AccessAndRefreshToken
+    public class AccessToken
     {
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
+        public string Token { get; set; }
     }
 }

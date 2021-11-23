@@ -86,7 +86,7 @@ namespace HospitalManager.Controllers
             return _mapper.Map<DoctorViewModel>(doctor);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public async Task<IEnumerable<DoctorViewModel>> Get()
         {
             var doctors = await _doctorsService.GetAllAsync();
@@ -100,7 +100,7 @@ namespace HospitalManager.Controllers
             }
 
             return resultDoctors;
-        }
+        }*/
 
         [HttpGet]
         public async Task<PaginationViewModel<DoctorViewModel>> GetPaginationDoctors(
@@ -112,7 +112,10 @@ namespace HospitalManager.Controllers
             var sortFilter = _mapper.Map<SortFilterModel<SortDoctorFieldEnum>>(sortFilterParametres);
             var pagePaginationModel = _mapper.Map<PagePaginationModel>(pagePagination);
 
-            var doctorsPaginationModel = await _doctorsService.GetPaginationsDoctorsAsync(doctorFilter, sortFilter, pagePaginationModel);
+            var doctorsPaginationModel = await _doctorsService.GetPaginationsDoctorsAsync(
+                doctorFilter,
+                sortFilter,
+                pagePaginationModel);
 
             var doctorsList = new List<DoctorViewModel>();
 
@@ -141,7 +144,7 @@ namespace HospitalManager.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        [Authorize(Roles = "Manager, Doctor")]
+        [Authorize(Roles = "Manager")]
         public async Task Update (DoctorPostModel model)
         {
             var doctor = _mapper.Map<DoctorModel>(model);

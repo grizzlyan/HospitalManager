@@ -49,7 +49,7 @@ namespace HospitalManager.Controllers
             return _mapper.Map<SpecializationViewModel>(specialization);
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public async Task<IEnumerable<SpecializationViewModel>> Get()
         {
             var specializations = await _specializationsService.GetAllAsync();
@@ -63,7 +63,7 @@ namespace HospitalManager.Controllers
             }
 
             return resultSpecializations;
-        }
+        }*/
 
         [HttpGet]
         public async Task<PaginationViewModel<SpecializationViewModel>> GetPaginationSpecializations(

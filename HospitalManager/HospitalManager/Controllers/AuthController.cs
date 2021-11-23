@@ -39,7 +39,7 @@ namespace HospitalManager.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromBody] UserDetails userDetails)
+        public async Task<IActionResult> RegisterAsync([FromBody] UserDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
             {
@@ -65,13 +65,13 @@ namespace HospitalManager.Controllers
 
         [HttpPost]
         [Route("Login")]
-        public async Task<IActionResult> Login([FromBody] LoginCredentials credentials)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginCredentials credentials)
         {
             User identityUser;
 
             if (!ModelState.IsValid
                 || credentials == null
-                || (identityUser = await ValidateUser(credentials)) == null)
+                || (identityUser = await ValidateUserAsync(credentials)) == null)
             {
                 return new BadRequestObjectResult(new { Message = "Login failed" });
             }
@@ -81,8 +81,7 @@ namespace HospitalManager.Controllers
             return Ok(
                 new
                 {
-                    AccessToken = token.AccessToken,
-                    RefreshToken = token.RefreshToken,
+                    AccessToken = token.Token,
                     Username = identityUser.UserName,
                     Roles = await _userManager.GetRolesAsync(identityUser),
                 });
@@ -90,36 +89,21 @@ namespace HospitalManager.Controllers
 
         [HttpPost]
         [Route("Logout")]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
             return Ok(new { Token = "", Message = "Logged Out" });
         }
 
-        [HttpPost]
-        [Route("refreshtoken")]
-        public AccessAndRefreshToken RefreshToken(string refreshToken)
-        {
-            SecurityToken validatedToken = null;
-            var validationParameters = new TokenValidationParameters();
-            var principal = new JwtSecurityTokenHandler().ValidateToken(refreshToken, validationParameters, out validatedToken);
-
-            var userId = principal.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = _ctx.Users.Find(userId);
-
-            var token = GenerateToken(user);
-
-            return token;
-        }
-
-
-        private async Task<User> ValidateUser(LoginCredentials credentials)
+        private async Task<User> ValidateUserAsync(LoginCredentials credentials)
         {
             var identityUser = await _userManager.FindByNameAsync(credentials.Username);
-            var users = await _userManager.Users.ToListAsync();
 
             if (identityUser != null)
             {
-                var result = _userManager.PasswordHasher.VerifyHashedPassword(identityUser, identityUser.PasswordHash, credentials.Password);
+                var result = _userManager.PasswordHasher.VerifyHashedPassword(
+                    identityUser,
+                    identityUser.PasswordHash,
+                    credentials.Password);
                 return result == PasswordVerificationResult.Failed ? null : identityUser;
             }
 
@@ -127,7 +111,7 @@ namespace HospitalManager.Controllers
         }
 
 
-        private AccessAndRefreshToken GenerateToken(IdentityUser identityUser)
+        private AccessToken GenerateToken(IdentityUser identityUser)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtBearerTokenSettings.SecretKey);
@@ -141,38 +125,17 @@ namespace HospitalManager.Controllers
                     new Claim(ClaimTypes.NameIdentifier, identityUser.Id),
                 }),
 
-                Expires = DateTime.Now.AddSeconds(_jwtBearerTokenSettings.ExpiryTimeInSeconds),
+                Expires = DateTime.Now.AddDays(_jwtBearerTokenSettings.ExpiryTimeInDays),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Audience = _jwtBearerTokenSettings.Audience,
                 Issuer = _jwtBearerTokenSettings.Issuer
             };
 
-            var refreshTokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, identityUser.Id),
-                }),
-
-                Expires = DateTime.UtcNow.AddHours(_jwtBearerTokenSettings.RefreshTokenExpiryTimeHours),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var refreshToken = tokenHandler.CreateToken(refreshTokenDescriptor);
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            var refreshTokenValue = tokenHandler.WriteToken(refreshToken);
-
-            _ctx.Tokens.Add(new RefreshToken
+            return new AccessToken
             {
-                Value = refreshTokenValue,
-                UserId = identityUser.Id
-            });
-
-            return new AccessAndRefreshToken
-            {
-                AccessToken = tokenHandler.WriteToken(token),
-                RefreshToken = refreshTokenValue
+                Token = tokenHandler.WriteToken(token),
             };
 
         }

@@ -38,6 +38,7 @@ namespace HospitalManager.Controllers
 
         [HttpPost]
         [Route("Register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Create(PatientPostModel model, UserDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
@@ -76,7 +77,7 @@ namespace HospitalManager.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Manager, Doctor")]
+        [Authorize(Roles = "Manager")]
         public async Task<PatientViewModel> GetById(int id)
         {
             var patient = await _patientsService.GetByIdAsync(id);

@@ -47,7 +47,7 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<DoctorModel>(doctor);
         }
 
-        public async Task<List<DoctorModel>> GetAllAsync()
+        public async Task<IEnumerable<DoctorModel>> GetAllAsync()
         {
             var resultDoctorsList = new List<DoctorModel>();
 

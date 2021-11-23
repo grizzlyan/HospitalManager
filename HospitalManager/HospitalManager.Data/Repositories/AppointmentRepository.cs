@@ -13,9 +13,9 @@ namespace HospitalManager.Data.Repositories
 {
     public class AppointmentRepository : IAppointmentRepository
     {
-        private readonly HospitalManagerContext _ctx;
+        private readonly ApplicationDbContext _ctx;
 
-        public AppointmentRepository(HospitalManagerContext ctx)
+        public AppointmentRepository(ApplicationDbContext ctx)
         {
             _ctx = ctx;
         }
@@ -45,11 +45,14 @@ namespace HospitalManager.Data.Repositories
             .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<IEnumerable<Appointment>> GetAllByDoctorIdAsync(int doctorId)
+        {
+            return await _ctx.Appointments.Where(x => x.DoctorId == doctorId).AsNoTracking().ToListAsync();
+        }
+
         public async Task<IEnumerable<Appointment>> GetAllAsync()
         {
-            return await _ctx.Appointments
-            .AsNoTracking()
-            .ToListAsync();
+            return await _ctx.Appointments.AsNoTracking().ToListAsync();
         }
 
         public async Task UpdateAsync(Appointment model)
