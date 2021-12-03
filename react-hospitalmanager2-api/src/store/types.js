@@ -28,4 +28,4 @@ export const DELETE_APPOINTMENT = 'DELETE_APPOINTMENT';
 export const APPOINTMENTS_ERROR = 'APPOINTMENTS_ERROR';
 
 export const LOGIN = 'LOGIN';
-export const LOGIN_ERROR = 'LOGIN_ERROR';
+export const LOGINS_ERROR = 'LOGINS_ERROR';

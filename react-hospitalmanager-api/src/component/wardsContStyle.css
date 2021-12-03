@@ -1,0 +1,150 @@
+table {
+	width: 100%;
+	margin-bottom: 5px;
+    margin-top: 30px;
+	border: 5px solid #fff;
+	border-top: 5px solid #fff;
+	border-bottom: 3px solid #fff;
+	border-collapse: collapse; 
+	outline: 3px solid #ffd300;
+	font-size: 15px;
+	background: #fff!important;
+}
+table th {
+	font-weight: bold;
+    width: 30%;
+	padding: 7px;
+	background: #ffd300;
+	border: none;
+	text-align: left;
+	font-size: 15px;
+	border-top: 3px solid #fff;
+	border-bottom: 3px solid #ffd300;
+}
+table td {	padding: 7px;
+	border: none;
+	border-top: 3px solid #fff;
+	border-bottom: 3px solid #fff;
+	font-size: 15px;
+}
+
+hr {
+	margin: 20px 0;
+	padding: 0;
+	height: 10px;
+	border: none;
+	box-sizing: border-box;
+	background-position: 50%;
+	color: orange;
+	background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="3px" height="3px" viewBox="0 0 3 3" fill="orange"><polygon points="0,0.5 0,1.5 1.5,3 2.5,3"></polygon><polygon points="2.5,0 1.5,0 3,1.5 3,0.5"></polygon></svg>');
+	background-size: 6px 6px;
+}
+.redButton{
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    background-color: #e64e2b;
+    border: 2px solid;
+    color: white;
+    padding: 4px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.redButton:hover{
+    background-color: white; 
+    color: #e64e2b;
+}
+
+.greenButton{
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    background-color: #4CAF50;
+    border: 2px solid;
+    color: white;
+    padding: 4px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.greenButton:hover{
+    background-color: white; 
+    color: #4CAF50;
+    
+}
+
+.blueButton{
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    background-color: #009186; 
+    border: 2px solid;
+    color: white;
+    padding: 4px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.blueButton:hover{
+    background-color: white; 
+    color: #009186;
+}
+
+.redButtonp{
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    background-color: white;
+    color: black;
+    border: 2px solid #e64e2b;
+    padding: 4px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.redButtonp:hover{
+    background-color: #e64e2b; 
+    color: white;
+}
+
+.greenButtonp{
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+    padding: 2.5px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.greenButtonp:hover{
+    background-color: #4CAF50; 
+    color: white;
+    
+}
+
+.blueButtonp{
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    background-color: white;
+    color: black;
+    border: 2px solid #009186;
+    padding: 4px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+}
+
+.blueButtonp:hover{
+    background-color: #009186; 
+    color: white;
+}

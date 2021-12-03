@@ -46,11 +46,26 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<AppointmentModel>(appointment);
         }
 
-        public async Task<List<AppointmentModel>> GetAllAsync()
+        public async Task<IEnumerable<AppointmentModel>> GetAllByDoctorIdAsync(int doctorId)
         {
-            var resultAppointmentsList = new List<AppointmentModel>();
+            var appointments = await _appointmentRepository.GetAllByDoctorIdAsync(doctorId);
 
+            var appointmentsByDoctorId = new List<AppointmentModel>();
+
+            foreach (var item in appointments)
+            {
+                var appointment = _mapper.Map<AppointmentModel>(item);
+                appointmentsByDoctorId.Add(appointment);
+            }
+
+            return appointmentsByDoctorId;
+        }
+
+        public async Task<IEnumerable<AppointmentModel>> GetAllAsync()
+        {
             var appointments = await _appointmentRepository.GetAllAsync();
+
+            var resultAppointmentsList = new List<AppointmentModel>();
 
             foreach (var item in appointments)
             {

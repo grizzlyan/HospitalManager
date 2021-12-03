@@ -21,13 +21,13 @@ namespace HospitalManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthorizationsController : ControllerBase
     {
         private readonly JwtBearerTokenSettings _jwtBearerTokenSettings;
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _ctx;
 
-        public AuthController(
+        public AuthorizationsController(
             IOptions<JwtBearerTokenSettings> jwtTokenOptions,
             UserManager<User> userManager,
             ApplicationDbContext ctx) 
@@ -64,7 +64,7 @@ namespace HospitalManager.Controllers
         }
 
         [HttpPost]
-        [Route("Login")]
+        [Route("[controller]/Login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCredentials credentials)
         {
             User identityUser;

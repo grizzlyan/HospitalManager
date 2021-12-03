@@ -17,12 +17,12 @@ namespace HospitalManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppointmentController : ControllerBase
+    public class AppointmentsController : ControllerBase
     {
         private readonly IAppointmentService _appointmentsService;
         private readonly IMapper _mapper;
 
-        public AppointmentController(IAppointmentService appointmentsService, IMapper mapper)
+        public AppointmentsController(IAppointmentService appointmentsService, IMapper mapper)
         {
             _appointmentsService = appointmentsService;
             _mapper = mapper;
@@ -50,11 +50,11 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{doctorId}")]
         [Authorize(Roles = "Manager, Doctor")]
-        public async Task<IEnumerable<AppointmentViewModel>> GetByDoctorId(int id)
+        public async Task<IEnumerable<AppointmentViewModel>> GetByDoctorId(int doctorId)
         {
-            var appointments = await _appointmentsService.GetAllByDoctorIdAsync(id);
+            var appointments = await _appointmentsService.GetAllByDoctorIdAsync(doctorId);
 
             var resultAppointments = new List<AppointmentViewModel>();
 

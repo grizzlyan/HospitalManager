@@ -8,7 +8,7 @@ namespace HospitalManager.Models.PaginationsModels
 {
     public class PaginationViewModel <T>
     {
-        public IEnumerable<T> DoctorsData { get; set; }
+        public IEnumerable<T> Data { get; set; }
         public int TotalCount { get; set; }
     }
 }

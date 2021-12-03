@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 namespace HospitalManager.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class DoctorsController : ControllerBase
     {
         private readonly IDoctorsService _doctorsService;
@@ -127,7 +127,7 @@ namespace HospitalManager.Controllers
 
             var doctorsData = new PaginationViewModel<DoctorViewModel>
             {
-                DoctorsData = doctorsList,
+                Data = doctorsList,
                 TotalCount = doctorsPaginationModel.TotalCount
             };
 

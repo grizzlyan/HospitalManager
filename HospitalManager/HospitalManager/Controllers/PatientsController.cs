@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class PatientsController : ControllerBase
     {

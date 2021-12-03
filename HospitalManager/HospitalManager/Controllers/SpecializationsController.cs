@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class SpecializationsController : ControllerBase
     {
@@ -85,7 +85,7 @@ namespace HospitalManager.Controllers
 
             var specializationsData = new PaginationViewModel<SpecializationViewModel>
             {
-                DoctorsData = specializationList,
+                Data = specializationList,
                 TotalCount = specializationsPaginationModel.TotalCount
             };
 
