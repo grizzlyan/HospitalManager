@@ -1,5 +1,6 @@
 import {CREATE_PATIENT, GET_PATIENTS, GET_PATIENTBYID, UPDATE_PATIENT, DELETE_PATIENT, PATIENTS_ERROR} from '../types'
 import axios from 'axios'
+import axiosConfig from '../getToken';
 const host = 'https://localhost:44333/api/';
 
 export const createPatient = (patientData, userDetails) => async dispatch => {
@@ -22,7 +23,7 @@ export const createPatient = (patientData, userDetails) => async dispatch => {
 export const getPatientById = (id) => async dispatch => {
     
     try{
-        const res = await axios.get(`${host}Patients/${id}`)
+        const res = await axios.get(`${host}Patients/${id}`, axiosConfig)
         dispatch( {
             type: GET_PATIENTBYID,
             payload: res.data
@@ -39,7 +40,7 @@ export const getPatientById = (id) => async dispatch => {
 export const getPatients = () => async dispatch => {
     
     try{
-        const res = await axios.get(`${host}Patients`)
+        const res = await axios.get(`${host}Patients`, axiosConfig)
         dispatch( {
             type: GET_PATIENTS,
             payload: res.data
@@ -56,7 +57,7 @@ export const getPatients = () => async dispatch => {
 export const updatePatient = (patientData) => async dispatch => {
     const id = patientData.id
     try{
-        const res = await axios.put(`${host}Patients/${id}`, patientData)
+        const res = await axios.put(`${host}Patients/${id}`, patientData, axiosConfig)
 
         dispatch( {
             type: UPDATE_PATIENT,
@@ -73,7 +74,7 @@ export const updatePatient = (patientData) => async dispatch => {
 
 export const deletePatient = (id) => async (dispatch) => {
     try{
-        await axios.delete(`${host}Patients/${id}`)
+        await axios.delete(`${host}Patients/${id}`, axiosConfig)
 
         dispatch({
             type: DELETE_PATIENT,

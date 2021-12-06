@@ -11,12 +11,10 @@ namespace HospitalManager.Models.PostModels
 
         public string LastName { get; set; }
 
-        public DateTime EmploymentDate { get; set; }
-
-        public int WorkExperience { get; set; }
-
         public string PathToPhoto { get; set; }
 
-        public int MedicalProfessionId { get; set; }
+        public int SpecializationId { get; set; }
+
+        public string UserID { get; set; }
     }
 }

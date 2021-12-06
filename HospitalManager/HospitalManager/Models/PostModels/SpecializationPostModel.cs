@@ -8,5 +8,7 @@ namespace HospitalManager.Models.PostModels
     public class SpecializationPostModel
     {
         public string SpecializationName { get; set; }
+
+        public string Description { get; set; }
     }
 }

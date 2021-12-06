@@ -1,7 +1,8 @@
 import { CREATE_SPECIALIZATION, GET_SPECIALIZATIONS, GET_SPECIALIZATIONBYID, UPDATE_SPECIALIZATION, DELETE_SPECIALIZATION } from '../types'
 
 const initialState = {
-    specializations: []
+    specializations: [],
+    totalCount: 0
 }
 
 export default function (state = initialState, action) {
@@ -20,6 +21,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 specializations: action.payload,
+                totalCount: action.payload.totalCount
             }
 
         case GET_SPECIALIZATIONBYID:

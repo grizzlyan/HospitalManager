@@ -16,7 +16,12 @@ namespace HospitalManager.Data.DataAccess.Configs
             builder.Property(p => p.SpecializationName).IsRequired().HasMaxLength(50);
 
             builder.HasData(
-                new Specialization { Id = 1, SpecializationName = "Проктология" },
+                new Specialization
+                { 
+                    Id = 1, 
+                    SpecializationName = "Проктология", 
+                    Description = "Лечение геморроя и других проктологических заболеваний с помощью малоинвазивных методик."
+                },
                 new Specialization { Id = 2, SpecializationName = "Урология" },
                 new Specialization { Id = 3, SpecializationName = "Гинекология" },
                 new Specialization { Id = 4, SpecializationName = "Дерматология" },

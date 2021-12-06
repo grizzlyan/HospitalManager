@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HospitalManager.Services.Services
@@ -17,21 +18,36 @@ namespace HospitalManager.Services.Services
     {
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IMapper _mapper;
+        private readonly SemaphoreSlim _semaphoreSlim;
 
         public AppointmentsService(IAppointmentRepository appointmentRepository, IMapper mapper)
         {
             _appointmentRepository = appointmentRepository;
             _mapper = mapper;
+            _semaphoreSlim = new SemaphoreSlim(1);
         }
 
         public async Task<AppointmentModel> CreateAsync(AppointmentModel model)
         {
             var entity = _mapper.Map<Appointment>(model);
 
-            await _appointmentRepository.CreateAsync(entity);
-            model.Id = entity.Id;
+            bool isConainsAppointment;
 
-            return model;
+            await _semaphoreSlim.WaitAsync();
+
+            isConainsAppointment = await _appointmentRepository.IsContainsAppointmentAsync(entity);
+
+            _semaphoreSlim.Release();
+
+            if (!isConainsAppointment)
+            {
+                var createdAppointment = await _appointmentRepository.CreateAsync(entity);
+                model.Id = createdAppointment.Id;
+
+                return model;
+            }
+
+            return null;
         }
 
         public async Task DeleteAsync(int id)
@@ -59,6 +75,21 @@ namespace HospitalManager.Services.Services
             }
 
             return appointmentsByDoctorId;
+        }
+
+        public async Task<IEnumerable<AppointmentModel>> GetAllByPatientIdAsync(int patientId)
+        {
+            var appointments = await _appointmentRepository.GetAllByPatientIdAsync(patientId);
+
+            var appointmentsByPatientId = new List<AppointmentModel>();
+
+            foreach (var item in appointments)
+            {
+                var appointment = _mapper.Map<AppointmentModel>(item);
+                appointmentsByPatientId.Add(appointment);
+            }
+
+            return appointmentsByPatientId;
         }
 
         public async Task<IEnumerable<AppointmentModel>> GetAllAsync()

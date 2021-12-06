@@ -22,15 +22,19 @@ namespace HospitalManager.Mapper
             //PL
 
             CreateMap<DoctorPostModel, DoctorModel>();
+            CreateMap<DoctorViewModel, DoctorModel>();
             CreateMap<DoctorModel, DoctorViewModel>();
 
             CreateMap<SpecializationPostModel, SpecializationModel>();
+            CreateMap<SpecializationViewModel, SpecializationModel>();
             CreateMap<SpecializationModel, SpecializationViewModel>();
 
             CreateMap<PatientPostModel, PatientModel>();
+            CreateMap<PatientViewModel, PatientModel>();
             CreateMap<PatientModel, PatientViewModel>();
 
             CreateMap<AppointmentPostModel, AppointmentModel>();
+            CreateMap<AppointmentViewModel, AppointmentModel>();
             CreateMap<AppointmentModel, AppointmentViewModel>();
 
             CreateMap<DoctorFilterFieldsParametres, DoctorFilterFieldsModel>();

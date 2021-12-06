@@ -1,10 +1,11 @@
 import React from 'react'
 import './regAuthFormStyle.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { createPatient } from '../store/actions/patientsAction'
+import { createPatient } from '../store/actions/patientsActions'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom';
 
-class RegistrationForm extends React.Component {
+export class registrationForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -95,11 +96,6 @@ class RegistrationForm extends React.Component {
                                     <input class="form-control" type="password" placeholder="пароль" onChange={this.onPasswordChange} required />
                                 </div>
                             </div>
-                            <div class="col-lg-12 mb-3">
-                                <div class="form-group">
-                                    <input class="form-control" type="password" placeholder="повторите пароль" />
-                                </div>
-                            </div>
                             <button type="button" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={() => this.onCreateAccount()}>
                                 <span> Создать аккаунт</span>
                             </button>
@@ -113,7 +109,7 @@ class RegistrationForm extends React.Component {
                                 </div>
                             </div>
                             <div class="col-lg-12 text-center mt-4">
-                                Уже есть аккаунт? <a href="#" class="text-danger">Войти</a>
+                                Уже есть аккаунт? <Link to="/login" class="text-danger">Войти</Link>
                             </div>
                         </div>
                     </div>
@@ -125,4 +121,4 @@ class RegistrationForm extends React.Component {
 
 const mapStateToProps = (state) => ({ registrationForm: state.registrationForm });
 
-export default connect(mapStateToProps, { createPatient })(RegistrationForm);
+export default connect(mapStateToProps, { createPatient })(registrationForm);

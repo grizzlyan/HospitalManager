@@ -40,8 +40,9 @@ namespace HospitalManager.Controllers
         }
 
         [HttpPost]
+        [Route("Register")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Create(DoctorPostModel model, UserDetails userDetails)
+        public async Task<IActionResult> Create(UserDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
             {
@@ -68,11 +69,23 @@ namespace HospitalManager.Controllers
 
             await _userManager.AddToRoleAsync(identityUser, roleName);
 
+            var userId = await _userManager.GetUserIdAsync(identityUser);
+
+            var model = new DoctorPostModel
+            {
+                FirstName = userDetails.FirstName,
+                LastName = userDetails.LastName,
+                SpecializationId = userDetails.SpecializationId,
+                UserID = userId
+            };
+
             var createModel = _mapper.Map<DoctorModel>(model);
 
             var createdModel = await _doctorsService.CreateAsync(createModel);
 
-            return Ok(new { Message = "User Reigstration Successful" });
+            var doctor = _mapper.Map<DoctorViewModel>(createdModel);
+
+            return Ok(new { Message = "User Reigstration Successful", Doctor = doctor });
 
             //return _mapper.Map<DoctorViewModel>(createdModel);
         }
@@ -145,7 +158,7 @@ namespace HospitalManager.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Manager")]
-        public async Task Update (DoctorPostModel model)
+        public async Task Update (DoctorViewModel model)
         {
             var doctor = _mapper.Map<DoctorModel>(model);
             await _doctorsService.UpdateAsync(doctor);

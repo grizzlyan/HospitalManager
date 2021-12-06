@@ -11,6 +11,8 @@ namespace HospitalManager.Models.ViewModels
 
         public string SpecializationName { get; set; }
 
+        public string Description { get; set; }
+
         public IEnumerable<DoctorViewModel> Doctors { get; set; }
     }
 }

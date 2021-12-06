@@ -14,10 +14,6 @@ namespace HospitalManager.Services.Models
 
         public string LastName { get; set; }
 
-        public DateTime EmploymentDate { get; set; }
-
-        public int WorkExperience { get; set; }
-
         public string PathToPhoto { get; set; }
 
         public int SpecializationId { get; set; }

@@ -68,6 +68,24 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
+        [Route("{patientId}")]
+        [Authorize(Roles = "Manager, Doctor")]
+        public async Task<IEnumerable<AppointmentViewModel>> GetByPatientId(int patientId)
+        {
+            var appointments = await _appointmentsService.GetAllByDoctorIdAsync(patientId);
+
+            var resultAppointments = new List<AppointmentViewModel>();
+
+            foreach (var item in appointments)
+            {
+                var appointment = _mapper.Map<AppointmentViewModel>(item);
+                resultAppointments.Add(appointment);
+            }
+
+            return resultAppointments;
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Manager")]
         public async Task<IEnumerable<AppointmentViewModel>> Get()
         {
@@ -95,7 +113,7 @@ namespace HospitalManager.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize]
-        public async Task Update(AppointmentPostModel model)
+        public async Task Update(AppointmentViewModel model)
         {
             var appointment = _mapper.Map<AppointmentModel>(model);
             await _appointmentsService.UpdateAsync(appointment);

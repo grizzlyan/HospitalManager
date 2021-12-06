@@ -70,7 +70,9 @@ namespace HospitalManager.Controllers
 
             var createdModel = await _patientsService.CreateAsync(createModel);
 
-            return Ok(new { Message = "User Reigstration Successful" });
+            var patient = _mapper.Map<PatientViewModel>(createdModel);
+
+            return Ok(new { Message = "User Reigstration Successful", Patient = patient });
 
             //return _mapper.Map<PatientViewModel>(createdModel);
         }
@@ -113,7 +115,7 @@ namespace HospitalManager.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Patient")]
-        public async Task Update(PatientPostModel model)
+        public async Task Update(PatientViewModel model)
         {
             var patient = _mapper.Map<PatientModel>(model);
             await _patientsService.UpdateAsync(patient);

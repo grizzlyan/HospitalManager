@@ -15,6 +15,8 @@ namespace HospitalManager.Services.Abstractions
 
         Task UpdateAsync(DoctorModel model);
 
+        Task UpdatePathToPhotoAsync(int id, string pathToPhoto);
+
         Task<DoctorModel> GetByIdAsync(int id);
 
         Task<IEnumerable<DoctorModel>> GetAllAsync();

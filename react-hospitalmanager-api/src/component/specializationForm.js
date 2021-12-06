@@ -1,33 +1,33 @@
 import React from 'react'
-import { authorization } from '../store/actions/authorizationsActions'
+import { createSpecialization } from '../store/actions/specializationsActions';
 import { connect } from 'react-redux'
 import './regAuthFormStyle.css'
 
-export class authorizationForm extends React.Component {
+export class specializationForm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.onUserNameChange = this.onUserNameChange.bind(this);
-        this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onUserNameChange = this.onSpecializationNameChange.bind(this);
+        this.onPasswordChange = this.onDescriptionChange.bind(this);
     }
 
-    onUserNameChange(e) {
+    onSpecializationNameChange(e) {
         let val = e.target.value;
         this.setState({ userName: val });
     }
 
-    onPasswordChange(e) {
+    onDescriptionChange(e) {
         let val = e.target.value;
         this.setState({ password: val });
     }
 
-    onAuthorization() {
+    onCreate() {
         const credentials = {
-            username: this.state.username,
-            password: this.state.password,
+            specializationName: this.state.specializationName,
+            description: this.state.description,
         }
 
-        this.props.authorization(credentials);
+        this.props.createSpecialization(credentials);
     }
 
     render() {
@@ -36,21 +36,20 @@ export class authorizationForm extends React.Component {
                 <div class="container">
                     <div class="col-lg-3 mx-auto align-justify-center pr-4 pl-0 contact-form">
                         <div class="">
-                            <h2 class="mb-3 font-weight-light">Авторизация</h2>
-                            <h6 class="subtitle font-weight-normal">Lorem ipsum dolor sit amet, adipiscing.</h6>
+                            <h2 class="mb-3 font-weight-light">Новое отделение</h2>
                             <div class="row">
                                 <div class="col-lg-12 mb-3">
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="логин" onChange={this.onUserNameChange} required />
+                                        <input class="form-control" type="text" placeholder="название отделения" onChange={this.onSpecializationNameChange} required />
                                     </div>
                                 </div>
                                 <div class="col-lg-12 mb-3">
                                     <div class="form-group">
-                                        <input class="form-control" type="password" placeholder="пароль" onChange={this.onPasswordChange} required />
+                                    <input class="form-control" type="text" placeholder="описание" onChange={this.onDescriptionChange} required />
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={() => this.onAuthorization()}>
-                                    <span> Вход</span>
+                                <button type="submit" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={() => this.onCreate()}>
+                                    <span>Добавить</span>
                                 </button>
                             </div>
                         </div>
@@ -63,6 +62,6 @@ export class authorizationForm extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({ authorizationForm: state.token });
+const mapStateToProps = (state) => ({ specializations: state.specializations });
 
-export default connect(mapStateToProps, { authorization })(authorizationForm);
+export default connect(mapStateToProps, { createSpecialization })(specializationForm);

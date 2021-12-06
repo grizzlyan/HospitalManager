@@ -30,7 +30,7 @@ namespace HospitalManager.Controllers
         public AuthorizationsController(
             IOptions<JwtBearerTokenSettings> jwtTokenOptions,
             UserManager<User> userManager,
-            ApplicationDbContext ctx) 
+            ApplicationDbContext ctx)
         {
             _jwtBearerTokenSettings = jwtTokenOptions.Value;
             _userManager = userManager;
@@ -77,13 +77,33 @@ namespace HospitalManager.Controllers
             }
 
             var token = GenerateToken(identityUser);
+            var role = await _userManager.GetRolesAsync(identityUser);
+            var userId = await _userManager.GetUserIdAsync(identityUser);
+
+            var id = 0;
+
+            switch (role[0])
+            {
+                case "Doctor":
+                    var doctor = identityUser.Doctors.First(x => x.UserId == userId);
+                    id = doctor.Id;
+                    break;
+                case "Patient":
+                    var patient = identityUser.Patients.First(x => x.UserId == userId);
+                    id = patient.Id;
+                    break;
+                default:
+                    break;
+            }
+
 
             return Ok(
                 new
                 {
                     AccessToken = token.Token,
-                    Username = identityUser.UserName,
-                    Roles = await _userManager.GetRolesAsync(identityUser),
+                    UserName = identityUser.UserName,
+                    Role = role,
+                    Id = id
                 });
         }
 
@@ -96,7 +116,7 @@ namespace HospitalManager.Controllers
 
         private async Task<User> ValidateUserAsync(LoginCredentials credentials)
         {
-            var identityUser = await _userManager.FindByNameAsync(credentials.Username);
+            var identityUser = await _userManager.FindByNameAsync(credentials.UserName);
 
             if (identityUser != null)
             {

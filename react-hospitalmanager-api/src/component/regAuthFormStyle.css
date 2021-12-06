@@ -68,24 +68,3 @@
 .bform .text-danger {
  color: #ff4d7e !important;
 }
-
-/*@media (max-width: 1023px) {
- .bform .contact-form {
- padding-left: 0;
- padding-right: 0;
- }
-}
-
-@media (max-width: 767px) {
- .bform .contact-form {
- padding-left: 15px;
- padding-right: 15px;
- }
-}
-
-@media (max-width: 1023px) {
- .bform .right-image {
- position: relative;
- bottom: -95px;
- }
-}*/

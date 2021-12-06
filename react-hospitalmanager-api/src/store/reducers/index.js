@@ -1,8 +1,15 @@
 import { combineReducers } from 'redux'
 import patientReducer from './patientReducer'
-import { routerReducer } from 'react-router-redux';
+import appointmentReducer from './appointmentReducer';
+import authorizationReducer from './authorizationReducer';
+import doctorReducer from './doctorReducer';
+import specializationReducer from './specializationReducer';
 
 export default combineReducers({
-   routing: routerReducer,
-   patients: patientReducer
+
+   appointments: appointmentReducer,
+   authorizations: authorizationReducer,
+   doctors: doctorReducer,
+   patients: patientReducer,
+   specializations: specializationReducer
   })

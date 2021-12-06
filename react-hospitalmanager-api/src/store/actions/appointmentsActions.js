@@ -1,18 +1,21 @@
-import {CREATE_APPOINTMENT, GET_APPOINTMENTS, GET_APPOINTMENTBYID, GET_APPOINTMENTBYDOCTORID, UPDATE_APPOINTMENT, DELETE_APPOINTMENT, APPOINTMENTS_ERROR} from '../types'
+import { CREATE_APPOINTMENT, GET_APPOINTMENTS, GET_APPOINTMENTBYID, GET_APPOINTMENTBYDOCTORID, UPDATE_APPOINTMENT, DELETE_APPOINTMENT, APPOINTMENTS_ERROR } from '../types'
 import axios from 'axios'
+import axiosConfig from '../getToken';
+
 const host = 'https://localhost:44333/api/';
 
 export const createAppointment = (appointmentData) => async dispatch => {
-    
-    try{
-        const res = await axios.post(`${host}Appointments`, appointmentData)
-        dispatch( {
+
+    try {
+        const res = await axios.post(`${host}Appointments`, appointmentData, axiosConfig)
+
+        dispatch({
             type: CREATE_APPOINTMENT,
             payload: res.data
         })
     }
-    catch(e){
-        dispatch( {
+    catch (e) {
+        dispatch({
             type: APPOINTMENTS_ERROR,
             payload: console.log(e),
         })
@@ -20,16 +23,16 @@ export const createAppointment = (appointmentData) => async dispatch => {
 }
 
 export const getAppointments = () => async dispatch => {
-    
-    try{
-        const res = await axios.get(`${host}Appointments`)
-        dispatch( {
+
+    try {
+        const res = await axios.get(`${host}Appointments`, axiosConfig)
+        dispatch({
             type: GET_APPOINTMENTS,
             payload: res.data
         })
     }
-    catch(e){
-        dispatch( {
+    catch (e) {
+        dispatch({
             type: APPOINTMENTS_ERROR,
             payload: console.log(e),
         })
@@ -37,16 +40,16 @@ export const getAppointments = () => async dispatch => {
 }
 
 export const getAppointmentById = (id) => async dispatch => {
-    
-    try{
-        const res = await axios.get(`${host}Appointments/${id}`)
-        dispatch( {
+
+    try {
+        const res = await axios.get(`${host}Appointments/${id}`, axiosConfig)
+        dispatch({
             type: GET_APPOINTMENTBYID,
             payload: res.data
         })
     }
-    catch(e){
-        dispatch( {
+    catch (e) {
+        dispatch({
             type: APPOINTMENTS_ERROR,
             payload: console.log(e),
         })
@@ -54,50 +57,50 @@ export const getAppointmentById = (id) => async dispatch => {
 }
 
 export const getAppointmentByDoctorId = (doctorId) => async dispatch => {
-    
-    try{
-        const res = await axios.get(`${host}Appointments/${doctorId}`)
-        dispatch( {
+
+    try {
+        const res = await axios.get(`${host}Appointments/${doctorId}`, axiosConfig)
+        dispatch({
             type: GET_APPOINTMENTBYDOCTORID,
             payload: res.data
         })
     }
-    catch(e){
-        dispatch( {
+    catch (e) {
+        dispatch({
             type: APPOINTMENTS_ERROR,
             payload: console.log(e),
         })
     }
 }
 
-export const updateDoctor = (appointmentData) => async dispatch => {
+export const updateAppointment = (appointmentData) => async dispatch => {
     const id = appointmentData.id
-    try{
-        const res = await axios.put(`${host}Appointments/${id}`, appointmentData)
+    try {
+        const res = await axios.put(`${host}Appointments/${id}`, appointmentData, axiosConfig)
 
-        dispatch( {
+        dispatch({
             type: UPDATE_APPOINTMENT,
             payload: appointmentData
         })
     }
-    catch(e){
-        dispatch( {
+    catch (e) {
+        dispatch({
             type: APPOINTMENTS_ERROR,
             payload: console.log(e),
         })
     }
 }
 
-export const deleteDoctor = (id) => async (dispatch) => {
-    try{
-        await axios.delete(`${host}Appointments/${id}`)
+export const deleteAppointment = (id) => async (dispatch) => {
+    try {
+        await axios.delete(`${host}Appointments/${id}`, axiosConfig)
 
         dispatch({
             type: DELETE_APPOINTMENT,
             payload: id
         })
     }
-    catch(e){
+    catch (e) {
         dispatch({
             type: APPOINTMENTS_ERROR,
             payload: console.log(e),

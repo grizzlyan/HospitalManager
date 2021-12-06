@@ -1,11 +1,12 @@
 import {CREATE_SPECIALIZATION, GET_SPECIALIZATIONS, GET_SPECIALIZATIONBYID, UPDATE_SPECIALIZATION, DELETE_SPECIALIZATION, SPECIALIZATIONS_ERROR} from '../types'
 import axios from 'axios'
+import axiosConfig from '../getToken';
 const host = 'https://localhost:44333/api/';
 
 export const createSpecialization = (specializationData) => async dispatch => {
     
     try{
-        const res = await axios.post(`${host}Specialization`, specializationData)
+        const res = await axios.post(`${host}Specializations`, specializationData, axiosConfig)
         dispatch( {
             type: CREATE_SPECIALIZATION,
             payload: res.data
@@ -22,7 +23,7 @@ export const createSpecialization = (specializationData) => async dispatch => {
 export const getSpecializationById = (id) => async dispatch => {
     
     try{
-        const res = await axios.get(`${host}Specialization/${id}`)
+        const res = await axios.get(`${host}Specializations/${id}`)
         dispatch( {
             type: GET_SPECIALIZATIONBYID,
             payload: res.data
@@ -39,7 +40,7 @@ export const getSpecializationById = (id) => async dispatch => {
 export const getSpecializations = () => async dispatch => {
     
     try{
-        const res = await axios.get(`${host}Specialization`)
+        const res = await axios.get(`${host}Specializations`)
         dispatch( {
             type: GET_SPECIALIZATIONS,
             payload: res.data
@@ -56,7 +57,7 @@ export const getSpecializations = () => async dispatch => {
 export const updateSpecialization = (specializationData) => async dispatch => {
     const id = specializationData.id
     try{
-        const res = await axios.put(`${host}Specialization/${id}`, specializationData)
+        const res = await axios.put(`${host}Specializations/${id}`, specializationData, axiosConfig)
 
         dispatch( {
             type: UPDATE_SPECIALIZATION,
@@ -73,7 +74,7 @@ export const updateSpecialization = (specializationData) => async dispatch => {
 
 export const deletePatient = (id) => async (dispatch) => {
     try{
-        await axios.delete(`${host}Specialization/${id}`)
+        await axios.delete(`${host}Specializations/${id}`, axiosConfig)
 
         dispatch({
             type: DELETE_SPECIALIZATION,

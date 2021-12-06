@@ -19,10 +19,11 @@ namespace HospitalManager.Data.Repositories
             _ctx = ctx;
         }
 
-        public async Task CreateAsync(Specialization model)
+        public async Task<Specialization> CreateAsync(Specialization model)
         {
             _ctx.Specializations.Add(model);
             await _ctx.SaveChangesAsync();
+            return model;
         }
 
         public async Task DeleteAsync(int id)
@@ -52,6 +53,7 @@ namespace HospitalManager.Data.Repositories
         {
             var specialization = await _ctx.Specializations.FindAsync(model.Id);
             specialization.SpecializationName = model.SpecializationName;
+            specialization.Description = model.Description;
 
             _ctx.Specializations.Update(specialization);
             await _ctx.SaveChangesAsync();

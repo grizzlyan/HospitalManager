@@ -2,6 +2,8 @@ using HospitalManager.Configuration;
 using HospitalManager.Data;
 using HospitalManager.Data.Entities;
 using HospitalManager.Mapper;
+using HospitalManager.Services.ConfigurationServices;
+using HospitalManager.Services.ConfigurationServices.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,8 +59,6 @@ namespace HospitalManager
                 //.AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddTransient<ManagerInitializer>();
-
             var jwtSection = Configuration.GetSection("JwtBearerTokenSettings");
             services.Configure<JwtBearerTokenSettings>(jwtSection);
             var jwtBearerTokenSettings = jwtSection.Get<JwtBearerTokenSettings>();
@@ -80,7 +80,7 @@ namespace HospitalManager
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                 };
             });
-
+            services.AddTransient<IDbInitializer, DbInitializer>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -89,7 +89,7 @@ namespace HospitalManager
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<User> userManager, ManagerInitializer managerInitializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitialiser)
         {
             if (env.IsDevelopment())
             {
@@ -99,7 +99,7 @@ namespace HospitalManager
             }
 
             app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseAuthentication();
@@ -110,8 +110,8 @@ namespace HospitalManager
                 endpoints.MapControllers();
             });
 
-            managerInitializer.SeedManagerAsync(userManager).Wait();
-            //ManagerInitializer.SeedManagerAsync(userManager);
+            var seedTask = dbInitialiser.Seed();
+            seedTask.Wait();
         }
     }
 }

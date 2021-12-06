@@ -26,8 +26,8 @@ namespace HospitalManager.Services.Services
         {
             var entity = _mapper.Map<Patient>(model);
 
-            await _patientRepository.CreateAsync(entity);
-            model.Id = entity.Id;
+            var createdPatient = await _patientRepository.CreateAsync(entity);
+            model.Id = createdPatient.Id;
 
             return model;
         }

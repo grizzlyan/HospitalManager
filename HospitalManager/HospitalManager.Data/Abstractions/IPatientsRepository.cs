@@ -9,7 +9,7 @@ namespace HospitalManager.Data.Abstractions
 {
     public interface IPatientsRepository
     {
-        Task CreateAsync(Patient model);
+        Task<Patient> CreateAsync(Patient model);
 
         Task<Patient> GetByIdAsync(int id);
 

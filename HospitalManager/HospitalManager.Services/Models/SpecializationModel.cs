@@ -10,7 +10,9 @@ namespace HospitalManager.Services.Models
     {
         public int Id { get; set; }
 
-        public string ProfessionName { get; set; }
+        public string SpecializationName { get; set; }
+
+        public string Description { get; set; }
 
         public IEnumerable<DoctorModel> Doctors { get; set; }
     }

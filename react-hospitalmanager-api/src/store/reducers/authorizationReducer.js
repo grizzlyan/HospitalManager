@@ -1,9 +1,11 @@
 import { LOGIN, LOGIN_ERROR } from '../types'
 
 const initialState = {
+    userData:{
     token: '',
-    // login: '',
-    // password: ''
+    userName: '',
+    roles: []
+    }
 }
 
 export default function (state = initialState, action) {
@@ -12,9 +14,11 @@ export default function (state = initialState, action) {
 
         case LOGIN:
 
+        localStorage.setItem('userData', JSON.stringify(action.payload))
+
             return {
                 ...state,
-                token: action.payload
+                userData: action.payload
             }
 
             case LOGIN_ERROR:

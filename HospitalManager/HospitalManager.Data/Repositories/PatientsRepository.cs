@@ -18,10 +18,11 @@ namespace HospitalManager.Data.Repositories
             _ctx = ctx;
         }
 
-        public async Task CreateAsync(Patient model)
+        public async Task<Patient> CreateAsync(Patient model)
         {
             _ctx.Patients.Add(model);
             await _ctx.SaveChangesAsync();
+            return model;
         }
 
         public async Task DeleteAsync(int id)

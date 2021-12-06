@@ -14,10 +14,6 @@ namespace HospitalManager.Data.Entities
 
         public string LastName { get; set; }
 
-        public DateTime EmploymentDate { get; set; }
-
-        public int WorkExperience { get; set; }
-
         public string PathToPhoto { get; set; }
 
         public IEnumerable<Appointment> Appointments { get; set; }

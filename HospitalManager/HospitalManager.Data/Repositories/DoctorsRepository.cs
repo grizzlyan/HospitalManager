@@ -19,10 +19,11 @@ namespace HospitalManager.Data.Repositories
             _ctx = ctx;
         }
 
-        public async Task CreateAsync(Doctor model)
+        public async Task<Doctor> CreateAsync(Doctor model)
         {
             _ctx.Doctors.Add(model);
             await _ctx.SaveChangesAsync();
+            return model;
         }
 
         public async Task DeleteAsync(int id)
@@ -53,9 +54,16 @@ namespace HospitalManager.Data.Repositories
             var doctor = await _ctx.Doctors.FindAsync(model.Id);
             doctor.FirstName = model.FirstName;
             doctor.LastName = model.LastName;
-            doctor.EmploymentDate = model.EmploymentDate;
-            doctor.WorkExperience = model.WorkExperience;
             doctor.SpecializationId = model.SpecializationId;
+
+            _ctx.Doctors.Update(doctor);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task UpdatePathToPhotoAsync (int id, string pathToPhoto)
+        {
+            var doctor = await _ctx.Doctors.FindAsync(id);
+            doctor.PathToPhoto = pathToPhoto;
 
             _ctx.Doctors.Update(doctor);
             await _ctx.SaveChangesAsync();

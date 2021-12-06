@@ -20,15 +20,17 @@ namespace HospitalManager.Data.Repositories
             _ctx = ctx;
         }
 
-        public async Task CreateAsync(Appointment model)
+        public async Task<Appointment> CreateAsync(Appointment model)
         {
-            var appointmentDate = await _ctx.Appointments.AnyAsync(x => x.AppointmentDate == model.AppointmentDate);
+            _ctx.Appointments.Add(model);
+            await _ctx.SaveChangesAsync();
 
-            if (!appointmentDate)
-            {
-                _ctx.Appointments.Add(model);
-                await _ctx.SaveChangesAsync();
-            }
+            return model;
+        }
+
+        public async Task<bool> IsContainsAppointmentAsync(Appointment model)
+        {
+            return await _ctx.Appointments.AnyAsync(x => x.AppointmentDate == model.AppointmentDate);
         }
 
         public async Task DeleteAsync(int id)
@@ -50,6 +52,11 @@ namespace HospitalManager.Data.Repositories
             return await _ctx.Appointments.Where(x => x.DoctorId == doctorId).AsNoTracking().ToListAsync();
         }
 
+        public async Task<IEnumerable<Appointment>> GetAllByPatientIdAsync(int patientId)
+        {
+            return await _ctx.Appointments.Where(x => x.PatientId == patientId).AsNoTracking().ToListAsync();
+        }
+
         public async Task<IEnumerable<Appointment>> GetAllAsync()
         {
             return await _ctx.Appointments.AsNoTracking().ToListAsync();
@@ -60,8 +67,6 @@ namespace HospitalManager.Data.Repositories
             var appointment = await _ctx.Appointments.FindAsync(model.Id);
             appointment.AppointmentDate = model.AppointmentDate;
             appointment.AppointmentDuration = model.AppointmentDuration;
-            appointment.DoctorId = model.DoctorId;
-            appointment.PatientId = model.PatientId;
 
             _ctx.Appointments.Update(appointment);
             await _ctx.SaveChangesAsync();

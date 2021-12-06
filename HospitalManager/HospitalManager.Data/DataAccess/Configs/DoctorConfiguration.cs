@@ -15,8 +15,6 @@ namespace HospitalManager.Data.DataAccess.Configs
         {
             builder.Property(p => p.FirstName).IsRequired().HasMaxLength(30);
             builder.Property(p => p.LastName).IsRequired().HasMaxLength(30);
-            builder.Property(p => p.EmploymentDate).IsRequired().HasColumnType("datetime(0)");
-            builder.Property(p => p.WorkExperience).IsRequired();
 
             builder.HasOne(d => d.Specialization)
                 .WithMany(mp => mp.Doctors)

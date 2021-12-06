@@ -29,8 +29,8 @@ namespace HospitalManager.Services.Services
         {
             var entity = _mapper.Map<Doctor>(model);
 
-            await _doctorRepository.CreateAsync(entity);
-            model.Id = entity.Id;
+            var createdDoctor = await _doctorRepository.CreateAsync(entity);
+            model.Id = createdDoctor.Id;
 
             return model;
         }
@@ -66,6 +66,11 @@ namespace HospitalManager.Services.Services
         {
             var doctor = _mapper.Map<Doctor>(model);
             await _doctorRepository.UpdateAsync(doctor);
+        }
+
+        public async Task UpdatePathToPhotoAsync(int id, string pathToPhoto)
+        {
+            await _doctorRepository.UpdatePathToPhotoAsync(id, pathToPhoto);
         }
 
         public async Task<PaginationModel<DoctorModel>> GetPaginationsDoctorsAsync(

@@ -13,13 +13,9 @@ namespace HospitalManager.Models.ViewModels
 
         public string LastName { get; set; }
 
-        public DateTime EmploymentDate { get; set; }
-
-        public int WorkExperience { get; set; }
-
         public string PathToPhoto { get; set; }
 
-        public int MedicalProfessionId { get; set; }
-        public SpecializationViewModel MedicalProfession { get; set; }
+        public int SpecializationId { get; set; }
+        public SpecializationViewModel Specialization { get; set; }
     }
 }

@@ -50,6 +50,7 @@ namespace HospitalManager.Controllers
         }
 
         /*[HttpGet]
+        [Authorize(Roles = "Manager")]
         public async Task<IEnumerable<SpecializationViewModel>> Get()
         {
             var specializations = await _specializationsService.GetAllAsync();
@@ -103,7 +104,7 @@ namespace HospitalManager.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Manager")]
-        public async Task Update(SpecializationPostModel model)
+        public async Task Update(SpecializationViewModel model)
         {
             var specialization = _mapper.Map<SpecializationModel>(model);
             await _specializationsService.UpdateAsync(specialization);

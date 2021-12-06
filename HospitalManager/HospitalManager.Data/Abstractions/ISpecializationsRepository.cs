@@ -10,7 +10,7 @@ namespace HospitalManager.Data.Abstractions
 {
     public interface ISpecializationsRepository
     {
-        Task CreateAsync(Specialization model);
+        Task<Specialization> CreateAsync(Specialization model);
 
         Task<Specialization> GetByIdAsync(int id);
 

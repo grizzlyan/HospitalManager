@@ -12,6 +12,8 @@ namespace HospitalManager.Data.Entities
 
         public string SpecializationName { get; set; }
 
+        public string Description { get; set; }
+
         public IEnumerable<Doctor> Doctors { get; set; }
     }
 }
