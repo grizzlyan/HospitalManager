@@ -8,9 +8,7 @@ import { doctorForm } from './doctorForm';
 import { doctorsContainer } from './doctorsContainer';
 import { patientsContainer } from './patientsContainer';
 import { appointmentsContainer } from './appointmentsContainer';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'
-import Calendar from './appointmentCalendar';
+import { appointmentCalendar } from './appointmentCalendar';
 
 
 export class cabinet extends React.Component {
@@ -18,9 +16,13 @@ export class cabinet extends React.Component {
 
 
 
-        let code;
+        let cabinetBar;
+        let routes;
+
         let userData;
+
         let role = 'Manager';
+
 
         const retrievedStoreStr = localStorage.getItem('userData')
 
@@ -30,7 +32,7 @@ export class cabinet extends React.Component {
         }
 
         if (role === "Manager") {
-            code = <ul class="navbar-nav">
+            cabinetBar = <ul class="navbar-nav">
 
                 <span class="navbar-brand" >Отделения</span>
                 <li class="nav-item">
@@ -52,7 +54,7 @@ export class cabinet extends React.Component {
 
                 <span class="navbar-brand" >Пациенты</span>
                 <li class="nav-item">
-                    <Link class="nav-link" to="/cabinet/doctors">Список пациентов</Link>
+                    <Link class="nav-link" to="/cabinet/patients">Список пациентов</Link>
                 </li>
                 <hr />
 
@@ -62,37 +64,55 @@ export class cabinet extends React.Component {
                 </li>
                 <hr />
             </ul>
+
+            routes = <Switch>
+                <Route path='/cabinet/createSpecialization' component={specializationForm} />
+                <Route exact path='/cabinet/specializations' component={specializationContainer} />
+                <Route path='/cabinet/createDoctor' component={doctorForm} />
+                <Route exact path='/cabinet/doctors' component={doctorsContainer} />
+                <Route exact path='/cabinet/patients' component={patientsContainer} />
+                <Route exact path='/cabinet/appointments' component={appointmentsContainer} />
+            </Switch>
         }
 
         else if (role === "Doctor") {
-            code = <ul class="navbar-nav">
+            cabinetBar = <ul class="navbar-nav">
                 <li class="nav-item">
-                    <Link class="nav-link" to="/edit">Создать прём</Link>
+                    <Link class="nav-link" to="/d-upcoming">Предстоящие приёмы</Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" to="/upcoming">Предстоящие приёмы</Link>
-                </li>
-                <li class="nav-item">
-                    <Link class="nav-link" to="/history">История приёмов</Link>
+                    <Link class="nav-link" to="/d-history">История приёмов</Link>
                 </li>
             </ul>
+
+            routes = <Switch>
+                <Route exact path='/cabinet/p-upcoming' component={appointmentCalendar} />
+                <Route exact path='/cabinet/p-history' component={appointmentCalendar} />
+            </Switch>
         }
 
         else if (role === "Patient") {
-            code = <ul class="navbar-nav">
+            cabinetBar = <ul class="navbar-nav">
                 <li class="nav-item">
-                    <Link class="nav-link" to="/createAppointment">Записаться</Link>
+                    <Link class="nav-link" to="/cabinet/p-createAppointment">Записаться</Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" to="/upcoming">Предстоящие приёмы</Link>
+                    <Link class="nav-link" to="/cabinet/p-upcoming">Предстоящие приёмы</Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" to="/history">История приёмов</Link>
+                    <Link class="nav-link" to="/cabinet/p-history">История приёмов</Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" to="/edit">Редактировать информацию о себе</Link>
+                    <Link class="nav-link" to="/cabinet/p-edit">Редактировать информацию о себе</Link>
                 </li>
             </ul>
+
+            routes = <Switch>
+                <Route exact path='/cabinet/p-createAppointment' component={appointmentCalendar} />
+                <Route exact path='/cabinet/p-upcoming' component={appointmentCalendar} />
+                <Route exact path='/cabinet/p-history' component={appointmentCalendar} />
+                <Route exact path='/cabinet/p-edit' component={appointmentCalendar} />
+            </Switch>
 
         }
 
@@ -102,52 +122,19 @@ export class cabinet extends React.Component {
 
                     <nav class="navbar navbar-expand-md navbar-light">
                         <h1 class="navbar-brand" >Привет, !</h1>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" 
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbar">
 
-                            {code}
+                            {cabinetBar}
 
                         </div>
                     </nav>
                 </div>
                 <div class="col-md-8 col-lg-9 content-container" >
-
-                    <form>
-                        <div>
-                            <label for="party">Введите дату::</label>
-                            <input type="date" id="party" name="party" min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split("T")[0]}
-                                max={new Date(new Date().setDate(new Date().getDate() + 30)).toISOString().split("T")[0]} required />
-                            <span class="validity"></span>
-                            <br />
-
-                        </div>
-                        <div>
-                            <input type="submit" value="Submit form" />
-                        </div>
-                    </form>
-                    <label for="from">Время приёма: </label>
-                    <select name="from" id="from">
-                        <option value="1">8:00</option>
-                        <option value="2">9:00</option>
-                        <option value="3">10:00</option>
-                        <option value="4">11:00</option>
-                        <option value="5">13:00</option>
-                        <option value="1">14:00</option>
-                        <option value="2">15:00</option>
-                        <option value="3">16:00</option>
-                    </select>
-
-                    <Switch>
-                        <Route path='/cabinet/createSpecialization' component={specializationForm} />
-                        <Route exact path='/cabinet/specializations' component={specializationContainer} />
-                        <Route path='/cabinet/createDoctor' component={doctorForm} />
-                        <Route exact path='/cabinet/doctors' component={doctorsContainer} />
-                        <Route exact path='/cabinet/doctors' component={patientsContainer} />
-                        <Route exact path='/cabinet/appointments' component={appointmentsContainer} />
-                    </Switch>
+                    {routes}
                 </div>
             </div>
         </div>

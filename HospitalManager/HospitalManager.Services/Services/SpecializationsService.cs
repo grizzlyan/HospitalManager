@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Services.Services
 {
-    public class SpetializationsService : ISpecializationsService
+    public class SpecializationsService : ISpecializationsService
     {
         private readonly ISpecializationsRepository _specializationRepository;
         private readonly IMapper _mapper;
 
-        public SpetializationsService(ISpecializationsRepository specializationRepository, IMapper mapper)
+        public SpecializationsService(ISpecializationsRepository specializationRepository, IMapper mapper)
         {
             _specializationRepository = specializationRepository;
             _mapper = mapper;

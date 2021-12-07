@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data.Abstractions
 {
-    public interface IAppointmentRepository
+    public interface IAppointmentsRepository
     {
         public Task<Appointment> CreateAsync(Appointment model);
 

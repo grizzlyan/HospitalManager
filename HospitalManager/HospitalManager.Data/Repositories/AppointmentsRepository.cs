@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Data.Repositories
 {
-    public class AppointmentRepository : IAppointmentRepository
+    public class AppointmentsRepository : IAppointmentsRepository
     {
         private readonly ApplicationDbContext _ctx;
 
-        public AppointmentRepository(ApplicationDbContext ctx)
+        public AppointmentsRepository(ApplicationDbContext ctx)
         {
             _ctx = ctx;
         }

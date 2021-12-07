@@ -19,10 +19,10 @@ namespace HospitalManager.Controllers
     [ApiController]
     public class AppointmentsController : ControllerBase
     {
-        private readonly IAppointmentService _appointmentsService;
+        private readonly IAppointmentsService _appointmentsService;
         private readonly IMapper _mapper;
 
-        public AppointmentsController(IAppointmentService appointmentsService, IMapper mapper)
+        public AppointmentsController(IAppointmentsService appointmentsService, IMapper mapper)
         {
             _appointmentsService = appointmentsService;
             _mapper = mapper;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Services.Abstractions
 {
-    public interface IAppointmentService
+    public interface IAppointmentsService
     {
         public Task<AppointmentModel> CreateAsync(AppointmentModel model);
 

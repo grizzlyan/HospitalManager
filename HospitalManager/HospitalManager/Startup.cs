@@ -1,9 +1,13 @@
 using HospitalManager.Configuration;
 using HospitalManager.Data;
+using HospitalManager.Data.Abstractions;
 using HospitalManager.Data.Entities;
+using HospitalManager.Data.Repositories;
 using HospitalManager.Mapper;
+using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.ConfigurationServices;
 using HospitalManager.Services.ConfigurationServices.Abstractions;
+using HospitalManager.Services.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -80,7 +84,19 @@ namespace HospitalManager
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                 };
             });
+
+            services.AddTransient<IAppointmentsService, AppointmentsService>();
+            services.AddTransient<IDoctorsService, DoctorsService>();
+            services.AddTransient<IPatientsService, PatientsService>();
+            services.AddTransient<ISpecializationsService, SpecializationsService>();
+
+            services.AddTransient<IAppointmentsRepository, AppointmentsRepository>();
+            services.AddTransient<IDoctorsRepository, DoctorsRepository>();
+            services.AddTransient<IPatientsRepository, PatientsRepository>();
+            services.AddTransient<ISpecializationsRepository, SpecializationsRepository>();
+
             services.AddTransient<IDbInitializer, DbInitializer>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

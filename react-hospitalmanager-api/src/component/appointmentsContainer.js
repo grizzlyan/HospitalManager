@@ -14,11 +14,10 @@ export class appointmentsContainer extends React.Component {
     render() {
         const { appointments } = this.props.appointment;
 
-
         return <div class="flexColumn">
 
             {appointments.map(appointment =>
-                <div>ID {appointments.id} {appointments.appointmentDate} {appointments.appointmentDuration} Врач - {appointments.doctorId} Пациент - {appointments.patientId}</div>)}
+                <div>ID {appointment.id} {appointment.appointmentDate} {appointment.appointmentDuration} Врач - {appointment.doctorId} Пациент - {appointment.patientId}</div>)}
         </div>
     }
 }
