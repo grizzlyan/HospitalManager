@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 
 namespace HospitalManager.Services.Services
 {
-    public class AppointmentsService : IAppointmentService
+    public class AppointmentsService : IAppointmentsService
     {
-        private readonly IAppointmentRepository _appointmentRepository;
+        private readonly IAppointmentsRepository _appointmentRepository;
         private readonly IMapper _mapper;
         private readonly SemaphoreSlim _semaphoreSlim;
 
-        public AppointmentsService(IAppointmentRepository appointmentRepository, IMapper mapper)
+        public AppointmentsService(IAppointmentsRepository appointmentRepository, IMapper mapper)
         {
             _appointmentRepository = appointmentRepository;
             _mapper = mapper;
