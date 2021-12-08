@@ -363,26 +363,6 @@ namespace HospitalManager.Data.DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "3d102e9d-17cf-4533-a8a3-645b44ad3fe9",
-                            ConcurrencyStamp = "2751fda9-4651-42e7-b45a-c11eae7ec1fc",
-                            Name = "Manager"
-                        },
-                        new
-                        {
-                            Id = "67938b3b-fbb7-489f-a107-baea92a941b1",
-                            ConcurrencyStamp = "60c07283-362c-4a87-b37f-4e299cdaf953",
-                            Name = "Doctor"
-                        },
-                        new
-                        {
-                            Id = "aad20197-7c0d-4ab2-9074-a0811fac0546",
-                            ConcurrencyStamp = "0e7ab8d3-f671-4149-a5ea-e11ea2e97643",
-                            Name = "Patient"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

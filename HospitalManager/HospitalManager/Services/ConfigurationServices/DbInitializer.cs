@@ -39,13 +39,10 @@ namespace HospitalManager.Services.ConfigurationServices
                 var manager = new User()
                 {
                     UserName = "Manager",
-                    NormalizedUserName = "MANAGER",
-                    Email = "manager@manager.com",
-                    NormalizedEmail = "MANAGER@MANAGER.COM",
-                    EmailConfirmed = true
+                    Email = "manager@manager.com"
                 };
 
-                var password = "ManagerPassword";
+                var password = "ManagerPassword123#@";
 
                 var existingManager = await _userManager.FindByNameAsync(manager.UserName);
                 if (existingManager == null)
