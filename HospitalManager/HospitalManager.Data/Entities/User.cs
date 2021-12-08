@@ -12,7 +12,5 @@ namespace HospitalManager.Data.Entities
         public IEnumerable<Doctor> Doctors { get; set; }
 
         public IEnumerable<Patient> Patients { get; set; }
-
-        public IEnumerable<Manager> Managers { get; set; }
     }
 }

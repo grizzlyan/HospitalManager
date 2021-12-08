@@ -16,6 +16,12 @@ namespace HospitalManager.Data.DataAccess.Configs
             builder.Property(p => p.FirstName).IsRequired().HasMaxLength(30);
             builder.Property(p => p.LastName).IsRequired().HasMaxLength(30);
             builder.Property(p => p.City).IsRequired().HasMaxLength(30);
+            builder.Property(p => p.UserId).IsRequired();
+
+            builder.HasOne(p => p.User)
+                .WithMany(u => u.Patients)
+                .HasForeignKey(p => p.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

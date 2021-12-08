@@ -9,8 +9,6 @@ namespace HospitalManager.Models.PostModels
     {
         public DateTime AppointmentDate { get; set; }
 
-        public TimeSpan AppointmentDuration { get; set; }
-
         public int DoctorId { get; set; }
 
         public int PatientId { get; set; }

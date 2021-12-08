@@ -15,6 +15,8 @@ namespace HospitalManager.Data.DataAccess.Configs
         {
             builder.Property(p => p.FirstName).IsRequired().HasMaxLength(30);
             builder.Property(p => p.LastName).IsRequired().HasMaxLength(30);
+            builder.Property(p => p.SpecializationId).IsRequired();
+            builder.Property(p => p.UserId).IsRequired();
 
             builder.HasOne(d => d.Specialization)
                 .WithMany(mp => mp.Doctors)

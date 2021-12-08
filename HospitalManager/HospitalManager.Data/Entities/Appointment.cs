@@ -12,8 +12,6 @@ namespace HospitalManager.Data.Entities
 
         public DateTime AppointmentDate { get; set; }
 
-        public TimeSpan AppointmentDuration { get; set; }
-
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }
 

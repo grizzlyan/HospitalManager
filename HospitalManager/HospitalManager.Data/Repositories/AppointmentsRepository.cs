@@ -52,7 +52,6 @@ namespace HospitalManager.Data.Repositories
         {
             var appointment = await _ctx.Appointments.FindAsync(model.Id);
             appointment.AppointmentDate = model.AppointmentDate;
-            appointment.AppointmentDuration = model.AppointmentDuration;
 
             _ctx.Appointments.Update(appointment);
             await _ctx.SaveChangesAsync();

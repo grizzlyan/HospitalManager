@@ -13,8 +13,9 @@ namespace HospitalManager.Data.DataAccess.Configs
     {
         public void Configure(EntityTypeBuilder<Appointment> builder)
         {
-            builder.Property(p => p.AppointmentDate).IsRequired().HasColumnType("datetime(0)");
-            builder.Property(p => p.AppointmentDuration).IsRequired();
+            builder.Property(p => p.AppointmentDate).IsRequired().HasColumnType("datetime2");
+            builder.Property(p => p.DoctorId).IsRequired();
+            builder.Property(p => p.PatientId).IsRequired();
 
             builder.HasOne(a => a.Doctor)
                 .WithMany(d => d.Appointments)
@@ -24,7 +25,7 @@ namespace HospitalManager.Data.DataAccess.Configs
             builder.HasOne(a => a.Patient)
                 .WithMany(p => p.Appointments)
                 .HasForeignKey(a => a.PatientId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
