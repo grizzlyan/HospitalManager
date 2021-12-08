@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HospitalManager.Services.Models.AuthModels
+namespace HospitalManager.Services.Models.AuthModels.Abstractions
 {
-    public class UserDetails
+    public abstract class UserDetails
     {
         [Required]
         public string Username { get; set; }
@@ -24,13 +24,5 @@ namespace HospitalManager.Services.Models.AuthModels
 
         [Required]
         public string LastName { get; set; }
-
-        [Required]
-        public string PathToPhoto { get; set; }
-
-        [Required]
-        public int SpecializationId { get; set; }
-
-        public RolesEnum Role { get; set; }
     }
 }

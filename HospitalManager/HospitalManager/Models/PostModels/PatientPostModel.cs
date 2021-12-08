@@ -12,5 +12,7 @@ namespace HospitalManager.Models.PostModels
         public string LastName { get; set; }
 
         public string City { get; set; }
+
+        public string UserId {get;set;}
     }
 }

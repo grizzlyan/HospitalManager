@@ -35,42 +35,19 @@ namespace HospitalManager.Services.Services
             return model;
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            await _doctorRepository.DeleteAsync(id);
-        }
-
-        public async Task<DoctorModel> GetByIdAsync(int id)
-        {
-            var doctor = await _doctorRepository.GetByIdAsync(id);
-
-            return _mapper.Map<DoctorModel>(doctor);
-        }
-
         public async Task<IEnumerable<DoctorModel>> GetAllAsync()
         {
             var resultDoctorsList = new List<DoctorModel>();
 
             var doctors = await _doctorRepository.GetAllAsync();
 
-            foreach(var item in doctors)
+            foreach (var item in doctors)
             {
                 var doctor = _mapper.Map<DoctorModel>(item);
                 resultDoctorsList.Add(doctor);
             }
 
             return resultDoctorsList;
-        }
-
-        public async Task UpdateAsync(DoctorModel model)
-        {
-            var doctor = _mapper.Map<Doctor>(model);
-            await _doctorRepository.UpdateAsync(doctor);
-        }
-
-        public async Task UpdatePathToPhotoAsync(int id, string pathToPhoto)
-        {
-            await _doctorRepository.UpdatePathToPhotoAsync(id, pathToPhoto);
         }
 
         public async Task<PaginationModel<DoctorModel>> GetPaginationsDoctorsAsync(
@@ -84,7 +61,7 @@ namespace HospitalManager.Services.Services
             var pagePgination = _mapper.Map<PagePagination>(pagePagination);
 
             var doctors = await _doctorRepository.GetPaginationDoctors(paginationFilter, doctorSortFilter, pagePgination);
-            
+
             var resultDoctorsList = new List<DoctorModel>();
 
             foreach (var item in doctors)
@@ -98,6 +75,29 @@ namespace HospitalManager.Services.Services
             var doctorsData = new PaginationModel<DoctorModel> { Data = resultDoctorsList, TotalCount = countDoctors };
 
             return doctorsData;
+        }
+
+        public async Task<DoctorModel> GetByIdAsync(int id)
+        {
+            var doctor = await _doctorRepository.GetByIdAsync(id);
+
+            return _mapper.Map<DoctorModel>(doctor);
+        }
+
+        public async Task UpdateAsync(DoctorModel model)
+        {
+            var doctor = _mapper.Map<Doctor>(model);
+            await _doctorRepository.UpdateAsync(doctor);
+        }
+
+        public async Task UpdatePathToPhotoAsync(int id, string pathToPhoto)
+        {
+            await _doctorRepository.UpdatePathToPhotoAsync(id, pathToPhoto);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _doctorRepository.DeleteAsync(id);
         }
     }
 }

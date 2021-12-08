@@ -11,9 +11,9 @@ namespace HospitalManager.Data.Abstractions
     {
         Task<Patient> CreateAsync(Patient model);
 
-        Task<Patient> GetByIdAsync(int id);
-
         Task<IEnumerable<Patient>> GetAllAsync();
+
+        Task<Patient> GetByIdAsync(int id);
 
         Task UpdateAsync(Patient model);
 

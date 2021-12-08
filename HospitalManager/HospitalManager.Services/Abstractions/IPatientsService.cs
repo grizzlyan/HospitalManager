@@ -11,11 +11,11 @@ namespace HospitalManager.Services.Abstractions
     {
         public Task<PatientModel> CreateAsync(PatientModel model);
 
-        public Task UpdateAsync(PatientModel model);
+        public Task<IEnumerable<PatientModel>> GetAllAsync();
 
         public Task<PatientModel> GetByIdAsync(int id);
 
-        public Task<IEnumerable<PatientModel>> GetAllAsync();
+        public Task UpdateAsync(PatientModel model);
 
         public Task DeleteAsync(int id);
     }

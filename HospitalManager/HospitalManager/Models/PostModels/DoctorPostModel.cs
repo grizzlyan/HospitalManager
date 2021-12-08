@@ -11,10 +11,8 @@ namespace HospitalManager.Models.PostModels
 
         public string LastName { get; set; }
 
-        public string PathToPhoto { get; set; }
-
         public int SpecializationId { get; set; }
 
-        public string UserID { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -9,20 +9,20 @@ namespace HospitalManager.Data.Abstractions
 {
     public interface IAppointmentsRepository
     {
-        public Task<Appointment> CreateAsync(Appointment model);
+        Task<Appointment> CreateAsync(Appointment model);
 
-        Task<bool> IsContainsAppointmentAsync(Appointment model);
-
-        public Task DeleteAsync(int id);
-
-        public Task<Appointment> GetByIdAsync(int id);
+        Task<IEnumerable<Appointment>> GetAllAsync();
 
         Task<IEnumerable<Appointment>> GetAllByDoctorIdAsync(int doctorId);
 
         Task<IEnumerable<Appointment>> GetAllByPatientIdAsync(int patientId);
 
-        public Task<IEnumerable<Appointment>> GetAllAsync();
+        Task<Appointment> GetByIdAsync(int id);
 
-        public Task UpdateAsync(Appointment model);
+        Task UpdateAsync(Appointment model);
+
+        Task DeleteAsync(int id);      
+
+        Task<bool> IsContainsAppointmentAsync(Appointment model);
     }
 }

@@ -25,11 +25,11 @@ namespace HospitalManager.Data.Repositories
             return model;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<IEnumerable<Patient>> GetAllAsync()
         {
-            var patient = await _ctx.Patients.FindAsync(id);
-            _ctx.Remove(patient);
-            await _ctx.SaveChangesAsync();
+            return await _ctx.Patients
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<Patient> GetByIdAsync(int id)
@@ -37,13 +37,6 @@ namespace HospitalManager.Data.Repositories
             return await _ctx.Patients
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
-        public async Task<IEnumerable<Patient>> GetAllAsync()
-        {
-            return await _ctx.Patients
-                .AsNoTracking()
-                .ToListAsync();
         }
 
         public async Task UpdateAsync(Patient model)
@@ -54,6 +47,13 @@ namespace HospitalManager.Data.Repositories
             patient.City = model.City;
 
             _ctx.Update(patient);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var patient = await _ctx.Patients.FindAsync(id);
+            _ctx.Remove(patient);
             await _ctx.SaveChangesAsync();
         }
     }

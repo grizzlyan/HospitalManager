@@ -8,7 +8,7 @@ namespace HospitalManager.Models.PaginationsModels
 {
     public class SortFilterParametres<T> where T: struct
     {
-        public SortDirectionEnum? sortDirection { get; set; }
+        public SortDirectionEnum? SortDirection { get; set; }
         public T? SortField { get; set; }
     }
 }

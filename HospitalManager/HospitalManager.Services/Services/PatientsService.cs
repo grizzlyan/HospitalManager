@@ -32,18 +32,6 @@ namespace HospitalManager.Services.Services
             return model;
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            await _patientRepository.DeleteAsync(id);
-        }
-
-        public async Task<PatientModel> GetByIdAsync(int id)
-        {
-            var medicalProfession = await _patientRepository.GetByIdAsync(id);
-
-            return _mapper.Map<PatientModel>(medicalProfession);
-        }
-
         public async Task<IEnumerable<PatientModel>> GetAllAsync()
         {
             var resultPatientsList = new List<PatientModel>();
@@ -59,10 +47,22 @@ namespace HospitalManager.Services.Services
             return resultPatientsList;
         }
 
+        public async Task<PatientModel> GetByIdAsync(int id)
+        {
+            var medicalProfession = await _patientRepository.GetByIdAsync(id);
+
+            return _mapper.Map<PatientModel>(medicalProfession);
+        }
+
         public async Task UpdateAsync(PatientModel model)
         {
             var patient = _mapper.Map<Patient>(model);
             await _patientRepository.UpdateAsync(patient);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _patientRepository.DeleteAsync(id);
         }
     }
 }

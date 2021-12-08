@@ -81,12 +81,12 @@ namespace HospitalManager.Mapper
 
                     dest.FilterPredicates = new List<Expression<Func<Doctor, bool>>>();
 
-                    if (src.MedicalProffessionId.HasValue)
+                    if (src.SpecializationId.HasValue)
                     {
                         switch (src.FilterDoctorField)
                         {
                             case FilterDoctorFieldEnum.MedicalProffession:
-                                dest.FilterPredicates.Add(x => x.SpecializationId == src.MedicalProffessionId);
+                                dest.FilterPredicates.Add(x => x.SpecializationId == src.SpecializationId);
                                 break;
                             default:
                                 break;

@@ -41,32 +41,6 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<SpecializationViewModel> GetById(int id)
-        {
-            var specialization = await _specializationsService.GetByIdAsync(id);
-
-            return _mapper.Map<SpecializationViewModel>(specialization);
-        }
-
-        /*[HttpGet]
-        [Authorize(Roles = "Manager")]
-        public async Task<IEnumerable<SpecializationViewModel>> Get()
-        {
-            var specializations = await _specializationsService.GetAllAsync();
-
-            var resultSpecializations = new List<SpecializationViewModel>();
-
-            foreach (var item in specializations)
-            {
-                var specialization = _mapper.Map<SpecializationViewModel>(item);
-                resultSpecializations.Add(specialization);
-            }
-
-            return resultSpecializations;
-        }*/
-
-        [HttpGet]
         public async Task<PaginationViewModel<SpecializationViewModel>> GetPaginationSpecializations(
             [FromQuery] SortFilterParametres<SortSpecializationFieldEnum> sortFilterParametres,
             [FromQuery] PagePaginationPostModel pagePagination)
@@ -93,13 +67,31 @@ namespace HospitalManager.Controllers
             return specializationsData;
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Manager")]
-        public async Task Delete(int id)
+        public async Task<SpecializationViewModel> GetById(int id)
         {
-            await _specializationsService.DeleteAsync(id);
+            var specialization = await _specializationsService.GetByIdAsync(id);
+
+            return _mapper.Map<SpecializationViewModel>(specialization);
         }
+
+        /*[HttpGet]
+        [Authorize(Roles = "Manager")]
+        public async Task<IEnumerable<SpecializationViewModel>> Get()
+        {
+            var specializations = await _specializationsService.GetAllAsync();
+
+            var resultSpecializations = new List<SpecializationViewModel>();
+
+            foreach (var item in specializations)
+            {
+                var specialization = _mapper.Map<SpecializationViewModel>(item);
+                resultSpecializations.Add(specialization);
+            }
+
+            return resultSpecializations;
+        }*/
 
         [HttpPut]
         [Route("{id}")]
@@ -108,6 +100,14 @@ namespace HospitalManager.Controllers
         {
             var specialization = _mapper.Map<SpecializationModel>(model);
             await _specializationsService.UpdateAsync(specialization);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task Delete(int id)
+        {
+            await _specializationsService.DeleteAsync(id);
         }
     }
 }

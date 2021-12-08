@@ -39,7 +39,7 @@ namespace HospitalManager.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] UserDetails userDetails)
+        public async Task<IActionResult> RegisterAsync([FromBody] UserDoctorDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
             {
@@ -82,7 +82,7 @@ namespace HospitalManager.Controllers
 
             var id = 0;
 
-            switch (role[0])
+            switch (role.First())
             {
                 case "Doctor":
                     var doctor = identityUser.Doctors.First(x => x.UserId == userId);

@@ -28,23 +28,9 @@ namespace HospitalManager.Data.Repositories
             return model;
         }
 
-        public async Task<bool> IsContainsAppointmentAsync(Appointment model)
+        public async Task<IEnumerable<Appointment>> GetAllAsync()
         {
-            return await _ctx.Appointments.AnyAsync(x => x.AppointmentDate == model.AppointmentDate);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var appointment = await _ctx.Appointments.FindAsync(id);
-            _ctx.Remove(appointment);
-            await _ctx.SaveChangesAsync();
-        }
-
-        public async Task<Appointment> GetByIdAsync(int id)
-        {
-            return await _ctx.Appointments
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id);
+            return await _ctx.Appointments.AsNoTracking().ToListAsync();
         }
 
         public async Task<IEnumerable<Appointment>> GetAllByDoctorIdAsync(int doctorId)
@@ -57,9 +43,9 @@ namespace HospitalManager.Data.Repositories
             return await _ctx.Appointments.Where(x => x.PatientId == patientId).AsNoTracking().ToListAsync();
         }
 
-        public async Task<IEnumerable<Appointment>> GetAllAsync()
+        public async Task<Appointment> GetByIdAsync(int id)
         {
-            return await _ctx.Appointments.AsNoTracking().ToListAsync();
+            return await _ctx.Appointments.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(Appointment model)
@@ -70,6 +56,18 @@ namespace HospitalManager.Data.Repositories
 
             _ctx.Appointments.Update(appointment);
             await _ctx.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var appointment = await _ctx.Appointments.FindAsync(id);
+            _ctx.Remove(appointment);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsContainsAppointmentAsync(Appointment model)
+        {
+            return await _ctx.Appointments.AnyAsync(x => x.AppointmentDate == model.AppointmentDate);
         }
     }
 }

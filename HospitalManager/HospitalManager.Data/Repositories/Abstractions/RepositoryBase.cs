@@ -11,10 +11,10 @@ namespace HospitalManager.Data.Repositories.Abstractions
     public abstract class RepositoryBase<TEntity, TKey>
         where TEntity: class, IEntity<TKey>
     {
-        private readonly HospitalManagerContext _ctx;
+        private readonly ApplicationDbContext _ctx;
         private DbSet<TEntity> _dbSet;
 
-        public RepositoryBase(HospitalManagerContext context)
+        public RepositoryBase(ApplicationDbContext context)
         {
             _ctx = context;
             _dbSet = context.Set<TEntity>();

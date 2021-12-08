@@ -26,37 +26,12 @@ namespace HospitalManager.Data.Repositories
             return model;
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            var specialization = await _ctx.Specializations.FindAsync(id);
-            _ctx.Remove(specialization);
-            await _ctx.SaveChangesAsync();
-        }
-
-        public async Task<Specialization> GetByIdAsync(int id)
-        {
-            return await _ctx.Specializations
-                .Include(x => x.Doctors)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
         public async Task<IEnumerable<Specialization>> GetAllAsync()
         {
             return await _ctx.Specializations
                .Include(x => x.Doctors)
                .AsNoTracking()
                .ToListAsync();
-        }
-
-        public async Task UpdateAsync(Specialization model)
-        {
-            var specialization = await _ctx.Specializations.FindAsync(model.Id);
-            specialization.SpecializationName = model.SpecializationName;
-            specialization.Description = model.Description;
-
-            _ctx.Specializations.Update(specialization);
-            await _ctx.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Specialization>> GetPaginationSpecializationsAsync(
@@ -87,10 +62,35 @@ namespace HospitalManager.Data.Repositories
             return paginationSpecialization;
         }
 
+        public async Task<Specialization> GetByIdAsync(int id)
+        {
+            return await _ctx.Specializations
+                .Include(x => x.Doctors)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<int> GetCountSpecializationsAsync()
         {
             var count = await _ctx.Specializations.CountAsync();
             return count;
+        }
+
+        public async Task UpdateAsync(Specialization model)
+        {
+            var specialization = await _ctx.Specializations.FindAsync(model.Id);
+            specialization.SpecializationName = model.SpecializationName;
+            specialization.Description = model.Description;
+
+            _ctx.Specializations.Update(specialization);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var specialization = await _ctx.Specializations.FindAsync(id);
+            _ctx.Remove(specialization);
+            await _ctx.SaveChangesAsync();
         }
     }
 }

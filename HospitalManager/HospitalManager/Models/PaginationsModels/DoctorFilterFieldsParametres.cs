@@ -8,7 +8,7 @@ namespace HospitalManager.Models.PaginationsModels
 {
     public class DoctorFilterFieldsParametres
     {
-        public FilterDoctorFieldEnum? filterDoctorField { get; set; }
+        public FilterDoctorFieldEnum? FilterDoctorField { get; set; }
         public int? MedicalProffessionId { get; set; }
     }
 }

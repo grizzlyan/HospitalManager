@@ -50,9 +50,31 @@ namespace HospitalManager.Services.Services
             return null;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<IEnumerable<AppointmentModel>> GetAllAsync()
         {
-            await _appointmentRepository.DeleteAsync(id);
+            var appointments = await _appointmentRepository.GetAllAsync();
+
+            var resultAppointmentsList = MapAppointmentList(appointments);
+
+            return resultAppointmentsList;
+        }
+
+        public async Task<IEnumerable<AppointmentModel>> GetAppointmentsByDoctorIdAsync(int doctorId)
+        {
+            var appointments = await _appointmentRepository.GetAllByDoctorIdAsync(doctorId);
+
+            var appointmentsByDoctorId = MapAppointmentList(appointments);
+
+            return appointmentsByDoctorId;
+        }
+
+        public async Task<IEnumerable<AppointmentModel>> GetAppointmentsByPatientIdAsync(int patientId)
+        {
+            var appointments = await _appointmentRepository.GetAllByPatientIdAsync(patientId);
+
+            var appointmentsByPatientId = MapAppointmentList(appointments);
+
+            return appointmentsByPatientId;
         }
 
         public async Task<AppointmentModel> GetByIdAsync(int id)
@@ -62,40 +84,19 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<AppointmentModel>(appointment);
         }
 
-        public async Task<IEnumerable<AppointmentModel>> GetAllByDoctorIdAsync(int doctorId)
+        public async Task UpdateAsync(AppointmentModel model)
         {
-            var appointments = await _appointmentRepository.GetAllByDoctorIdAsync(doctorId);
-
-            var appointmentsByDoctorId = new List<AppointmentModel>();
-
-            foreach (var item in appointments)
-            {
-                var appointment = _mapper.Map<AppointmentModel>(item);
-                appointmentsByDoctorId.Add(appointment);
-            }
-
-            return appointmentsByDoctorId;
+            var appointment = _mapper.Map<Appointment>(model);
+            await _appointmentRepository.UpdateAsync(appointment);
         }
 
-        public async Task<IEnumerable<AppointmentModel>> GetAllByPatientIdAsync(int patientId)
+        public async Task DeleteAsync(int id)
         {
-            var appointments = await _appointmentRepository.GetAllByPatientIdAsync(patientId);
-
-            var appointmentsByPatientId = new List<AppointmentModel>();
-
-            foreach (var item in appointments)
-            {
-                var appointment = _mapper.Map<AppointmentModel>(item);
-                appointmentsByPatientId.Add(appointment);
-            }
-
-            return appointmentsByPatientId;
+            await _appointmentRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<AppointmentModel>> GetAllAsync()
+        private IEnumerable<AppointmentModel> MapAppointmentList(IEnumerable<Appointment> appointments)
         {
-            var appointments = await _appointmentRepository.GetAllAsync();
-
             var resultAppointmentsList = new List<AppointmentModel>();
 
             foreach (var item in appointments)
@@ -105,12 +106,6 @@ namespace HospitalManager.Services.Services
             }
 
             return resultAppointmentsList;
-        }
-
-        public async Task UpdateAsync(AppointmentModel model)
-        {
-            var appointment = _mapper.Map<Appointment>(model);
-            await _appointmentRepository.UpdateAsync(appointment);
         }
     }
 }

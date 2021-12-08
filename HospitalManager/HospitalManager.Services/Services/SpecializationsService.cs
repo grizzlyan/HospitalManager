@@ -35,18 +35,6 @@ namespace HospitalManager.Services.Services
             return model;
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            await _specializationRepository.DeleteAsync(id);
-        }
-
-        public async Task<SpecializationModel> GetByIdAsync(int id)
-        {
-            var specialization = await _specializationRepository.GetByIdAsync(id);
-
-            return _mapper.Map<SpecializationModel>(specialization);
-        }
-
         public async Task<IEnumerable<SpecializationModel>> GetAllAsync()
         {
             var resultSpecializationsList = new List<SpecializationModel>();
@@ -62,13 +50,7 @@ namespace HospitalManager.Services.Services
             return resultSpecializationsList;
         }
 
-        public async Task UpdateAsync(SpecializationModel model)
-        {
-            var specialization = _mapper.Map<Specialization>(model);
-            await _specializationRepository.UpdateAsync(specialization);
-        }
-
-        public async Task<PaginationModel<SpecializationModel>> GetPaginationSpecializationsAsync (
+        public async Task<PaginationModel<SpecializationModel>> GetPaginationSpecializationsAsync(
             SortFilterModel<SortSpecializationFieldEnum> sortFilter,
             PagePaginationModel pagePagination)
         {
@@ -76,7 +58,7 @@ namespace HospitalManager.Services.Services
             var pagePgination = _mapper.Map<PagePagination>(pagePagination);
 
             var medicalProffessions = await _specializationRepository.GetPaginationSpecializationsAsync(
-                specializationSortFilter, 
+                specializationSortFilter,
                 pagePgination);
 
             var resultSpecializations = new List<SpecializationModel>();
@@ -96,6 +78,24 @@ namespace HospitalManager.Services.Services
             };
 
             return specializationsData;
+        }
+
+        public async Task<SpecializationModel> GetByIdAsync(int id)
+        {
+            var specialization = await _specializationRepository.GetByIdAsync(id);
+
+            return _mapper.Map<SpecializationModel>(specialization);
+        }
+
+        public async Task UpdateAsync(SpecializationModel model)
+        {
+            var specialization = _mapper.Map<Specialization>(model);
+            await _specializationRepository.UpdateAsync(specialization);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _specializationRepository.DeleteAsync(id);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace HospitalManager.Controllers
         [HttpPost]
         [Route("Register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Create(PatientPostModel model, UserDetails userDetails)
+        public async Task<IActionResult> Create(UserPatientDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
             {
@@ -60,11 +60,19 @@ namespace HospitalManager.Controllers
                 return new BadRequestObjectResult(new { Message = "User Registration Failed", Errors = dictionary });
             }
 
-            userDetails.Role = RolesEnum.Patient;
-
-            var roleName = userDetails.Role.GetEnumDescription();
+            var roleName = RolesEnum.Patient.GetEnumDescription();
 
             await _userManager.AddToRoleAsync(identityUser, roleName);
+
+            var userId = await _userManager.GetUserIdAsync(identityUser);
+
+            var model = new PatientPostModel
+            {
+                FirstName = userDetails.FirstName,
+                LastName = userDetails.LastName,
+                City = userDetails.City,
+                UserId = userId
+            };
 
             var createModel = _mapper.Map<PatientModel>(model);
 
@@ -75,16 +83,6 @@ namespace HospitalManager.Controllers
             return Ok(new { Message = "User Reigstration Successful", Patient = patient });
 
             //return _mapper.Map<PatientViewModel>(createdModel);
-        }
-
-        [HttpGet]
-        [Route("{id}")]
-        [Authorize(Roles = "Manager")]
-        public async Task<PatientViewModel> GetById(int id)
-        {
-            var patient = await _patientsService.GetByIdAsync(id);
-
-            return _mapper.Map<PatientViewModel>(patient);
         }
 
         [HttpGet]
@@ -104,12 +102,14 @@ namespace HospitalManager.Controllers
             return resultPatients;
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("{id}")]
         [Authorize(Roles = "Manager")]
-        public async Task Delete(int id)
+        public async Task<PatientViewModel> GetById(int id)
         {
-            await _patientsService.DeleteAsync(id);
+            var patient = await _patientsService.GetByIdAsync(id);
+
+            return _mapper.Map<PatientViewModel>(patient);
         }
 
         [HttpPut]
@@ -119,6 +119,14 @@ namespace HospitalManager.Controllers
         {
             var patient = _mapper.Map<PatientModel>(model);
             await _patientsService.UpdateAsync(patient);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task Delete(int id)
+        {
+            await _patientsService.DeleteAsync(id);
         }
     }
 }

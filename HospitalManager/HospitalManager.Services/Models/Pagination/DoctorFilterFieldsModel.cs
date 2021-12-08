@@ -10,6 +10,6 @@ namespace HospitalManager.Services.Models.Pagination
     public class DoctorFilterFieldsModel
     {
         public FilterDoctorFieldEnum? FilterDoctorField { get; set; }
-        public int? MedicalProffessionId { get; set; }
+        public int? SpecializationId { get; set; }
     }
 }

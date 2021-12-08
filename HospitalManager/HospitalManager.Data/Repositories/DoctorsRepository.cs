@@ -26,47 +26,12 @@ namespace HospitalManager.Data.Repositories
             return model;
         }
 
-        public async Task DeleteAsync(int id)
-        {
-            var doctor = await _ctx.Doctors.FindAsync(id);
-            _ctx.Remove(doctor);
-            await _ctx.SaveChangesAsync();
-        }
-
-        public async Task<Doctor> GetByIdAsync(int id)
-        {
-            return await _ctx.Doctors
-            .Include(x => x.Specialization)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id);
-        }
-
         public async Task<IEnumerable<Doctor>> GetAllAsync()
         {
             return await _ctx.Doctors
             .Include(x => x.Specialization)
             .AsNoTracking()
             .ToListAsync();
-        }
-
-        public async Task UpdateAsync(Doctor model)
-        {
-            var doctor = await _ctx.Doctors.FindAsync(model.Id);
-            doctor.FirstName = model.FirstName;
-            doctor.LastName = model.LastName;
-            doctor.SpecializationId = model.SpecializationId;
-
-            _ctx.Doctors.Update(doctor);
-            await _ctx.SaveChangesAsync();
-        }
-
-        public async Task UpdatePathToPhotoAsync (int id, string pathToPhoto)
-        {
-            var doctor = await _ctx.Doctors.FindAsync(id);
-            doctor.PathToPhoto = pathToPhoto;
-
-            _ctx.Doctors.Update(doctor);
-            await _ctx.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Doctor>> GetPaginationDoctors(
@@ -88,7 +53,7 @@ namespace HospitalManager.Data.Repositories
 
             if (sortFilter != null)
             {
-                if(sortFilter.IsAscending)
+                if (sortFilter.IsAscending)
                 {
                     result = result.OrderBy(sortFilter.SortPredicate);
                 }
@@ -106,10 +71,45 @@ namespace HospitalManager.Data.Repositories
             return paginationDoctors;
         }
 
+        public async Task<Doctor> GetByIdAsync(int id)
+        {
+            return await _ctx.Doctors
+            .Include(x => x.Specialization)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         public async Task<int> GetCountDoctorsAsync()
         {
             var count = await _ctx.Doctors.CountAsync();
             return count;
+        }
+
+        public async Task UpdateAsync(Doctor model)
+        {
+            var doctor = await _ctx.Doctors.FindAsync(model.Id);
+            doctor.FirstName = model.FirstName;
+            doctor.LastName = model.LastName;
+            doctor.SpecializationId = model.SpecializationId;
+
+            _ctx.Doctors.Update(doctor);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task UpdatePathToPhotoAsync(int id, string pathToPhoto)
+        {
+            var doctor = await _ctx.Doctors.FindAsync(id);
+            doctor.PathToPhoto = pathToPhoto;
+
+            _ctx.Doctors.Update(doctor);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var doctor = await _ctx.Doctors.FindAsync(id);
+            _ctx.Remove(doctor);
+            await _ctx.SaveChangesAsync();
         }
     }
 }

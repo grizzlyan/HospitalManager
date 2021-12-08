@@ -42,7 +42,7 @@ namespace HospitalManager.Controllers
         [HttpPost]
         [Route("Register")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Create(UserDetails userDetails)
+        public async Task<IActionResult> Create(UserDoctorDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
             {
@@ -63,9 +63,7 @@ namespace HospitalManager.Controllers
                 return new BadRequestObjectResult(new { Message = "User Registration Failed", Errors = dictionary });
             }
 
-            userDetails.Role = RolesEnum.Doctor;
-
-            var roleName = userDetails.Role.GetEnumDescription();
+            var roleName = RolesEnum.Doctor.GetEnumDescription();
 
             await _userManager.AddToRoleAsync(identityUser, roleName);
 
@@ -76,7 +74,7 @@ namespace HospitalManager.Controllers
                 FirstName = userDetails.FirstName,
                 LastName = userDetails.LastName,
                 SpecializationId = userDetails.SpecializationId,
-                UserID = userId
+                UserId = userId
             };
 
             var createModel = _mapper.Map<DoctorModel>(model);
@@ -89,31 +87,6 @@ namespace HospitalManager.Controllers
 
             //return _mapper.Map<DoctorViewModel>(createdModel);
         }
-
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<DoctorViewModel> GetById(int id)
-        {
-            var doctor = await _doctorsService.GetByIdAsync(id);
-
-            return _mapper.Map<DoctorViewModel>(doctor);
-        }
-
-        /*[HttpGet]
-        public async Task<IEnumerable<DoctorViewModel>> Get()
-        {
-            var doctors = await _doctorsService.GetAllAsync();
-
-            var resultDoctors = new List<DoctorViewModel>();
-
-            foreach (var item in doctors)
-            {
-                var doctor = _mapper.Map<DoctorViewModel>(item);
-                resultDoctors.Add(doctor);
-            }
-
-            return resultDoctors;
-        }*/
 
         [HttpGet]
         public async Task<PaginationViewModel<DoctorViewModel>> GetPaginationDoctors(
@@ -147,21 +120,46 @@ namespace HospitalManager.Controllers
             return doctorsData;
         }
 
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<DoctorViewModel> GetById(int id)
+        {
+            var doctor = await _doctorsService.GetByIdAsync(id);
+
+            return _mapper.Map<DoctorViewModel>(doctor);
+        }
+
+        /*[HttpGet]
+        public async Task<IEnumerable<DoctorViewModel>> Get()
+        {
+            var doctors = await _doctorsService.GetAllAsync();
+
+            var resultDoctors = new List<DoctorViewModel>();
+
+            foreach (var item in doctors)
+            {
+                var doctor = _mapper.Map<DoctorViewModel>(item);
+                resultDoctors.Add(doctor);
+            }
+
+            return resultDoctors;
+        }*/
+
+        [HttpPut]
+        [Route("{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task Update(DoctorViewModel model)
+        {
+            var doctor = _mapper.Map<DoctorModel>(model);
+            await _doctorsService.UpdateAsync(doctor);
+        }
+
         [HttpDelete]
         [Route("{id}")]
         [Authorize(Roles = "Manager")]
         public async Task Delete(int id)
         {
             await _doctorsService.DeleteAsync(id);
-        }
-
-        [HttpPut]
-        [Route("{id}")]
-        [Authorize(Roles = "Manager")]
-        public async Task Update (DoctorViewModel model)
-        {
-            var doctor = _mapper.Map<DoctorModel>(model);
-            await _doctorsService.UpdateAsync(doctor);
-        }
+        }  
     }
 }

@@ -40,13 +40,14 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        [Authorize(Roles = "Manager, Patient")]
-        public async Task<AppointmentViewModel> GetById(int id)
+        [Authorize(Roles = "Manager")]
+        public async Task<IEnumerable<AppointmentViewModel>> Get()
         {
-            var appointment = await _appointmentsService.GetByIdAsync(id);
+            var appointments = await _appointmentsService.GetAllAsync();
 
-            return _mapper.Map<AppointmentViewModel>(appointment);
+            var resultAppointments = MapAppointmentList(appointments);
+
+            return resultAppointments;
         }
 
         [HttpGet]
@@ -54,15 +55,9 @@ namespace HospitalManager.Controllers
         [Authorize(Roles = "Manager, Doctor")]
         public async Task<IEnumerable<AppointmentViewModel>> GetByDoctorId(int doctorId)
         {
-            var appointments = await _appointmentsService.GetAllByDoctorIdAsync(doctorId);
+            var appointments = await _appointmentsService.GetAppointmentsByDoctorIdAsync(doctorId);
 
-            var resultAppointments = new List<AppointmentViewModel>();
-
-            foreach (var item in appointments)
-            {
-                var appointment = _mapper.Map<AppointmentViewModel>(item);
-                resultAppointments.Add(appointment);
-            }
+            var resultAppointments = MapAppointmentList(appointments);
 
             return resultAppointments;
         }
@@ -72,34 +67,30 @@ namespace HospitalManager.Controllers
         [Authorize(Roles = "Manager, Doctor")]
         public async Task<IEnumerable<AppointmentViewModel>> GetByPatientId(int patientId)
         {
-            var appointments = await _appointmentsService.GetAllByDoctorIdAsync(patientId);
+            var appointments = await _appointmentsService.GetAppointmentsByPatientIdAsync(patientId);
 
-            var resultAppointments = new List<AppointmentViewModel>();
-
-            foreach (var item in appointments)
-            {
-                var appointment = _mapper.Map<AppointmentViewModel>(item);
-                resultAppointments.Add(appointment);
-            }
+            var resultAppointments = MapAppointmentList(appointments);
 
             return resultAppointments;
         }
 
         [HttpGet]
-        [Authorize(Roles = "Manager")]
-        public async Task<IEnumerable<AppointmentViewModel>> Get()
+        [Route("{id}")]
+        [Authorize(Roles = "Manager, Patient")]
+        public async Task<AppointmentViewModel> GetById(int id)
         {
-            var appointments = await _appointmentsService.GetAllAsync();
+            var appointment = await _appointmentsService.GetByIdAsync(id);
 
-            var resultAppointments = new List<AppointmentViewModel>();
+            return _mapper.Map<AppointmentViewModel>(appointment);
+        }
 
-            foreach (var item in appointments)
-            {
-                var appointment = _mapper.Map<AppointmentViewModel>(item);
-                resultAppointments.Add(appointment);
-            }
-
-            return resultAppointments;
+        [HttpPut]
+        [Route("{id}")]
+        [Authorize]
+        public async Task Update(AppointmentViewModel model)
+        {
+            var appointment = _mapper.Map<AppointmentModel>(model);
+            await _appointmentsService.UpdateAsync(appointment);
         }
 
         [HttpDelete]
@@ -110,13 +101,17 @@ namespace HospitalManager.Controllers
             await _appointmentsService.DeleteAsync(id);
         }
 
-        [HttpPut]
-        [Route("{id}")]
-        [Authorize]
-        public async Task Update(AppointmentViewModel model)
+        private IEnumerable<AppointmentViewModel> MapAppointmentList(IEnumerable<AppointmentModel> appointments)
         {
-            var appointment = _mapper.Map<AppointmentModel>(model);
-            await _appointmentsService.UpdateAsync(appointment);
+            var resultAppointmentsList = new List<AppointmentViewModel>();
+
+            foreach (var item in appointments)
+            {
+                var appointment = _mapper.Map<AppointmentViewModel>(item);
+                resultAppointmentsList.Add(appointment);
+            }
+
+            return resultAppointmentsList;
         }
     }
 }

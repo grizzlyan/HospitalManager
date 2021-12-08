@@ -12,18 +12,18 @@ namespace HospitalManager.Data.Abstractions
     {
         Task<Specialization> CreateAsync(Specialization model);
 
-        Task<Specialization> GetByIdAsync(int id);
-
         Task<IEnumerable<Specialization>> GetAllAsync();
-
-        Task UpdateAsync(Specialization model);
-
-        Task DeleteAsync(int id);
 
         Task<IEnumerable<Specialization>> GetPaginationSpecializationsAsync(
             SortFilter<Specialization> sortFilter,
             PagePagination pagePagination);
 
+        Task<Specialization> GetByIdAsync(int id);
+
         Task<int> GetCountSpecializationsAsync();
+
+        Task UpdateAsync(Specialization model);
+
+        Task DeleteAsync(int id); 
     }
 }

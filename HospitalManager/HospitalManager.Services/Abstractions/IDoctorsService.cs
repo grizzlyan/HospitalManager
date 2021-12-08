@@ -13,18 +13,17 @@ namespace HospitalManager.Services.Abstractions
     {
         Task<DoctorModel> CreateAsync(DoctorModel model);
 
-        Task UpdateAsync(DoctorModel model);
-
-        Task UpdatePathToPhotoAsync(int id, string pathToPhoto);
-
-        Task<DoctorModel> GetByIdAsync(int id);
-
         Task<IEnumerable<DoctorModel>> GetAllAsync();
-
-        Task DeleteAsync(int id);
 
         Task<PaginationModel<DoctorModel>> GetPaginationsDoctorsAsync(DoctorFilterFieldsModel doctorFilterFields,
             SortFilterModel<SortDoctorFieldEnum> sortFilter,
             PagePaginationModel pagePagination);
+        Task<DoctorModel> GetByIdAsync(int id);
+
+        Task UpdateAsync(DoctorModel model);
+
+        Task UpdatePathToPhotoAsync(int id, string pathToPhoto);
+
+        Task DeleteAsync(int id);
     }
 }
