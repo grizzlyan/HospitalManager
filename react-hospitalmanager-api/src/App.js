@@ -1,28 +1,27 @@
 import React from 'react';
 import './App.css';
-
+import { BrowserRouter, Route, Switch, Router } from 'react-router-dom';
 import NavigationBar from './component/navigationBar';
-
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { authorizationForm } from './component/authorizationForm';
-import { registrationForm} from './component/registrationForm';
-import { doctorsContainer } from './component/doctorsContainer';
-import { specializationContainer } from './component/specializationsContainer';
-import { cabinet } from './component/cabinet';
+import  AuthorizationForm  from './component/authorizationForm';
+import RegistrationForm from './component/registrationForm';
+import  DoctorsContainer  from './component/doctorsContainer';
+import SpecializationContainer  from './component/specializationsContainer';
+import {cabinet} from './component/cabinet';
 import Specialization from './component/specialization';
+import RegistrationResult from './component/registrationResult';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
         <NavigationBar />
-        <specializationContainer/>
         <div>
         <Switch>
-          <Route path='/login' component={authorizationForm} />
-          <Route path='/registration' component={registrationForm} />
-          <Route path='/doctors' component={doctorsContainer}/>
-          <Route path='/specializations' component={specializationContainer}/>
+          <Route path='/login' component={AuthorizationForm} />
+          <Route path='/registration' component={RegistrationForm} />
+          <Route path='/regResult' component={RegistrationResult} />
+          <Route path='/doctors' component={DoctorsContainer}/>
+          <Route path='/specializations' component={SpecializationContainer}/>
           <Route path='/cabinet' component={cabinet}/>
         </Switch>
         </div>

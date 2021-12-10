@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import './cabinetStyle.css'
 import { Link, Switch, Route } from 'react-router-dom';
-import { specializationForm } from './specializationForm';
-import { specializationContainer } from './specializationsContainer';
-import { doctorForm } from './doctorForm';
-import { doctorsContainer } from './doctorsContainer';
+import SpecializationForm from './specializationForm';
+import SpecializationContainer  from './specializationsContainer';
+import DoctorForm  from './doctorForm';
+import  DoctorsContainer  from './doctorsContainer';
 import { patientsContainer } from './patientsContainer';
 import { appointmentsContainer } from './appointmentsContainer';
 import { appointmentCalendar } from './appointmentCalendar';
@@ -14,21 +14,19 @@ import { appointmentCalendar } from './appointmentCalendar';
 export class cabinet extends React.Component {
     render() {
 
-
-
         let cabinetBar;
         let routes;
 
         let userData;
 
-        let role = 'Manager';
+        let role = '';
 
 
         const retrievedStoreStr = localStorage.getItem('userData')
 
         if (retrievedStoreStr) {
             userData = JSON.parse(retrievedStoreStr)
-            role = userData.roles[0];
+            role = userData.role;
         }
 
         if (role === "Manager") {
@@ -66,10 +64,10 @@ export class cabinet extends React.Component {
             </ul>
 
             routes = <Switch>
-                <Route path='/cabinet/createSpecialization' component={specializationForm} />
-                <Route exact path='/cabinet/specializations' component={specializationContainer} />
-                <Route path='/cabinet/createDoctor' component={doctorForm} />
-                <Route exact path='/cabinet/doctors' component={doctorsContainer} />
+                <Route path='/cabinet/createSpecialization' component={SpecializationForm} />
+                <Route exact path='/cabinet/specializations' component={SpecializationContainer} />
+                <Route path='/cabinet/createDoctor' component={DoctorForm} />
+                <Route exact path='/cabinet/doctors' component={DoctorsContainer} />
                 <Route exact path='/cabinet/patients' component={patientsContainer} />
                 <Route exact path='/cabinet/appointments' component={appointmentsContainer} />
             </Switch>

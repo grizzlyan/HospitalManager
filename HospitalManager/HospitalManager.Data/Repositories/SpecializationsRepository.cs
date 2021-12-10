@@ -27,11 +27,8 @@ namespace HospitalManager.Data.Repositories
         }
 
         public async Task<IEnumerable<Specialization>> GetAllAsync()
-        {
-            return await _ctx.Specializations
-               .Include(x => x.Doctors)
-               .AsNoTracking()
-               .ToListAsync();
+        {               
+            return await _ctx.Specializations.ToListAsync();
         }
 
         public async Task<IEnumerable<Specialization>> GetPaginationSpecializationsAsync(

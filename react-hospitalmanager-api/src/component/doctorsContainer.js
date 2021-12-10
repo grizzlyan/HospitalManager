@@ -3,7 +3,7 @@ import Doctor from './doctor';
 import { connect } from 'react-redux'
 import { getDoctors } from '../store/actions/doctorsActions'
 
-export class doctorsContainer extends React.Component {
+class doctorsContainer extends React.Component {
     constructor(props) {
         super(props);
     }

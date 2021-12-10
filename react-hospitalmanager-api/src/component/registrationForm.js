@@ -5,7 +5,7 @@ import { createPatient } from '../store/actions/patientsActions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 
-export class registrationForm extends React.Component {
+class registrationForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -43,19 +43,17 @@ export class registrationForm extends React.Component {
     }
 
     onCreateAccount() {
-        const model = {
+
+        const userDetails = {
+            username: this.state.userName,
+            password: this.state.password,
+            email: this.state.email,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             city: this.state.city
         }
 
-        const userDetails = {
-            username: this.state.username,
-            password: this.state.password,
-            email: this.state.email
-        }
-
-        this.props.createPatient(model, userDetails);
+        this.props.createPatient(userDetails);
     }
 
     render() {
@@ -96,7 +94,7 @@ export class registrationForm extends React.Component {
                                     <input class="form-control" type="password" placeholder="пароль" onChange={this.onPasswordChange} required />
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={() => this.onCreateAccount()}>
+                            <button type="button" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" href ="/" onClick={() => this.onCreateAccount()}>
                                 <span> Создать аккаунт</span>
                             </button>
                         </div>

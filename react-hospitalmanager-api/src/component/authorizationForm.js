@@ -1,14 +1,15 @@
 import React from 'react'
-import { authorization } from '../store/actions/authorizationsActions'
 import { connect } from 'react-redux'
+import { authorization } from '../store/actions/authorizationsActions'
 import './regAuthFormStyle.css'
 
-export class authorizationForm extends React.Component {
+class authorizationForm extends React.Component {
     constructor(props) {
         super(props);
 
         this.onUserNameChange = this.onUserNameChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
+        this.onAuthorization = this.onAuthorization.bind(this);
     }
 
     onUserNameChange(e) {
@@ -23,7 +24,7 @@ export class authorizationForm extends React.Component {
 
     onAuthorization() {
         const credentials = {
-            username: this.state.username,
+            username: this.state.userName,
             password: this.state.password,
         }
 
@@ -31,7 +32,7 @@ export class authorizationForm extends React.Component {
     }
 
     render() {
-        return <div class="bform py-5">
+        return <form class="bform py-5">
             <div class="row">
                 <div class="container">
                     <div class="col-lg-3 mx-auto align-justify-center pr-4 pl-0 contact-form">
@@ -49,20 +50,18 @@ export class authorizationForm extends React.Component {
                                         <input class="form-control" type="password" placeholder="пароль" onChange={this.onPasswordChange} required />
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={() => this.onAuthorization()}>
-                                    <span> Вход</span>
-                                </button>
+                                <submit type="submit" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={this.onAuthorization}>
+                                     <span>Вход</span>
+                                </submit>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 right-image pl-3">
-                </div>
             </div>
-        </div>
+        </form>
     }
 }
 
-const mapStateToProps = (state) => ({ authorizationForm: state.token });
+const mapStateToProps = (state) => ({ authorization: state.token });
 
-export default connect(mapStateToProps, { authorization })(authorizationForm);
+export default connect(null, { authorization })(authorizationForm);

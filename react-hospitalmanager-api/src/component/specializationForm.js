@@ -3,7 +3,7 @@ import { createSpecialization } from '../store/actions/specializationsActions';
 import { connect } from 'react-redux'
 import './regAuthFormStyle.css'
 
-export class specializationForm extends React.Component {
+class specializationForm extends React.Component {
     constructor(props) {
         super(props);
 

@@ -1,7 +1,8 @@
 import { CREATE_PATIENT, GET_PATIENTS, GET_PATIENTBYID, UPDATE_PATIENT, DELETE_PATIENT } from '../types'
 
 const initialState = {
-    patients: []
+    patients: [],
+    message: 'AAAAAAAAAAAAAAAAAAAA'
 }
 
 export default function (state = initialState, action) {
@@ -12,7 +13,8 @@ export default function (state = initialState, action) {
 
             return {
                 ...state,
-                patients: state.patients.concat(action.payload),
+                patients: state.patients.concat(action.payload.patient),
+                message: action.payload.message
             }
 
         case GET_PATIENTS:

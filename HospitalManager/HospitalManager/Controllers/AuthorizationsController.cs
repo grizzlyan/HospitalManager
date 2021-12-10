@@ -64,7 +64,7 @@ namespace HospitalManager.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]/Login")]
+        [Route("Login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCredentials credentials)
         {
             User identityUser;
@@ -76,26 +76,15 @@ namespace HospitalManager.Controllers
                 return new BadRequestObjectResult(new { Message = "Login failed" });
             }
 
-            var token = GenerateToken(identityUser);
-            var role = await _userManager.GetRolesAsync(identityUser);
-            var userId = await _userManager.GetUserIdAsync(identityUser);
+            
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            var role = roles.First();
 
-            var id = 0;
+            var token = GenerateToken(identityUser, role);
 
-            switch (role.First())
-            {
-                case "Doctor":
-                    var doctor = identityUser.Doctors.First(x => x.UserId == userId);
-                    id = doctor.Id;
-                    break;
-                case "Patient":
-                    var patient = identityUser.Patients.First(x => x.UserId == userId);
-                    id = patient.Id;
-                    break;
-                default:
-                    break;
-            }
-
+            //var b = _userManager.Users.Include(x => x.Patients).First(x => x.Id == userId);
+            //var c = b.Patients.First(x => x.UserId == userId);
+            //var id = identityUser.Patients.First().Id;
 
             return Ok(
                 new
@@ -103,7 +92,8 @@ namespace HospitalManager.Controllers
                     AccessToken = token.Token,
                     UserName = identityUser.UserName,
                     Role = role,
-                    Id = id
+                    UserId = identityUser.Id,
+                    IsLoggedIn = true
                 });
         }
 
@@ -131,7 +121,7 @@ namespace HospitalManager.Controllers
         }
 
 
-        private AccessToken GenerateToken(IdentityUser identityUser)
+        private AccessToken GenerateToken(IdentityUser identityUser, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtBearerTokenSettings.SecretKey);
@@ -143,9 +133,10 @@ namespace HospitalManager.Controllers
                     new Claim(ClaimTypes.Name, identityUser.UserName.ToString()),
                     new Claim(ClaimTypes.Email, identityUser.Email),
                     new Claim(ClaimTypes.NameIdentifier, identityUser.Id),
+                    new Claim(ClaimTypes.Role, role)
                 }),
 
-                Expires = DateTime.Now.AddDays(_jwtBearerTokenSettings.ExpiryTimeInDays),
+                Expires = DateTime.UtcNow.AddDays(_jwtBearerTokenSettings.ExpiryTimeInSeconds),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Audience = _jwtBearerTokenSettings.Audience,
                 Issuer = _jwtBearerTokenSettings.Issuer

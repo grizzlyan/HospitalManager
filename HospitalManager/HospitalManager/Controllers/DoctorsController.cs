@@ -41,7 +41,7 @@ namespace HospitalManager.Controllers
 
         [HttpPost]
         [Route("Register")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles ="Manager")]
         public async Task<IActionResult> Create(UserDoctorDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)

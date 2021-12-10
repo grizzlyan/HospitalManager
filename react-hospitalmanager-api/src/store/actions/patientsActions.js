@@ -1,16 +1,19 @@
 import {CREATE_PATIENT, GET_PATIENTS, GET_PATIENTBYID, UPDATE_PATIENT, DELETE_PATIENT, PATIENTS_ERROR} from '../types'
 import axios from 'axios'
-import axiosConfig from '../getToken';
+import { axiosConfig } from '../getToken';
 const host = 'https://localhost:44333/api/';
 
-export const createPatient = (patientData, userDetails) => async dispatch => {
+export const createPatient = (userDetails) => async dispatch => {
     
     try{
-        const res = await axios.post(`${host}Patients/Register`, patientData, userDetails)
+        const res = await axios.post(`${host}Patients/Register`, userDetails)
+
         dispatch( {
             type: CREATE_PATIENT,
             payload: res.data
         })
+
+        window.location.href = '/login';
     }
     catch(e){
         dispatch( {

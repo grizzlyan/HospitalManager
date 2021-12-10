@@ -8,12 +8,14 @@ namespace HospitalManager.Services.Models
 {
     public class PatientModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         
         public string FirstName { get; set; }
         
         public string LastName { get; set; }
 
         public string City { get; set; }
+
+        public string UserId { get; set; }
     }
 }

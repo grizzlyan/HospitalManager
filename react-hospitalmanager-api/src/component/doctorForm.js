@@ -1,18 +1,32 @@
 import React from 'react'
 import { createDoctor } from '../store/actions/doctorsActions';
+import { getAllSpecializations } from "../store/actions/specializationsActions";
 import { connect } from 'react-redux'
 import './regAuthFormStyle.css'
 
-export class doctorForm extends React.Component {
+class doctorForm extends React.Component {
     constructor(props) {
         super(props);
 
-        this.onSpecializationIdChange = this.onSpecializationIdChange.bind(this);
+        this.state = {
+            specializationId: 1
+        };
+
         this.onFirstNameChange = this.onFirstNameChange.bind(this);
         this.onLastNameChange = this.onLastNameChange.bind(this);
         this.onEmailChange = this.onEmailChange.bind(this);
         this.onPasswordChange = this.onPasswordChange.bind(this);
         this.onImageChange = this.onImageChange.bind(this);
+        this.handleDropdownChange = this.handleDropdownChange.bind(this);
+        this.onCreate = this.onCreate.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.getAllSpecializations();
+    }
+
+    handleDropdownChange(e) {
+        this.setState({ specializationId: e.target.value });
     }
 
     onFirstNameChange(e) {
@@ -23,11 +37,6 @@ export class doctorForm extends React.Component {
     onLastNameChange(e) {
         let val = e.target.value;
         this.setState({ lastName: val });
-    }
-
-    onSpecializationIdChange(e) {
-        let val = e.target.value;
-        this.setState({ specializationId: val });
     }
 
     onEmailChange(e) {
@@ -46,7 +55,7 @@ export class doctorForm extends React.Component {
             this.setState({
                 image: img
             });
-           
+
         }
     }
 
@@ -65,6 +74,9 @@ export class doctorForm extends React.Component {
     }
 
     render() {
+
+        const { specializations } = this.props.specializations
+
         return <div class="bform py-5">
             <div class="row">
                 <div class="container">
@@ -84,7 +96,10 @@ export class doctorForm extends React.Component {
                                 </div>
                                 <div class="col-lg-12 mb-3">
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="ID отделения" onChange={this.onSpecializationIdChange} required />
+                                        <select name='option' class="form-control" onChange={this.handleDropdownChange}>
+                                            {specializations.map(specialization =>
+                                                <option value={specialization.id}>{specialization.specializationName}</option>)}
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-12 mb-3">
@@ -98,10 +113,10 @@ export class doctorForm extends React.Component {
                                     </div>
                                 </div>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" onChange={this.onImageChange}/>
-                                    <label class ="custom-file-label" for="customFile"/>
+                                    <input type="file" class="custom-file-input" id="customFile" onChange={this.onImageChange} />
+                                    <label class="custom-file-label" for="customFile" />
                                 </div>
-                                <button type="submit" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={() => this.onCreate()}>
+                                <button type="submit" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={this.onCreate}>
                                     <span>Добавить</span>
                                 </button>
                             </div>
@@ -116,6 +131,6 @@ export class doctorForm extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({ doctors: state.doctors });
+const mapStateToProps = (state) => ({ doctors: state.doctors, specializations: state.specializations });
 
-export default connect(mapStateToProps, { createDoctor })(doctorForm);
+export default connect(mapStateToProps, { createDoctor, getAllSpecializations })(doctorForm);

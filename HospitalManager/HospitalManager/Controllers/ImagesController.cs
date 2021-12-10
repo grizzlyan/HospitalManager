@@ -30,7 +30,7 @@ namespace HospitalManager.Controllers
             if (image != null)
             {
                 var fileExtension = Path.GetExtension(image.FileName);
-                var imagePath = $"{Guid.NewGuid()}{fileExtension}";
+                var imagePath = $"{_appEnvironment.WebRootPath}\\{Guid.NewGuid()}{fileExtension}";
 
                 await _doctorsService.UpdatePathToPhotoAsync(id, imagePath);
 

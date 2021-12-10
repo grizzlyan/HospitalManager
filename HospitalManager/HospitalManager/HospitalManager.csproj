@@ -19,8 +19,4 @@
     <ProjectReference Include="..\HospitalManager.Services\HospitalManager.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\doctorsimages\" />
-  </ItemGroup>
-
 </Project>

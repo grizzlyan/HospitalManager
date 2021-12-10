@@ -16,6 +16,8 @@ namespace HospitalManager.Services.Models
 
         public string PathToPhoto { get; set; }
 
+        public string UserId { get; set; }
+
         public int SpecializationId { get; set; }
         public SpecializationModel Specialization { get; set; }
     }

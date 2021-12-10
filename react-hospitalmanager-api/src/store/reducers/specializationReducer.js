@@ -1,7 +1,8 @@
-import { CREATE_SPECIALIZATION, GET_SPECIALIZATIONS, GET_SPECIALIZATIONBYID, UPDATE_SPECIALIZATION, DELETE_SPECIALIZATION } from '../types'
+import { CREATE_SPECIALIZATION, GET_SPECIALIZATIONS, GET_PAGINATIONSPECIALIZATIONS, GET_SPECIALIZATIONBYID, UPDATE_SPECIALIZATION, DELETE_SPECIALIZATION } from '../types'
 
 const initialState = {
     specializations: [],
+    data: [],
     totalCount: 0
 }
 
@@ -17,10 +18,17 @@ export default function (state = initialState, action) {
             }
 
         case GET_SPECIALIZATIONS:
-
+            debugger;
             return {
                 ...state,
                 specializations: action.payload,
+            }
+
+        case GET_PAGINATIONSPECIALIZATIONS:
+
+            return {
+                ...state,
+                data: action.payload.data,
                 totalCount: action.payload.totalCount
             }
 
@@ -32,7 +40,7 @@ export default function (state = initialState, action) {
             }
 
         case UPDATE_SPECIALIZATION:
-            
+
             let specialization = state.specializations.find(s => s.id === action.payload.id);
             specialization.specializationName = action.payload.specializationName;
 

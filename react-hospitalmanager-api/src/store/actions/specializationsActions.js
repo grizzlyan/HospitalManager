@@ -1,6 +1,6 @@
-import {CREATE_SPECIALIZATION, GET_SPECIALIZATIONS, GET_SPECIALIZATIONBYID, UPDATE_SPECIALIZATION, DELETE_SPECIALIZATION, SPECIALIZATIONS_ERROR} from '../types'
+import {CREATE_SPECIALIZATION, GET_SPECIALIZATIONS, GET_PAGINATIONSPECIALIZATIONS, GET_SPECIALIZATIONBYID, UPDATE_SPECIALIZATION, DELETE_SPECIALIZATION, SPECIALIZATIONS_ERROR} from '../types'
 import axios from 'axios'
-import axiosConfig from '../getToken';
+import {axiosConfig} from '../getToken';
 const host = 'https://localhost:44333/api/';
 
 export const createSpecialization = (specializationData) => async dispatch => {
@@ -41,6 +41,25 @@ export const getSpecializations = () => async dispatch => {
     
     try{
         const res = await axios.get(`${host}Specializations`)
+
+        dispatch( {
+            type: GET_PAGINATIONSPECIALIZATIONS,
+            payload: res.data
+        })
+    }
+    catch(e){
+        dispatch( {
+            type: SPECIALIZATIONS_ERROR,
+            payload: console.log(e),
+        })
+    }
+}
+
+export const getAllSpecializations = () => async dispatch => {
+    
+    try{
+        const res = await axios.get(`${host}Specializations/allSpecializations`)
+        console.log(res);
         dispatch( {
             type: GET_SPECIALIZATIONS,
             payload: res.data

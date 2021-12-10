@@ -3,20 +3,43 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 
 export class NavigationBar extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.onLogOut = this.onLogOut.bind(this);
+    }
+
+    onLogOut() {
+        localStorage.removeItem('userData')
+    }
+
+
     render() {
 
         let code;
         let userData;
-        let accessToken = 'мсимич';
+        let isLoggedIn;
 
         const retrievedStoreStr = localStorage.getItem('userData')
 
         if(retrievedStoreStr) {
         userData = JSON.parse(retrievedStoreStr)
-        accessToken = userData.token;
+        isLoggedIn = userData.isLoggedIn;
         }
 
-        if (accessToken === '') {
+
+        if (isLoggedIn){
+            code = <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <Link class="nav-link" to="/cabinet">Личный кабинет</Link>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/" onClick={this.onLogOut}>Выйти</a>
+                </li>
+            </ul>
+        }
+        else {
             code = <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <Link class="nav-link" to="/registration">Регистрация</Link>
@@ -27,16 +50,7 @@ export class NavigationBar extends React.Component {
         </ul>
         }
 
-        else {
-            code = <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <Link class="nav-link" to="/cabinet">Личный кабинет</Link>
-                </li>
-                <li class="nav-item">
-                    <Link class="nav-link" to="/logout">Выйти</Link>
-                </li>
-            </ul>
-        }
+        
 
 
         return <nav class="navbar navbar-expand-lg navbar-light bg-light">

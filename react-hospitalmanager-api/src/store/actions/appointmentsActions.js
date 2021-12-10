@@ -1,6 +1,6 @@
 import { CREATE_APPOINTMENT, GET_APPOINTMENTS, GET_APPOINTMENTBYID, GET_APPOINTMENTBYDOCTORID, UPDATE_APPOINTMENT, DELETE_APPOINTMENT, APPOINTMENTS_ERROR } from '../types'
 import axios from 'axios'
-import axiosConfig from '../getToken';
+import {axiosConfig} from '../getToken';
 
 const host = 'https://localhost:44333/api/';
 

@@ -13,7 +13,5 @@ namespace HospitalManager.Services.Models
         public string SpecializationName { get; set; }
 
         public string Description { get; set; }
-
-        public IEnumerable<DoctorModel> Doctors { get; set; }
     }
 }

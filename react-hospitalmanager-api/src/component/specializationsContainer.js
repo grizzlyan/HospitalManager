@@ -10,7 +10,7 @@ import { getSpecializations } from '../store/actions/specializationsActions';
 
 //  const kolvo = [1,2]
 
-export class specializationContainer extends React.Component {
+class specializationContainer extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -20,8 +20,8 @@ export class specializationContainer extends React.Component {
     }
 
     render() {
-        const { specializations } = this.props.specializations
-        const { totalCount } = this.props.totalCount;
+        const {specializations} = this.props.specializations
+        const { totalCount } = specializations.totalCount;
         const { pagesCount } = Math.ceil(totalCount / specializations.lenght);
         let { pages } = new Array(pagesCount);
         for (var i = 0; i < pages.length; i++) {
@@ -31,22 +31,22 @@ export class specializationContainer extends React.Component {
         return <div class="flexColumn">
             <div class="flexRow">
                 {specializations.map(specialization =>
-                (<Specialization
-                    specializationName={specialization.specializationName}
-                    description={specialization.description} />
-                ))}
+                    <Specialization
+                        specializationName={specialization.specializationName}
+                        description={specialization.description} />
+                )}
             </div>
             <ul class="pagination">
-                <li class="page-item" disabled><a class="page-link" href="#">&lsaquo; Предыдущая</a></li>
+                {/* <li class="page-item" disabled><a class="page-link" href="#">&lsaquo; Предыдущая</a></li>
                 {pages.map(page =>
                     <li class="page-item" active><a class="page-link" href="#">{page}</a></li>
                 )}
-                <li class="page-item" disabled><a class="page-link" href="#">Следующая &rsaquo;</a></li>
+                <li class="page-item" disabled><a class="page-link" href="#">Следующая &rsaquo;</a></li> */}
             </ul>
         </div>
     }
 }
 
-const mapStateToProps = (state) => ({ specializations: state.specializations });
+const mapStateToProps = (state) => ({ specializations: state.data });
 
 export default connect(mapStateToProps, { getSpecializations })(specializationContainer);
