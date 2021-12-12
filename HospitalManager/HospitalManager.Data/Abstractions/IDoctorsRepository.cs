@@ -14,6 +14,8 @@ namespace HospitalManager.Data.Abstractions
 
         Task<IEnumerable<Doctor>> GetAllAsync();
 
+        Task<IEnumerable<Doctor>> GetAllBySpecializationIdAsync(int id);
+
         Task<IEnumerable<Doctor>> GetPaginationDoctors(
             PaginationFilters<Doctor> paginationFilters,
             SortFilter<Doctor> sortFilter,
@@ -21,9 +23,11 @@ namespace HospitalManager.Data.Abstractions
 
         Task<Doctor> GetByIdAsync(int id);
 
+        Task<Doctor> GetByUserIdAsync(string id);
+
         Task<int> GetCountDoctorsAsync();
 
-        Task UpdateAsync(Doctor model);
+        Task UpdateAsync(Doctor model, int id);
 
         Task UpdatePathToPhotoAsync(int id, string pathToPhoto);
 

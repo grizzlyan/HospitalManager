@@ -39,6 +39,13 @@ namespace HospitalManager.Data.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<Patient> GetByUserIdAsync(string id)
+        {
+            return await _ctx.Patients
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.UserId == id);
+        }
+
         public async Task UpdateAsync(Patient model)
         {
             var patient = await _ctx.Patients.FindAsync(model.Id);

@@ -8,7 +8,7 @@ namespace HospitalManager.Services.Models
 {
     public class PatientModel
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         
         public string FirstName { get; set; }
         

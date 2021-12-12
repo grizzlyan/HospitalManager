@@ -30,16 +30,17 @@ namespace HospitalManager.Controllers
             if (image != null)
             {
                 var fileExtension = Path.GetExtension(image.FileName);
-                var imagePath = $"{_appEnvironment.WebRootPath}\\{Guid.NewGuid()}{fileExtension}";
+                var imageName = $"{Guid.NewGuid()}{fileExtension}";
+                var imagePath = $"{_appEnvironment.WebRootPath}\\{imageName}";
 
-                await _doctorsService.UpdatePathToPhotoAsync(id, imagePath);
+                await _doctorsService.UpdatePathToPhotoAsync(id, imageName);
 
                 using var readStream = image.OpenReadStream();
                 var buffer = new byte[image.Length];
                 await readStream.ReadAsync(buffer, 0, buffer.Length);
                 await System.IO.File.WriteAllBytesAsync(imagePath, buffer);
 
-                return imagePath;
+                return imageName;
             }
 
             return "";

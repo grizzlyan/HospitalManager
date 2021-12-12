@@ -21,7 +21,7 @@ namespace HospitalManager.Services.Abstractions
 
         Task<SpecializationModel> GetByIdAsync(int id);
 
-        Task UpdateAsync(SpecializationModel model);
+        Task UpdateAsync(SpecializationModel model, int id);
 
         Task DeleteAsync(int id);
     }

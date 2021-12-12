@@ -1,11 +1,17 @@
 import React from 'react'
-import { createSpecialization } from '../store/actions/specializationsActions';
+import { updateSpecialization } from '../store/actions/specializationsActions';
 import { connect } from 'react-redux'
 import './regAuthFormStyle.css'
 
-class specializationForm extends React.Component {
+class editSpecializationForm extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state={
+            id: this.props.location.state.id,
+            specializationName: this.props.location.state.specializationName,
+            description: this.props.location.state.description
+        }
 
         this.onSpecializationNameChange = this.onSpecializationNameChange.bind(this);
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
@@ -23,11 +29,12 @@ class specializationForm extends React.Component {
 
     onCreate() {
         const credentials = {
+            id: this.state.id,
             specializationName: this.state.specializationName,
             description: this.state.description,
         }
 
-        this.props.createSpecialization(credentials);
+        this.props.updateSpecialization(credentials);
     }
 
     render() {
@@ -36,26 +43,24 @@ class specializationForm extends React.Component {
                 <div class="container">
                     <div class="col-lg-3 mx-auto align-justify-center pr-4 pl-0 contact-form">
                         <div class="">
-                            <h2 class="mb-3 font-weight-light">Новое отделение</h2>
+                            <h2 class="mb-3 font-weight-light">Редактировать отделение</h2>
                             <div class="row">
                                 <div class="col-lg-12 mb-3">
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="название отделения" onChange={this.onSpecializationNameChange} required />
+                                        <input class="form-control" type="text" value={this.state.specializationName} onChange={this.onSpecializationNameChange} required />
                                     </div>
                                 </div>
                                 <div class="col-lg-12 mb-3">
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="описание" onChange={this.onDescriptionChange} required />
+                                        <input class="form-control" type="text" value={this.state.description} onChange={this.onDescriptionChange} required />
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-md btn-block btn-danger-gradiant text-white border-0" onClick={() => this.onCreate()}>
-                                    <span>Добавить</span>
+                                    <span>Сохранить</span>
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6 right-image pl-3">
                 </div>
             </div>
         </div>
@@ -64,4 +69,4 @@ class specializationForm extends React.Component {
 
 const mapStateToProps = (state) => ({ specializations: state.specializations });
 
-export default connect(mapStateToProps, { createSpecialization })(specializationForm);
+export default connect(mapStateToProps, { updateSpecialization })(editSpecializationForm);

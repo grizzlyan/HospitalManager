@@ -22,7 +22,7 @@ namespace HospitalManager.Data.Abstractions
 
         Task<int> GetCountSpecializationsAsync();
 
-        Task UpdateAsync(Specialization model);
+        Task UpdateAsync(Specialization model, int id);
 
         Task DeleteAsync(int id); 
     }

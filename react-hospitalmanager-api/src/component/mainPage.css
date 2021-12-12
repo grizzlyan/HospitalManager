@@ -1,0 +1,61 @@
+/* body {
+    height: 100%;
+  }
+  
+  .header {
+    height: 200px;
+    background: #bfbfbf;
+  } */
+  
+  /* .img {
+    width: 100px;
+    position: relative;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+    animation-name: Appearance;
+    animation-duration: 3s;
+    animation-timing-function: cubic-bezier(.1,-.6,.2,0);
+  } */
+  
+  /* @-webkit-keyframes Appearance {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  
+  @-o-keyframes Appearance {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  
+  @-moz-keyframes Appearance {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  
+  @keyframes Appearance {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  } */
+  
+  @keyframes show{
+    0%{
+    opacity:0;
+    }
+    100% {
+    opacity:1;
+    }
+    }
+
+  .anim-show{
+    width:300px;
+    color:#fff;
+    margin:auto;
+
+    text-align:center;
+    opacity:0; /*Элемент полностью прозрачный (невидимый)*/
+    transition: 1s; /*Скорость перехода состояния элемента*/
+    animation: show 3s 1; /* Указываем название анимации, её время и количество повторов*/
+    animation-fill-mode: forwards; /* Чтобы элемент оставался в конечном состоянии анимации */
+    animation-delay: 0.3s; /* Задержка перед началом */
+    }

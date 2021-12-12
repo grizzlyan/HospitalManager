@@ -84,11 +84,10 @@ namespace HospitalManager.Controllers
             var doctor = _mapper.Map<DoctorViewModel>(createdModel);
 
             return Ok(new { Message = "User Reigstration Successful", Doctor = doctor });
-
-            //return _mapper.Map<DoctorViewModel>(createdModel);
         }
 
         [HttpGet]
+        [Route("paginGet")]
         public async Task<PaginationViewModel<DoctorViewModel>> GetPaginationDoctors(
             [FromQuery] DoctorFilterFieldsParametres doctorFilterFieldsParametres,
             [FromQuery] SortFilterParametres<SortDoctorFieldEnum> sortFilterParametres,
@@ -121,6 +120,16 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
+        [Route("{specializationId}")]
+        public async Task<IEnumerable<DoctorViewModel>> GetBySecializationId(int specializationId)
+        {
+            var doctors = await _doctorsService.GetAllBySpecializationIdAsync(specializationId);
+            var resultDoctorsList = MapDoctorsList(doctors);
+
+            return resultDoctorsList;
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<DoctorViewModel> GetById(int id)
         {
@@ -129,7 +138,7 @@ namespace HospitalManager.Controllers
             return _mapper.Map<DoctorViewModel>(doctor);
         }
 
-        /*[HttpGet]
+        [HttpGet]
         public async Task<IEnumerable<DoctorViewModel>> Get()
         {
             var doctors = await _doctorsService.GetAllAsync();
@@ -143,15 +152,15 @@ namespace HospitalManager.Controllers
             }
 
             return resultDoctors;
-        }*/
+        }
 
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Manager")]
-        public async Task Update(DoctorViewModel model)
+        public async Task Update(DoctorViewModel model, int id)
         {
             var doctor = _mapper.Map<DoctorModel>(model);
-            await _doctorsService.UpdateAsync(doctor);
+            await _doctorsService.UpdateAsync(doctor, id);
         }
 
         [HttpDelete]
@@ -160,6 +169,19 @@ namespace HospitalManager.Controllers
         public async Task Delete(int id)
         {
             await _doctorsService.DeleteAsync(id);
-        }  
+        }
+
+        private IEnumerable<DoctorViewModel> MapDoctorsList(IEnumerable<DoctorModel> doctors)
+        {
+            var resultDoctorsList = new List<DoctorViewModel>();
+
+            foreach (var item in doctors)
+            {
+                var doctor = _mapper.Map<DoctorViewModel>(item);
+                resultDoctorsList.Add(doctor);
+            }
+
+            return resultDoctorsList;
+        }
     }
 }

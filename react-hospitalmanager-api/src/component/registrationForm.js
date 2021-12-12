@@ -62,7 +62,7 @@ class registrationForm extends React.Component {
                 <div class="container">
                     <div class="col-lg-3 mx-auto align-justify-center pr-4 pl-0 contact-form">
                         <h2 class="mb-3 font-weight-light">Регистрация</h2>
-                        <h6 class="subtitle font-weight-normal">Lorem ipsum dolor sit amet, adipiscing.</h6>
+                        <h6 class="subtitle font-weight-normal">Заполните все поля</h6>
                         <div class="row">
                             <div class="col-lg-12 mb-3">
                                 <div class="form-group">

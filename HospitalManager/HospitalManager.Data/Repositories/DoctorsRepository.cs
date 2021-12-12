@@ -29,9 +29,13 @@ namespace HospitalManager.Data.Repositories
         public async Task<IEnumerable<Doctor>> GetAllAsync()
         {
             return await _ctx.Doctors
-            .Include(x => x.Specialization)
-            .AsNoTracking()
-            .ToListAsync();
+                .Include(x => x.Specialization)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Doctor>> GetAllBySpecializationIdAsync(int id)
+        {
+            return await _ctx.Doctors.Where(x => x.SpecializationId == id).ToListAsync();
         }
 
         public async Task<IEnumerable<Doctor>> GetPaginationDoctors(
@@ -41,6 +45,7 @@ namespace HospitalManager.Data.Repositories
         {
             var result = _ctx
                 .Doctors
+                .Include(x=>x.Specialization)
                 .AsNoTracking();
 
             if (paginationFilters != null)
@@ -73,10 +78,12 @@ namespace HospitalManager.Data.Repositories
 
         public async Task<Doctor> GetByIdAsync(int id)
         {
-            return await _ctx.Doctors
-            .Include(x => x.Specialization)
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Id == id);
+            return await _ctx.Doctors.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Doctor> GetByUserIdAsync(string id)
+        {
+            return await _ctx.Doctors.FirstOrDefaultAsync(x => x.UserId == id);
         }
 
         public async Task<int> GetCountDoctorsAsync()
@@ -85,9 +92,9 @@ namespace HospitalManager.Data.Repositories
             return count;
         }
 
-        public async Task UpdateAsync(Doctor model)
+        public async Task UpdateAsync(Doctor model, int id)
         {
-            var doctor = await _ctx.Doctors.FindAsync(model.Id);
+            var doctor = await _ctx.Doctors.FindAsync(id);
             doctor.FirstName = model.FirstName;
             doctor.LastName = model.LastName;
             doctor.SpecializationId = model.SpecializationId;

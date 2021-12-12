@@ -37,15 +37,24 @@ namespace HospitalManager.Services.Services
 
         public async Task<IEnumerable<DoctorModel>> GetAllAsync()
         {
-            var resultDoctorsList = new List<DoctorModel>();
-
             var doctors = await _doctorRepository.GetAllAsync();
+
+            var resultDoctorsList = new List<DoctorModel>();
 
             foreach (var item in doctors)
             {
                 var doctor = _mapper.Map<DoctorModel>(item);
                 resultDoctorsList.Add(doctor);
             }
+
+            return resultDoctorsList;
+        }
+
+        public async Task<IEnumerable<DoctorModel>> GetAllBySpecializationIdAsync(int id)
+        {
+            var doctors = await _doctorRepository.GetAllBySpecializationIdAsync(id);
+
+            var resultDoctorsList = MapDoctorsList(doctors);
 
             return resultDoctorsList;
         }
@@ -84,10 +93,17 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<DoctorModel>(doctor);
         }
 
-        public async Task UpdateAsync(DoctorModel model)
+        public async Task<DoctorModel> GetByUserIdAsync(string id)
+        {
+            var doctor = await _doctorRepository.GetByUserIdAsync(id);
+
+            return _mapper.Map<DoctorModel>(doctor);
+        }
+
+        public async Task UpdateAsync(DoctorModel model, int id)
         {
             var doctor = _mapper.Map<Doctor>(model);
-            await _doctorRepository.UpdateAsync(doctor);
+            await _doctorRepository.UpdateAsync(doctor, id);
         }
 
         public async Task UpdatePathToPhotoAsync(int id, string pathToPhoto)
@@ -98,6 +114,19 @@ namespace HospitalManager.Services.Services
         public async Task DeleteAsync(int id)
         {
             await _doctorRepository.DeleteAsync(id);
+        }
+
+        private IEnumerable<DoctorModel> MapDoctorsList(IEnumerable<Doctor> doctors)
+        {
+            var resultDoctorsList = new List<DoctorModel>();
+
+            foreach (var item in doctors)
+            {
+                var doctor = _mapper.Map<DoctorModel>(item);
+                resultDoctorsList.Add(doctor);
+            }
+
+            return resultDoctorsList;
         }
     }
 }

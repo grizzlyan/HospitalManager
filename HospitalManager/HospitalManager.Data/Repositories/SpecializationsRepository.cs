@@ -73,9 +73,9 @@ namespace HospitalManager.Data.Repositories
             return count;
         }
 
-        public async Task UpdateAsync(Specialization model)
+        public async Task UpdateAsync(Specialization model, int id)
         {
-            var specialization = await _ctx.Specializations.FindAsync(model.Id);
+            var specialization = await _ctx.Specializations.FindAsync(id);
             specialization.SpecializationName = model.SpecializationName;
             specialization.Description = model.Description;
 

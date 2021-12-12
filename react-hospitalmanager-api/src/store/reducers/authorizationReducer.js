@@ -6,6 +6,8 @@ const initialState = {
         userName: '',
         role:'',
         userId: '',
+        id: '',
+        fullName: '',
         isLoggedIn: false
     }
 }

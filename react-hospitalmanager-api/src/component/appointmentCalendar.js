@@ -27,14 +27,14 @@ export class appointmentCalendar extends React.Component {
 
       <label for="from">Время приёма: </label>
       <select name="from" id="from">
-        <option value="1">8:00</option>
-        <option value="2">9:00</option>
-        <option value="3">10:00</option>
-        <option value="4">11:00</option>
-        <option value="5">13:00</option>
-        <option value="1">14:00</option>
-        <option value="2">15:00</option>
-        <option value="3">16:00</option>
+        <option value={8}>8:00</option>
+        <option value={9}>9:00</option>
+        <option value={10}>10:00</option>
+        <option value={11}>11:00</option>
+        <option value={13}>13:00</option>
+        <option value={14}>14:00</option>
+        <option value={15}>15:00</option>
+        <option value={16}>16:00</option>
       </select>
       <hr />
       <div>

@@ -3,7 +3,7 @@ import { CREATE_DOCTOR, GET_DOCTORS, GET_DOCTORBYID, UPDATE_DOCTOR, DELETE_DOCTO
 const initialState = {
     doctors: [],
     totalCount: 0,
-    message: ''
+    message: 'авпв'
 }
 
 export default function (state = initialState, action) {
@@ -22,8 +22,7 @@ export default function (state = initialState, action) {
 
             return {
                 ...state,
-                doctors: action.payload.data,
-                totalCount: action.payload.totalCount
+                doctors: action.payload,
             }
 
         case GET_DOCTORBYID:

@@ -49,9 +49,16 @@ namespace HospitalManager.Services.Services
 
         public async Task<PatientModel> GetByIdAsync(int id)
         {
-            var medicalProfession = await _patientRepository.GetByIdAsync(id);
+            var patient = await _patientRepository.GetByIdAsync(id);
 
-            return _mapper.Map<PatientModel>(medicalProfession);
+            return _mapper.Map<PatientModel>(patient);
+        }
+
+        public async Task<PatientModel> GetByUserIdAsync(string id)
+        {
+            var patient = await _patientRepository.GetByUserIdAsync(id);
+
+            return _mapper.Map<PatientModel>(patient);
         }
 
         public async Task UpdateAsync(PatientModel model)

@@ -11,12 +11,15 @@ export const createSpecialization = (specializationData) => async dispatch => {
             type: CREATE_SPECIALIZATION,
             payload: res.data
         })
+
+        window.location.href = '/addSpecializationResultSuccess'
     }
     catch(e){
         dispatch( {
             type: SPECIALIZATIONS_ERROR,
             payload: console.log(e),
         })
+        window.location.href = '/addSpecializationResultError'
     }
 }
 
@@ -82,12 +85,14 @@ export const updateSpecialization = (specializationData) => async dispatch => {
             type: UPDATE_SPECIALIZATION,
             payload: specializationData
         })
+        window.location.href ='/editSuccess';
     }
     catch(e){
         dispatch( {
             type: SPECIALIZATIONS_ERROR,
             payload: console.log(e),
         })
+        window.location.href ='/editError';
     }
 }
 

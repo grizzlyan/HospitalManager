@@ -41,9 +41,10 @@ namespace HospitalManager.Controllers
         }
 
         [HttpGet]
+        [Route("paginGet")]
         public async Task<PaginationViewModel<SpecializationViewModel>> GetPaginationSpecializations(
-             SortFilterParametres<SortSpecializationFieldEnum> sortFilterParametres,
-             PagePaginationPostModel pagePagination)
+             [FromQuery] SortFilterParametres<SortSpecializationFieldEnum> sortFilterParametres,
+             [FromQuery] PagePaginationPostModel pagePagination)
         {
             var sortFilter = _mapper.Map<SortFilterModel<SortSpecializationFieldEnum>>(sortFilterParametres);
             var pagePaginationModel = _mapper.Map<PagePaginationModel>(pagePagination);
@@ -96,10 +97,10 @@ namespace HospitalManager.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles = "Manager")]
-        public async Task Update(SpecializationViewModel model)
+        public async Task Update(SpecializationViewModel model, int id)
         {
             var specialization = _mapper.Map<SpecializationModel>(model);
-            await _specializationsService.UpdateAsync(specialization);
+            await _specializationsService.UpdateAsync(specialization, id);
         }
 
         [HttpDelete]

@@ -1,6 +1,9 @@
-﻿using HospitalManager.Configuration;
+﻿using AutoMapper;
+using HospitalManager.Configuration;
 using HospitalManager.Data;
 using HospitalManager.Data.Entities;
+using HospitalManager.Models.ViewModels;
+using HospitalManager.Services.Abstractions;
 using HospitalManager.Services.Models.AuthModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -25,42 +28,24 @@ namespace HospitalManager.Controllers
     {
         private readonly JwtBearerTokenSettings _jwtBearerTokenSettings;
         private readonly UserManager<User> _userManager;
-        private readonly ApplicationDbContext _ctx;
+        private readonly IPatientsService _patientsService;
+        private readonly IDoctorsService _doctorsService;
+        private readonly IMapper _mapper;
+
 
         public AuthorizationsController(
             IOptions<JwtBearerTokenSettings> jwtTokenOptions,
             UserManager<User> userManager,
-            ApplicationDbContext ctx)
+            IPatientsService patientsService,
+            IDoctorsService doctorsService,
+            IMapper mapper
+           )
         {
             _jwtBearerTokenSettings = jwtTokenOptions.Value;
             _userManager = userManager;
-            _ctx = ctx;
-        }
-
-        [HttpPost]
-        [Route("Register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] UserDoctorDetails userDetails)
-        {
-            if (!ModelState.IsValid || userDetails == null)
-            {
-                return new BadRequestObjectResult(new { Message = "User Registration Failed" });
-            }
-
-            var identityUser = new User() { UserName = userDetails.Username, Email = userDetails.Email };
-            var result = await _userManager.CreateAsync(identityUser, userDetails.Password);
-
-            if (!result.Succeeded)
-            {
-                var dictionary = new ModelStateDictionary();
-                foreach (var error in result.Errors)
-                {
-                    dictionary.AddModelError(error.Code, error.Description);
-                }
-
-                return new BadRequestObjectResult(new { Message = "User Registration Failed", Errors = dictionary });
-            }
-
-            return Ok(new { Message = "User Reigstration Successful" });
+            _patientsService = patientsService;
+            _doctorsService = doctorsService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -76,15 +61,42 @@ namespace HospitalManager.Controllers
                 return new BadRequestObjectResult(new { Message = "Login failed" });
             }
 
-            
+
             var roles = await _userManager.GetRolesAsync(identityUser);
             var role = roles.First();
 
             var token = GenerateToken(identityUser, role);
 
-            //var b = _userManager.Users.Include(x => x.Patients).First(x => x.Id == userId);
-            //var c = b.Patients.First(x => x.UserId == userId);
-            //var id = identityUser.Patients.First().Id;
+            var id = 0;
+            var name = string.Empty;
+
+            if (role.Equals("Patient"))
+            {
+                var patient = await _patientsService.GetByUserIdAsync(identityUser.Id);
+                id = patient.Id;
+                name = $"{patient.FirstName} {patient.LastName}";
+            }
+
+            else if (role == "Doctor")
+            {
+                var doctor =await _doctorsService.GetByUserIdAsync(identityUser.Id);
+                id = doctor.Id;
+                name = $"{doctor.FirstName} {doctor.LastName}";
+            }
+
+            else if (role == "Manager")
+            {
+                return Ok(
+
+                    new
+                    {
+                        AccessToken = token.Token,
+                        UserName = identityUser.UserName,
+                        Role = role,
+                        UserId = identityUser.Id,
+                        IsLoggedIn = true
+                    });
+            }
 
             return Ok(
                 new
@@ -93,15 +105,10 @@ namespace HospitalManager.Controllers
                     UserName = identityUser.UserName,
                     Role = role,
                     UserId = identityUser.Id,
+                    Id = id,
+                    FullName = name,
                     IsLoggedIn = true
                 });
-        }
-
-        [HttpPost]
-        [Route("Logout")]
-        public IActionResult Logout()
-        {
-            return Ok(new { Token = "", Message = "Logged Out" });
         }
 
         private async Task<User> ValidateUserAsync(LoginCredentials credentials)
@@ -136,7 +143,7 @@ namespace HospitalManager.Controllers
                     new Claim(ClaimTypes.Role, role)
                 }),
 
-                Expires = DateTime.UtcNow.AddDays(_jwtBearerTokenSettings.ExpiryTimeInSeconds),
+                Expires = DateTime.UtcNow.AddDays(_jwtBearerTokenSettings.ExpiryTimeInDays),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Audience = _jwtBearerTokenSettings.Audience,
                 Issuer = _jwtBearerTokenSettings.Issuer

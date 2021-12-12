@@ -29,7 +29,7 @@ namespace HospitalManager.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Patient")]
         public async Task<AppointmentViewModel> Create(AppointmentPostModel model)
         {
             var createModel = _mapper.Map<AppointmentModel>(model);
@@ -64,7 +64,7 @@ namespace HospitalManager.Controllers
 
         [HttpGet]
         [Route("{patientId}")]
-        [Authorize(Roles = "Manager, Doctor")]
+        [Authorize(Roles = "Manager, Patient")]
         public async Task<IEnumerable<AppointmentViewModel>> GetByPatientId(int patientId)
         {
             var appointments = await _appointmentsService.GetAppointmentsByPatientIdAsync(patientId);
@@ -76,7 +76,7 @@ namespace HospitalManager.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Manager, Patient")]
+        [Authorize(Roles = "Manager")]
         public async Task<AppointmentViewModel> GetById(int id)
         {
             var appointment = await _appointmentsService.GetByIdAsync(id);
@@ -95,7 +95,7 @@ namespace HospitalManager.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Manager, Patient")]
         public async Task Delete(int id)
         {
             await _appointmentsService.DeleteAsync(id);

@@ -13,13 +13,15 @@ export const createPatient = (userDetails) => async dispatch => {
             payload: res.data
         })
 
-        window.location.href = '/login';
+        window.location.href = '/regResultSuccess';
     }
     catch(e){
         dispatch( {
             type: PATIENTS_ERROR,
             payload: console.log(e),
         })
+
+        window.location.href = '/regResultError';
     }
 }
 

@@ -38,7 +38,7 @@ class authorizationForm extends React.Component {
                     <div class="col-lg-3 mx-auto align-justify-center pr-4 pl-0 contact-form">
                         <div class="">
                             <h2 class="mb-3 font-weight-light">Авторизация</h2>
-                            <h6 class="subtitle font-weight-normal">Lorem ipsum dolor sit amet, adipiscing.</h6>
+                            <h6 class="subtitle font-weight-normal">Введите логин и пароль</h6>
                             <div class="row">
                                 <div class="col-lg-12 mb-3">
                                     <div class="form-group">

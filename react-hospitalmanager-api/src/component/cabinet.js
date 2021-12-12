@@ -9,13 +9,20 @@ import  DoctorsContainer  from './doctorsContainer';
 import { patientsContainer } from './patientsContainer';
 import { appointmentsContainer } from './appointmentsContainer';
 import { appointmentCalendar } from './appointmentCalendar';
+import EditDoctorForm from './editDoctorForm';
+import EditSpecializationForm from './editSpecializationForm';
 
 
 export class cabinet extends React.Component {
     render() {
 
+        let greetings;
+        let nameForGreeting;
+
         let cabinetBar;
         let routes;
+        
+
 
         let userData;
 
@@ -30,6 +37,11 @@ export class cabinet extends React.Component {
         }
 
         if (role === "Manager") {
+
+            nameForGreeting = userData.userName;
+
+            greetings = <h1 class="navbar-brand" >Привет, {nameForGreeting}!</h1>
+
             cabinetBar = <ul class="navbar-nav">
 
                 <span class="navbar-brand" >Отделения</span>
@@ -70,10 +82,17 @@ export class cabinet extends React.Component {
                 <Route exact path='/cabinet/doctors' component={DoctorsContainer} />
                 <Route exact path='/cabinet/patients' component={patientsContainer} />
                 <Route exact path='/cabinet/appointments' component={appointmentsContainer} />
+                <Route path='/cabinet/editDoctor' component={EditDoctorForm} />
+                <Route path={'/cabinet/editSpetialization'} component={EditSpecializationForm}/>
             </Switch>
         }
 
         else if (role === "Doctor") {
+
+            nameForGreeting = userData.fullName;
+
+            greetings = <h1 class="navbar-brand" >Привет, {nameForGreeting}!</h1>
+
             cabinetBar = <ul class="navbar-nav">
                 <li class="nav-item">
                     <Link class="nav-link" to="/d-upcoming">Предстоящие приёмы</Link>
@@ -90,6 +109,11 @@ export class cabinet extends React.Component {
         }
 
         else if (role === "Patient") {
+
+            nameForGreeting = userData.fullName;
+
+            greetings = <h1 class="navbar-brand" >Привет, {nameForGreeting}!</h1>
+
             cabinetBar = <ul class="navbar-nav">
                 <li class="nav-item">
                     <Link class="nav-link" to="/cabinet/p-createAppointment">Записаться</Link>
@@ -119,7 +143,9 @@ export class cabinet extends React.Component {
                 <div class="col-md-4 col-lg-3 navbar-container bg-light">
 
                     <nav class="navbar navbar-expand-md navbar-light">
-                        <h1 class="navbar-brand" >Привет, !</h1>
+
+                        {greetings}
+                        
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>

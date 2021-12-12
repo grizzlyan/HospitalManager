@@ -8,7 +8,7 @@ export const createDoctor = (userDetails) => async dispatch => {
     debugger
     try {
         const res = await axios.post(`${host}Doctors/Register`, userDetails, axiosConfig)
-
+        console.log(res)
         if (res.data.doctor.id != null) {
             const id = res.data.doctor.id
 
@@ -17,19 +17,23 @@ export const createDoctor = (userDetails) => async dispatch => {
 
             const imagePath = await axios.post(`${host}Images/${id}`, formData, axiosImageConfig)
 
-            res.data.pathToPhoto = imagePath;
+            res.data.doctor.pathToPhoto = imagePath;
         }
-
+        
         dispatch({
             type: CREATE_DOCTOR,
             payload: res.data
         })
+
+        window.location.href = '/regResultSuccess';
     }
     catch (e) {
         dispatch({
             type: DOCTORS_ERROR,
             payload: console.log(e),
         })
+
+        window.location.href = '/regResultError';
     }
 }
 
@@ -54,6 +58,7 @@ export const getDoctors = () => async dispatch => {
 
     try {
         const res = await axios.get(`${host}Doctors`)
+        console.log(res)
         dispatch({
             type: GET_DOCTORS,
             payload: res.data
@@ -76,12 +81,14 @@ export const updateDoctor = (doctorData) => async dispatch => {
             type: UPDATE_DOCTOR,
             payload: doctorData
         })
+        window.location.href ='/editSuccess';
     }
     catch (e) {
         dispatch({
             type: DOCTORS_ERROR,
             payload: console.log(e),
         })
+        window.location.href ='/editError';
     }
 }
 

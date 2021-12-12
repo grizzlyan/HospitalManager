@@ -87,10 +87,10 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<SpecializationModel>(specialization);
         }
 
-        public async Task UpdateAsync(SpecializationModel model)
+        public async Task UpdateAsync(SpecializationModel model, int id)
         {
             var specialization = _mapper.Map<Specialization>(model);
-            await _specializationRepository.UpdateAsync(specialization);
+            await _specializationRepository.UpdateAsync(specialization, id);
         }
 
         public async Task DeleteAsync(int id)
