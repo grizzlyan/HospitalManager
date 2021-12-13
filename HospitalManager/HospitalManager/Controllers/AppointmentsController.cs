@@ -3,6 +3,7 @@ using HospitalManager.Data.Entities;
 using HospitalManager.Models.PostModels;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Helpers;
 using HospitalManager.Services.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,11 +22,13 @@ namespace HospitalManager.Controllers
     {
         private readonly IAppointmentsService _appointmentsService;
         private readonly IMapper _mapper;
+        private readonly ModelListMapper<AppointmentViewModel, AppointmentModel> _modelListMapper;
 
         public AppointmentsController(IAppointmentsService appointmentsService, IMapper mapper)
         {
             _appointmentsService = appointmentsService;
             _mapper = mapper;
+            _modelListMapper = new ModelListMapper<AppointmentViewModel, AppointmentModel>(_mapper);
         }
 
         [HttpPost]
@@ -45,31 +48,31 @@ namespace HospitalManager.Controllers
         {
             var appointments = await _appointmentsService.GetAllAsync();
 
-            var resultAppointments = MapAppointmentList(appointments);
+            var resultAppointments = _modelListMapper.MapModelList(appointments);
 
             return resultAppointments;
         }
 
         [HttpGet]
-        [Route("{doctorId}")]
+        [Route("appointmentsByDoctorId/{doctorId}")]
         [Authorize(Roles = "Manager, Doctor")]
         public async Task<IEnumerable<AppointmentViewModel>> GetByDoctorId(int doctorId)
         {
             var appointments = await _appointmentsService.GetAppointmentsByDoctorIdAsync(doctorId);
 
-            var resultAppointments = MapAppointmentList(appointments);
+            var resultAppointments = _modelListMapper.MapModelList(appointments);
 
             return resultAppointments;
         }
 
         [HttpGet]
-        [Route("{patientId}")]
+        [Route("appointmentsByPatientId/{patientId}")]
         [Authorize(Roles = "Manager, Patient")]
         public async Task<IEnumerable<AppointmentViewModel>> GetByPatientId(int patientId)
         {
             var appointments = await _appointmentsService.GetAppointmentsByPatientIdAsync(patientId);
 
-            var resultAppointments = MapAppointmentList(appointments);
+            var resultAppointments = _modelListMapper.MapModelList(appointments);
 
             return resultAppointments;
         }
@@ -87,10 +90,10 @@ namespace HospitalManager.Controllers
         [HttpPut]
         [Route("{id}")]
         [Authorize]
-        public async Task Update(AppointmentViewModel model)
+        public async Task Update(AppointmentViewModel model, int id)
         {
             var appointment = _mapper.Map<AppointmentModel>(model);
-            await _appointmentsService.UpdateAsync(appointment);
+            await _appointmentsService.UpdateAsync(appointment, id);
         }
 
         [HttpDelete]
@@ -99,19 +102,6 @@ namespace HospitalManager.Controllers
         public async Task Delete(int id)
         {
             await _appointmentsService.DeleteAsync(id);
-        }
-
-        private IEnumerable<AppointmentViewModel> MapAppointmentList(IEnumerable<AppointmentModel> appointments)
-        {
-            var resultAppointmentsList = new List<AppointmentViewModel>();
-
-            foreach (var item in appointments)
-            {
-                var appointment = _mapper.Map<AppointmentViewModel>(item);
-                resultAppointmentsList.Add(appointment);
-            }
-
-            return resultAppointmentsList;
         }
     }
 }

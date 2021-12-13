@@ -2,7 +2,7 @@ import { CREATE_PATIENT, GET_PATIENTS, GET_PATIENTBYID, UPDATE_PATIENT, DELETE_P
 
 const initialState = {
     patients: [],
-    message: 'AAAAAAAAAAAAAAAAAAAA'
+    patient : null
 }
 
 export default function (state = initialState, action) {
@@ -14,7 +14,6 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 patients: state.patients.concat(action.payload.patient),
-                message: action.payload.message
             }
 
         case GET_PATIENTS:
@@ -25,10 +24,10 @@ export default function (state = initialState, action) {
             }
 
         case GET_PATIENTBYID:
-
+            
             return {
-                ...state,
-                patients: action.payload,
+                ...state.patient,
+                patient: action.payload,     
             }
 
         case UPDATE_PATIENT:
@@ -48,7 +47,7 @@ export default function (state = initialState, action) {
                 ...state,
                 patients: state.patients.filter(({ id }) => id !== action.payload),
             }
-            
+
         default: return state
     }
 }

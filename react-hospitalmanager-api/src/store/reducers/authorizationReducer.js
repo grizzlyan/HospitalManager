@@ -8,7 +8,8 @@ const initialState = {
         userId: '',
         id: '',
         fullName: '',
-        isLoggedIn: false
+        isLoggedIn: false,
+        patient: null
     }
 }
 

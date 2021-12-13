@@ -5,6 +5,7 @@ using HospitalManager.Models.PaginationsModels;
 using HospitalManager.Models.PostModels;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Helpers;
 using HospitalManager.Services.Models;
 using HospitalManager.Services.Models.AuthModels;
 using HospitalManager.Services.Models.Pagination;
@@ -28,6 +29,7 @@ namespace HospitalManager.Controllers
         private readonly IDoctorsService _doctorsService;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly ModelListMapper<DoctorViewModel, DoctorModel> _modelListMapper;
 
         public DoctorsController(
             IDoctorsService doctorsService,
@@ -37,11 +39,12 @@ namespace HospitalManager.Controllers
             _doctorsService = doctorsService;
             _userManager = userManager;
             _mapper = mapper;
+            _modelListMapper = new ModelListMapper<DoctorViewModel, DoctorModel>(_mapper);
         }
 
         [HttpPost]
         [Route("Register")]
-        [Authorize(Roles ="Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create(UserDoctorDetails userDetails)
         {
             if (!ModelState.IsValid || userDetails == null)
@@ -102,13 +105,7 @@ namespace HospitalManager.Controllers
                 sortFilter,
                 pagePaginationModel);
 
-            var doctorsList = new List<DoctorViewModel>();
-
-            foreach (var item in doctorsPaginationModel.Data)
-            {
-                var doctor = _mapper.Map<DoctorViewModel>(item);
-                doctorsList.Add(doctor);
-            }
+            var doctorsList = _modelListMapper.MapModelList(doctorsPaginationModel.Data);
 
             var doctorsData = new PaginationViewModel<DoctorViewModel>
             {
@@ -124,7 +121,8 @@ namespace HospitalManager.Controllers
         public async Task<IEnumerable<DoctorViewModel>> GetBySecializationId(int specializationId)
         {
             var doctors = await _doctorsService.GetAllBySpecializationIdAsync(specializationId);
-            var resultDoctorsList = MapDoctorsList(doctors);
+
+            var resultDoctorsList = _modelListMapper.MapModelList(doctors);
 
             return resultDoctorsList;
         }
@@ -143,15 +141,9 @@ namespace HospitalManager.Controllers
         {
             var doctors = await _doctorsService.GetAllAsync();
 
-            var resultDoctors = new List<DoctorViewModel>();
+            var resultDoctorsList = _modelListMapper.MapModelList(doctors);
 
-            foreach (var item in doctors)
-            {
-                var doctor = _mapper.Map<DoctorViewModel>(item);
-                resultDoctors.Add(doctor);
-            }
-
-            return resultDoctors;
+            return resultDoctorsList;
         }
 
         [HttpPut]
@@ -169,19 +161,6 @@ namespace HospitalManager.Controllers
         public async Task Delete(int id)
         {
             await _doctorsService.DeleteAsync(id);
-        }
-
-        private IEnumerable<DoctorViewModel> MapDoctorsList(IEnumerable<DoctorModel> doctors)
-        {
-            var resultDoctorsList = new List<DoctorViewModel>();
-
-            foreach (var item in doctors)
-            {
-                var doctor = _mapper.Map<DoctorViewModel>(item);
-                resultDoctorsList.Add(doctor);
-            }
-
-            return resultDoctorsList;
         }
     }
 }

@@ -72,3 +72,27 @@ export class editComponentError extends React.Component {
         )
     }
 }
+
+export class appointmentSuccess extends React.Component {
+
+    render() {
+
+        return (
+            <div class="one">
+                <h1>Вы записаны!</h1>
+            </div>
+        )
+    }
+}
+
+export class appointmentError extends React.Component {
+
+    render() {
+
+        return (
+            <div class="oneError">
+                <h1>Ошибка записи!</h1>
+            </div>
+        )
+    }
+}

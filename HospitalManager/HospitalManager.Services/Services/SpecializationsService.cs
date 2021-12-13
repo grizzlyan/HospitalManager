@@ -3,6 +3,7 @@ using HospitalManager.Data.Abstractions;
 using HospitalManager.Data.Entities;
 using HospitalManager.Data.Entities.Pagination;
 using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Helpers;
 using HospitalManager.Services.Models;
 using HospitalManager.Services.Models.Pagination;
 using HospitalManager.Services.Models.Pagination.Enums;
@@ -18,11 +19,13 @@ namespace HospitalManager.Services.Services
     {
         private readonly ISpecializationsRepository _specializationRepository;
         private readonly IMapper _mapper;
+        private readonly ModelListMapper<SpecializationModel, Specialization> _modelListMapper;
 
         public SpecializationsService(ISpecializationsRepository specializationRepository, IMapper mapper)
         {
             _specializationRepository = specializationRepository;
             _mapper = mapper;
+            _modelListMapper = new ModelListMapper<SpecializationModel, Specialization>(_mapper);
         }
 
         public async Task<SpecializationModel> CreateAsync(SpecializationModel model)
@@ -37,15 +40,9 @@ namespace HospitalManager.Services.Services
 
         public async Task<IEnumerable<SpecializationModel>> GetAllAsync()
         {
-            var resultSpecializationsList = new List<SpecializationModel>();
-
             var specializations = await _specializationRepository.GetAllAsync();
 
-            foreach (var item in specializations)
-            {
-                var specialization = _mapper.Map<SpecializationModel>(item);
-                resultSpecializationsList.Add(specialization);
-            }
+            var resultSpecializationsList = _modelListMapper.MapModelList(specializations);
 
             return resultSpecializationsList;
         }
@@ -57,17 +54,11 @@ namespace HospitalManager.Services.Services
             var specializationSortFilter = _mapper.Map<SortFilter<Specialization>>(sortFilter);
             var pagePgination = _mapper.Map<PagePagination>(pagePagination);
 
-            var medicalProffessions = await _specializationRepository.GetPaginationSpecializationsAsync(
+            var specializations = await _specializationRepository.GetPaginationSpecializationsAsync(
                 specializationSortFilter,
                 pagePgination);
 
-            var resultSpecializations = new List<SpecializationModel>();
-
-            foreach (var item in medicalProffessions)
-            {
-                var specialization = _mapper.Map<SpecializationModel>(item);
-                resultSpecializations.Add(specialization);
-            }
+            var resultSpecializations = _modelListMapper.MapModelList(specializations);
 
             var countSpecializations = await _specializationRepository.GetCountSpecializationsAsync();
 

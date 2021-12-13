@@ -2,36 +2,47 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { getAppointmentByDoctorId } from '../store/actions/appointmentsActions';
 
-export class appointmentsContainer extends React.Component {
+ class appointmentDoctorContainer extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state={
+            id : this.props.location.state.id,
+        }
     }
 
     componentDidMount() {
-        this.props.getAppointments()
+        this.props.getAppointmentByDoctorId(this.state.id)
     }
 
     render() {
-        const { appointments } = this.props.appointment;
+        const { appointments } = this.props.appointments;
 
+        let heading;
         let appointmentsList;
-        let isHistory;
+        let isHistory = this.props.location.state.isHistory;
 
         if (isHistory === true) {
-            appointmentsList = appointments.filter(p=>p.appointmentDate < new Date().getDate()).map(appointment =>
-                <div>ID {appointment.id} {appointment.appointmentDate} {appointment.appointmentDuration} Врач - {appointment.doctorId} Пациент - {appointment.patientId}</div>)
+
+            heading = <h3>История приёмов</h3>
+
+            appointmentsList = appointments.filter(p=>p.appointmentDate < new Date().toISOString()).map(appointment =>
+                <div>ID-{appointment.id}. Дата: {appointment.appointmentDate}. Пациент - {appointment.patient.firstName} {appointment.patient.lastName}</div>)
         }
         else {
-            appointmentsList = appointments.filter(p=>p.appointmentDate > new Date().getDate()).map(appointment =>
-                <div>ID {appointment.id} {appointment.appointmentDate} {appointment.appointmentDuration} Врач - {appointment.doctorId} Пациент - {appointment.patientId}</div>)
+            heading = <h3>Предстоящие приёмы</h3>
+
+            appointmentsList = appointments.filter(p=>p.appointmentDate > new Date().toISOString()).map(appointment =>
+                <div>ID-{appointment.id}. Дата: {appointment.appointmentDate}. Пациент - {appointment.patient.firstName} {appointment.patient.lastName}</div>)
         }
 
         return <div class="flexColumn">
-            {appointmentsList}
+            <div>{heading}</div>
+            <div>{appointmentsList}</div>
         </div>
     }
 }
 
 const mapStateToProps = (state) => ({ appointments: state.appointments });
 
-export default connect(mapStateToProps, { getAppointmentByDoctorId })(appointmentsContainer);
+export default connect(mapStateToProps, { getAppointmentByDoctorId })(appointmentDoctorContainer);

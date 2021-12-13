@@ -30,22 +30,20 @@ namespace HospitalManager.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IPatientsService _patientsService;
         private readonly IDoctorsService _doctorsService;
-        private readonly IMapper _mapper;
+
 
 
         public AuthorizationsController(
             IOptions<JwtBearerTokenSettings> jwtTokenOptions,
             UserManager<User> userManager,
             IPatientsService patientsService,
-            IDoctorsService doctorsService,
-            IMapper mapper
+            IDoctorsService doctorsService
            )
         {
             _jwtBearerTokenSettings = jwtTokenOptions.Value;
             _userManager = userManager;
             _patientsService = patientsService;
             _doctorsService = doctorsService;
-            _mapper = mapper;
         }
 
         [HttpPost]
@@ -68,20 +66,20 @@ namespace HospitalManager.Controllers
             var token = GenerateToken(identityUser, role);
 
             var id = 0;
-            var name = string.Empty;
+            var fullName = string.Empty;
 
             if (role.Equals("Patient"))
             {
                 var patient = await _patientsService.GetByUserIdAsync(identityUser.Id);
                 id = patient.Id;
-                name = $"{patient.FirstName} {patient.LastName}";
+                fullName = $"{patient.FirstName} {patient.LastName}";
             }
 
             else if (role == "Doctor")
             {
-                var doctor =await _doctorsService.GetByUserIdAsync(identityUser.Id);
+                var doctor = await _doctorsService.GetByUserIdAsync(identityUser.Id);
                 id = doctor.Id;
-                name = $"{doctor.FirstName} {doctor.LastName}";
+                fullName = $"{doctor.FirstName} {doctor.LastName}";
             }
 
             else if (role == "Manager")
@@ -106,7 +104,7 @@ namespace HospitalManager.Controllers
                     Role = role,
                     UserId = identityUser.Id,
                     Id = id,
-                    FullName = name,
+                    FullName = fullName,
                     IsLoggedIn = true
                 });
         }

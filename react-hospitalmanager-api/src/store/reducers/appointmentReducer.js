@@ -1,4 +1,4 @@
-import { CREATE_APPOINTMENT, GET_APPOINTMENTS, GET_APPOINTMENTBYID, GET_APPOINTMENTBYDOCTORID, UPDATE_APPOINTMENT, DELETE_APPOINTMENT } from '../types'
+import { CREATE_APPOINTMENT, GET_APPOINTMENTS, GET_APPOINTMENTBYID, GET_APPOINTMENTBYDOCTORID, GET_APPOINTMENTBYPATIENTID, UPDATE_APPOINTMENT, DELETE_APPOINTMENT } from '../types'
 
 const initialState = {
     appointments: []
@@ -30,6 +30,13 @@ export default function (state = initialState, action) {
             }
 
         case GET_APPOINTMENTBYDOCTORID:
+
+            return {
+                ...state,
+                appointments: action.payload,
+            }
+
+        case GET_APPOINTMENTBYPATIENTID:
 
             return {
                 ...state,

@@ -19,7 +19,7 @@ namespace HospitalManager.Services.Abstractions
 
         Task<AppointmentModel> GetByIdAsync(int id);
 
-        Task UpdateAsync(AppointmentModel model);
+        Task UpdateAsync(AppointmentModel model, int id);
 
         Task DeleteAsync(int id); 
     }

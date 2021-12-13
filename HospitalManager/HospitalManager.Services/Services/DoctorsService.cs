@@ -3,6 +3,7 @@ using HospitalManager.Data.Abstractions;
 using HospitalManager.Data.Entities;
 using HospitalManager.Data.Entities.Pagination;
 using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Helpers;
 using HospitalManager.Services.Models;
 using HospitalManager.Services.Models.Pagination;
 using HospitalManager.Services.Models.Pagination.Enums;
@@ -18,11 +19,13 @@ namespace HospitalManager.Services.Services
     {
         private readonly IDoctorsRepository _doctorRepository;
         private readonly IMapper _mapper;
+        private readonly ModelListMapper<DoctorModel, Doctor> _modelListMapper;
 
         public DoctorsService(IDoctorsRepository doctorRepository, IMapper mapper)
         {
             _doctorRepository = doctorRepository;
             _mapper = mapper;
+            _modelListMapper = new ModelListMapper<DoctorModel, Doctor>(_mapper);
         }
 
         public async Task<DoctorModel> CreateAsync(DoctorModel model)
@@ -39,13 +42,7 @@ namespace HospitalManager.Services.Services
         {
             var doctors = await _doctorRepository.GetAllAsync();
 
-            var resultDoctorsList = new List<DoctorModel>();
-
-            foreach (var item in doctors)
-            {
-                var doctor = _mapper.Map<DoctorModel>(item);
-                resultDoctorsList.Add(doctor);
-            }
+            var resultDoctorsList = _modelListMapper.MapModelList(doctors);
 
             return resultDoctorsList;
         }
@@ -54,7 +51,7 @@ namespace HospitalManager.Services.Services
         {
             var doctors = await _doctorRepository.GetAllBySpecializationIdAsync(id);
 
-            var resultDoctorsList = MapDoctorsList(doctors);
+            var resultDoctorsList = _modelListMapper.MapModelList(doctors);
 
             return resultDoctorsList;
         }
@@ -71,13 +68,7 @@ namespace HospitalManager.Services.Services
 
             var doctors = await _doctorRepository.GetPaginationDoctors(paginationFilter, doctorSortFilter, pagePgination);
 
-            var resultDoctorsList = new List<DoctorModel>();
-
-            foreach (var item in doctors)
-            {
-                var doctor = _mapper.Map<DoctorModel>(item);
-                resultDoctorsList.Add(doctor);
-            }
+            var resultDoctorsList = _modelListMapper.MapModelList(doctors);
 
             var countDoctors = await _doctorRepository.GetCountDoctorsAsync();
 
@@ -114,19 +105,6 @@ namespace HospitalManager.Services.Services
         public async Task DeleteAsync(int id)
         {
             await _doctorRepository.DeleteAsync(id);
-        }
-
-        private IEnumerable<DoctorModel> MapDoctorsList(IEnumerable<Doctor> doctors)
-        {
-            var resultDoctorsList = new List<DoctorModel>();
-
-            foreach (var item in doctors)
-            {
-                var doctor = _mapper.Map<DoctorModel>(item);
-                resultDoctorsList.Add(doctor);
-            }
-
-            return resultDoctorsList;
         }
     }
 }

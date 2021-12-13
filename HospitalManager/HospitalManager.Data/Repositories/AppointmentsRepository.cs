@@ -30,17 +30,17 @@ namespace HospitalManager.Data.Repositories
 
         public async Task<IEnumerable<Appointment>> GetAllAsync()
         {
-            return await _ctx.Appointments.AsNoTracking().ToListAsync();
+            return await _ctx.Appointments.Include(x=>x.Doctor).Include(x=>x.Patient).ToListAsync();
         }
 
         public async Task<IEnumerable<Appointment>> GetAllByDoctorIdAsync(int doctorId)
         {
-            return await _ctx.Appointments.Where(x => x.DoctorId == doctorId).AsNoTracking().ToListAsync();
+            return await _ctx.Appointments.Where(x => x.DoctorId == doctorId).Include(x=>x.Patient).ToListAsync();
         }
 
         public async Task<IEnumerable<Appointment>> GetAllByPatientIdAsync(int patientId)
         {
-            return await _ctx.Appointments.Where(x => x.PatientId == patientId).AsNoTracking().ToListAsync();
+            return await _ctx.Appointments.Where(x => x.PatientId == patientId).Include(x => x.Doctor).ToListAsync();
         }
 
         public async Task<Appointment> GetByIdAsync(int id)
@@ -48,9 +48,9 @@ namespace HospitalManager.Data.Repositories
             return await _ctx.Appointments.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task UpdateAsync(Appointment model)
+        public async Task UpdateAsync(Appointment model, int id)
         {
-            var appointment = await _ctx.Appointments.FindAsync(model.Id);
+            var appointment = await _ctx.Appointments.FindAsync(id);
             appointment.AppointmentDate = model.AppointmentDate;
 
             _ctx.Appointments.Update(appointment);

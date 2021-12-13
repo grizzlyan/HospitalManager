@@ -123,9 +123,6 @@ class doctorForm extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 right-image pl-3">
-
-                </div>
             </div>
         </div>
     }

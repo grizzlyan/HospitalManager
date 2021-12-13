@@ -4,6 +4,16 @@ import editDoctorForm from './editDoctorForm';
 import Link from 'react-router-dom/Link';
 
 export default class Doctor extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            id: this.props.id,
+            firstName: this.props.firstName,
+            lastName: this.props.lastName,
+            specialization: this.props.specialization
+        }
+    }
 
     render() {
 
@@ -22,15 +32,27 @@ export default class Doctor extends React.Component {
 
         if (role == 'Manager') {
             footerButtons = <div class="footer">
-                <Link class="btn btn-warning" to={{ pathname: '/cabinet/editDoctor', state: {id: this.props.id, firstName: this.props.firstName, lastName: this.props.lastName }}}>Редактировать</Link>
+                <Link class="btn btn-warning" to={{ pathname: '/cabinet/editDoctor', state: { id: this.props.id, firstName: this.props.firstName, lastName: this.props.lastName } }}>Редактировать</Link>
                 <button class="btn btn-danger" onClick={() => this.props.handleDelete(this.props.id)} >Удалить</button>
             </div>
         }
 
         else if (role == 'Patient') {
+
+            let patientId = userData.id;
+
             footerButtons = <div class="footer">
                 <button class="btn btn-primary">Информация</button>
-                <button class="btn btn-success" >Записаться</button>
+                <Link class="btn btn-success" to={{
+                    pathname: '/cabinet/p-createAppointment',
+                    state: {
+                        doctorId: this.state.id,
+                        doctorFirstName: this.props.firstName,
+                        doctorLastName: this.props.lastName,
+                        doctorSpecialization: this.props.specialization,
+                        patientId: patientId
+                    }
+                }} >Записаться</Link>
             </div>
         }
 

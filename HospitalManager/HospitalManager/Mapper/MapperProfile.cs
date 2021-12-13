@@ -33,7 +33,17 @@ namespace HospitalManager.Mapper
             CreateMap<PatientViewModel, PatientModel>();
             CreateMap<PatientModel, PatientViewModel>();
 
-            CreateMap<AppointmentPostModel, AppointmentModel>();
+            CreateMap<AppointmentPostModel, AppointmentModel>()
+                .ConvertUsing((src,dest,ctx)=>
+                {
+                    dest = dest ?? new AppointmentModel();
+
+                    dest.AppointmentDate = src.AppointmentDate.ToLocalTime();
+                    dest.DoctorId = src.DoctorId;
+                    dest.PatientId = src.PatientId;
+                    return dest;
+                });
+
             CreateMap<AppointmentViewModel, AppointmentModel>();
             CreateMap<AppointmentModel, AppointmentViewModel>();
 

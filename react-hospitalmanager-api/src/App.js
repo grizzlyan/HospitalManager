@@ -14,9 +14,11 @@ import {
   addSpecializationResultSuccess,
   addSpecializationResultError,
   editComponentSuccess,
-  editComponentError
+  editComponentError,
+  appointmentSuccess,
+  appointmentError
 } from './component/registrationResult';
-import EditDoctorForm from './component/editDoctorForm';
+import SpecializationsContainerPagination from './component/specializationsContainerPagination';
 
 function App() {
   return (
@@ -37,6 +39,9 @@ function App() {
             <Route path='/addSpecializationResultError' component={addSpecializationResultError} />
             <Route path='/editSuccess' component={editComponentSuccess} />
             <Route path='/editError' component={editComponentError} />
+            <Route path='/appointmentSuccess' component={appointmentSuccess} />
+            <Route path='/appointmentError' component={appointmentError} />
+            <Route path='/test' component={SpecializationsContainerPagination}/>
           </Switch>
         </div>
       </div>

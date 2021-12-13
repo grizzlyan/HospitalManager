@@ -1,4 +1,4 @@
-import { CREATE_APPOINTMENT, GET_APPOINTMENTS, GET_APPOINTMENTBYID, GET_APPOINTMENTBYDOCTORID, UPDATE_APPOINTMENT, DELETE_APPOINTMENT, APPOINTMENTS_ERROR } from '../types'
+import { CREATE_APPOINTMENT, GET_APPOINTMENTS, GET_APPOINTMENTBYID, GET_APPOINTMENTBYDOCTORID, GET_APPOINTMENTBYPATIENTID, UPDATE_APPOINTMENT, DELETE_APPOINTMENT, APPOINTMENTS_ERROR } from '../types'
 import axios from 'axios'
 import {axiosConfig} from '../getToken';
 
@@ -13,12 +13,15 @@ export const createAppointment = (appointmentData) => async dispatch => {
             type: CREATE_APPOINTMENT,
             payload: res.data
         })
+
+        window.location.href = "/appointmentSuccess";
     }
     catch (e) {
         dispatch({
             type: APPOINTMENTS_ERROR,
             payload: console.log(e),
         })
+        window.location.href = "/appointmentError";
     }
 }
 
@@ -59,9 +62,26 @@ export const getAppointmentById = (id) => async dispatch => {
 export const getAppointmentByDoctorId = (doctorId) => async dispatch => {
 
     try {
-        const res = await axios.get(`${host}Appointments/${doctorId}`, axiosConfig)
+        const res = await axios.get(`${host}Appointments/appointmentsByDoctorId/${doctorId}`, axiosConfig)
         dispatch({
             type: GET_APPOINTMENTBYDOCTORID,
+            payload: res.data
+        })
+    }
+    catch (e) {
+        dispatch({
+            type: APPOINTMENTS_ERROR,
+            payload: console.log(e),
+        })
+    }
+}
+
+export const getAppointmentByPatientId = (patientId) => async dispatch => {
+console.log(patientId)
+    try {
+        const res = await axios.get(`${host}Appointments/appointmentsByPatientId/${patientId}`, axiosConfig)
+        dispatch({
+            type: GET_APPOINTMENTBYPATIENTID,
             payload: res.data
         })
     }

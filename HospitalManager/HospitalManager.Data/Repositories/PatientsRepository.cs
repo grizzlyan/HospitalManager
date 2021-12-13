@@ -46,9 +46,9 @@ namespace HospitalManager.Data.Repositories
                 .FirstOrDefaultAsync(x => x.UserId == id);
         }
 
-        public async Task UpdateAsync(Patient model)
+        public async Task UpdateAsync(Patient model, int id)
         {
-            var patient = await _ctx.Patients.FindAsync(model.Id);
+            var patient = await _ctx.Patients.FindAsync(id);
             patient.FirstName = model.FirstName;
             patient.LastName = model.LastName;
             patient.City = model.City;

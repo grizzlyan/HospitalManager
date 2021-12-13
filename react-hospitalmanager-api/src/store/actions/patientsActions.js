@@ -29,6 +29,7 @@ export const getPatientById = (id) => async dispatch => {
     
     try{
         const res = await axios.get(`${host}Patients/${id}`, axiosConfig)
+        
         dispatch( {
             type: GET_PATIENTBYID,
             payload: res.data
@@ -60,6 +61,7 @@ export const getPatients = () => async dispatch => {
 }
 
 export const updatePatient = (patientData) => async dispatch => {
+    
     const id = patientData.id
     try{
         const res = await axios.put(`${host}Patients/${id}`, patientData, axiosConfig)
@@ -68,12 +70,14 @@ export const updatePatient = (patientData) => async dispatch => {
             type: UPDATE_PATIENT,
             payload: patientData
         })
+        window.location.href ='/editSuccess';
     }
     catch(e){
         dispatch( {
             type: PATIENTS_ERROR,
             payload: console.log(e),
         })
+        window.location.href ='/editError';
     }
 }
 

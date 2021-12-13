@@ -3,6 +3,7 @@ using HospitalManager.Models.PaginationsModels;
 using HospitalManager.Models.PostModels;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Helpers;
 using HospitalManager.Services.Models;
 using HospitalManager.Services.Models.Pagination;
 using HospitalManager.Services.Models.Pagination.Enums;
@@ -22,11 +23,15 @@ namespace HospitalManager.Controllers
     {
         private readonly ISpecializationsService _specializationsService;
         private readonly IMapper _mapper;
+        private readonly ModelListMapper<SpecializationViewModel, SpecializationModel> _modelListMapper;
 
-        public SpecializationsController(ISpecializationsService specializationsService, IMapper mapper)
+        public SpecializationsController(
+            ISpecializationsService specializationsService,
+            IMapper mapper)
         {
             _specializationsService = specializationsService;
             _mapper = mapper;
+            _modelListMapper = new ModelListMapper<SpecializationViewModel, SpecializationModel>(_mapper);
         }
 
         [HttpPost]
@@ -51,13 +56,7 @@ namespace HospitalManager.Controllers
 
             var specializationsPaginationModel = await _specializationsService.GetPaginationSpecializationsAsync(sortFilter, pagePaginationModel);
 
-            var specializationList = new List<SpecializationViewModel>();
-
-            foreach (var item in specializationsPaginationModel.Data)
-            {
-                var specialization = _mapper.Map<SpecializationViewModel>(item);
-                specializationList.Add(specialization);
-            }
+            var specializationList = _modelListMapper.MapModelList(specializationsPaginationModel.Data);
 
             var specializationsData = new PaginationViewModel<SpecializationViewModel>
             {
@@ -83,13 +82,7 @@ namespace HospitalManager.Controllers
         {
             var specializations = await _specializationsService.GetAllAsync();
 
-            var resultSpecializations = new List<SpecializationViewModel>();
-
-            foreach (var item in specializations)
-            {
-                var specialization = _mapper.Map<SpecializationViewModel>(item);
-                resultSpecializations.Add(specialization);
-            }
+            var resultSpecializations = _modelListMapper.MapModelList(specializations);
 
             return resultSpecializations;
         }

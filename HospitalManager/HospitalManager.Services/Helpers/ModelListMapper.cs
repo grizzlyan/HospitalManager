@@ -16,7 +16,7 @@ namespace HospitalManager.Services.Helpers
             _mapper = mapper;
         }
 
-        private IEnumerable<TResult> MapModelList(IEnumerable<TList> incomingList)
+        public IEnumerable<TResult> MapModelList(IEnumerable<TList> incomingList)
         {
             var resultList = new List<TResult>();
 

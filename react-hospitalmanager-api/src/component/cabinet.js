@@ -6,11 +6,14 @@ import SpecializationForm from './specializationForm';
 import SpecializationContainer  from './specializationsContainer';
 import DoctorForm  from './doctorForm';
 import  DoctorsContainer  from './doctorsContainer';
-import { patientsContainer } from './patientsContainer';
-import { appointmentsContainer } from './appointmentsContainer';
-import { appointmentCalendar } from './appointmentCalendar';
+import PatientsContainer from './patientsContainer';
+import AppointmentsContainer  from './appointmentsContainer';
+import AppointmentCalendar from './appointmentCalendar';
 import EditDoctorForm from './editDoctorForm';
 import EditSpecializationForm from './editSpecializationForm';
+import AppointmentPatientContainer from './appointmentPatientContainer';
+import AppointmentDoctorContainer from './appointmentDoctorContainer';
+import EditPatientForm from './editPatientForm';
 
 
 export class cabinet extends React.Component {
@@ -22,8 +25,6 @@ export class cabinet extends React.Component {
         let cabinetBar;
         let routes;
         
-
-
         let userData;
 
         let role = '';
@@ -69,8 +70,14 @@ export class cabinet extends React.Component {
                 <hr />
 
                 <span class="navbar-brand" >Приёмы</span>
-                <li class="nav-item">
+                {/* <li class="nav-item">
                     <Link class="nav-link" to="/cabinet/appointments">Список приёмов</Link>
+                </li> */}
+                <li class="nav-item">
+                    <Link class="nav-link" to={{ pathname: '/cabinet/appointments', state: {isHistory: false }}}>Предстоящие приёмы</Link>
+                </li>
+                <li class="nav-item">
+                    <Link class="nav-link" to={{ pathname: '/cabinet/appointments', state: {isHistory: true }}}>История приёмов</Link>
                 </li>
                 <hr />
             </ul>
@@ -80,10 +87,11 @@ export class cabinet extends React.Component {
                 <Route exact path='/cabinet/specializations' component={SpecializationContainer} />
                 <Route path='/cabinet/createDoctor' component={DoctorForm} />
                 <Route exact path='/cabinet/doctors' component={DoctorsContainer} />
-                <Route exact path='/cabinet/patients' component={patientsContainer} />
-                <Route exact path='/cabinet/appointments' component={appointmentsContainer} />
+                <Route exact path='/cabinet/patients' component={PatientsContainer} />
+                <Route exact path='/cabinet/appointments' component={AppointmentsContainer} />
                 <Route path='/cabinet/editDoctor' component={EditDoctorForm} />
                 <Route path={'/cabinet/editSpetialization'} component={EditSpecializationForm}/>
+                <Route path={'/cabinet/editPatient'} component={EditPatientForm}/>
             </Switch>
         }
 
@@ -91,20 +99,21 @@ export class cabinet extends React.Component {
 
             nameForGreeting = userData.fullName;
 
+            let id = userData.id;
+
             greetings = <h1 class="navbar-brand" >Привет, {nameForGreeting}!</h1>
 
             cabinetBar = <ul class="navbar-nav">
                 <li class="nav-item">
-                    <Link class="nav-link" to="/d-upcoming">Предстоящие приёмы</Link>
+                    <Link class="nav-link" to={{ pathname: '/cabinet/appointments', state: { id: id, isHistory: false }}}>Предстоящие приёмы</Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" to="/d-history">История приёмов</Link>
+                    <Link class="nav-link" to={{ pathname: '/cabinet/appointments', state: { id: id, isHistory: true }}}>История приёмов</Link>
                 </li>
             </ul>
 
             routes = <Switch>
-                <Route exact path='/cabinet/p-upcoming' component={appointmentCalendar} />
-                <Route exact path='/cabinet/p-history' component={appointmentCalendar} />
+                <Route exact path='/cabinet/appointments' component={AppointmentDoctorContainer} />
             </Switch>
         }
 
@@ -112,28 +121,26 @@ export class cabinet extends React.Component {
 
             nameForGreeting = userData.fullName;
 
+            let id = userData.id;
+
             greetings = <h1 class="navbar-brand" >Привет, {nameForGreeting}!</h1>
 
             cabinetBar = <ul class="navbar-nav">
                 <li class="nav-item">
-                    <Link class="nav-link" to="/cabinet/p-createAppointment">Записаться</Link>
+                    <Link class="nav-link" to="/cabinet/p-doctors">Записаться</Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" to="/cabinet/p-upcoming">Предстоящие приёмы</Link>
+                    <Link class="nav-link" to={{ pathname: '/cabinet/appointments', state: { id: id, isHistory: false }}}>Предстоящие приёмы</Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="nav-link" to="/cabinet/p-history">История приёмов</Link>
-                </li>
-                <li class="nav-item">
-                    <Link class="nav-link" to="/cabinet/p-edit">Редактировать информацию о себе</Link>
+                    <Link class="nav-link" to={{ pathname: '/cabinet/appointments', state: { id: id, isHistory: true }}}>История приёмов</Link>
                 </li>
             </ul>
 
             routes = <Switch>
-                <Route exact path='/cabinet/p-createAppointment' component={appointmentCalendar} />
-                <Route exact path='/cabinet/p-upcoming' component={appointmentCalendar} />
-                <Route exact path='/cabinet/p-history' component={appointmentCalendar} />
-                <Route exact path='/cabinet/p-edit' component={appointmentCalendar} />
+                <Route exact path='/cabinet/p-doctors' component={DoctorsContainer}/>
+                <Route exact path='/cabinet/p-createAppointment' component={AppointmentCalendar} />
+                <Route exact path='/cabinet/appointments' component={AppointmentPatientContainer} />
             </Switch>
 
         }

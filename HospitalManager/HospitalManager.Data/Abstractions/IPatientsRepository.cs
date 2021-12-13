@@ -17,7 +17,7 @@ namespace HospitalManager.Data.Abstractions
 
         Task<Patient> GetByUserIdAsync(string id);
 
-        Task UpdateAsync(Patient model);
+        Task UpdateAsync(Patient model, int id);
 
         Task DeleteAsync(int id);
     }

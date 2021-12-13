@@ -4,6 +4,7 @@ using HospitalManager.Extensions;
 using HospitalManager.Models.PostModels;
 using HospitalManager.Models.ViewModels;
 using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Helpers;
 using HospitalManager.Services.Models;
 using HospitalManager.Services.Models.AuthModels;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,7 @@ namespace HospitalManager.Controllers
         private readonly IPatientsService _patientsService;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
+        private readonly ModelListMapper<PatientViewModel, PatientModel> _modelListMapper;
 
         public PatientsController(
             IPatientsService patientsService,
@@ -34,6 +36,7 @@ namespace HospitalManager.Controllers
             _patientsService = patientsService;
             _userManager = userManager;
             _mapper = mapper;
+            _modelListMapper = new ModelListMapper<PatientViewModel, PatientModel>(_mapper);
         }
 
         [HttpPost]
@@ -81,8 +84,6 @@ namespace HospitalManager.Controllers
             var patient = _mapper.Map<PatientViewModel>(createdModel);
 
             return Ok(new { Message = "User Reigstration Successful", Patient = patient });
-
-            //return _mapper.Map<PatientViewModel>(createdModel);
         }
 
         [HttpGet]
@@ -91,20 +92,14 @@ namespace HospitalManager.Controllers
         {
             var patients = await _patientsService.GetAllAsync();
 
-            var resultPatients = new List<PatientViewModel>();
-
-            foreach (var item in patients)
-            {
-                var patient = _mapper.Map<PatientViewModel>(item);
-                resultPatients.Add(patient);
-            }
+            var resultPatients = _modelListMapper.MapModelList(patients);
 
             return resultPatients;
         }
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager, Patient")]
         public async Task<PatientViewModel> GetById(int id)
         {
             var patient = await _patientsService.GetByIdAsync(id);
@@ -114,11 +109,11 @@ namespace HospitalManager.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        [Authorize(Roles = "Patient")]
-        public async Task Update(PatientViewModel model)
+        [Authorize(Roles = "Manager, Patient")]
+        public async Task Update(PatientViewModel model, int id)
         {
             var patient = _mapper.Map<PatientModel>(model);
-            await _patientsService.UpdateAsync(patient);
+            await _patientsService.UpdateAsync(patient, id);
         }
 
         [HttpDelete]

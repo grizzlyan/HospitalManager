@@ -2,8 +2,7 @@ import { CREATE_DOCTOR, GET_DOCTORS, GET_DOCTORBYID, UPDATE_DOCTOR, DELETE_DOCTO
 
 const initialState = {
     doctors: [],
-    totalCount: 0,
-    message: 'авпв'
+    totalCount: 0
 }
 
 export default function (state = initialState, action) {

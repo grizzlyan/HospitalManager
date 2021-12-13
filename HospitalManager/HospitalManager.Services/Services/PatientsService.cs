@@ -2,6 +2,7 @@
 using HospitalManager.Data.Abstractions;
 using HospitalManager.Data.Entities;
 using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Helpers;
 using HospitalManager.Services.Models;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,13 @@ namespace HospitalManager.Services.Services
     {
         private readonly IPatientsRepository _patientRepository;
         private readonly IMapper _mapper;
+        private readonly ModelListMapper<PatientModel, Patient> _modelListMapper;
 
         public PatientsService(IPatientsRepository patientRepository, IMapper mapper)
         {
             _patientRepository = patientRepository;
             _mapper = mapper;
+            _modelListMapper = new ModelListMapper<PatientModel, Patient>(_mapper);
         }
 
         public async Task<PatientModel> CreateAsync(PatientModel model)
@@ -34,15 +37,9 @@ namespace HospitalManager.Services.Services
 
         public async Task<IEnumerable<PatientModel>> GetAllAsync()
         {
-            var resultPatientsList = new List<PatientModel>();
-
             var patients = await _patientRepository.GetAllAsync();
 
-            foreach (var item in patients)
-            {
-                var patient = _mapper.Map<PatientModel>(item);
-                resultPatientsList.Add(patient);
-            }
+            var resultPatientsList = _modelListMapper.MapModelList(patients);
 
             return resultPatientsList;
         }
@@ -61,10 +58,10 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<PatientModel>(patient);
         }
 
-        public async Task UpdateAsync(PatientModel model)
+        public async Task UpdateAsync(PatientModel model, int id)
         {
             var patient = _mapper.Map<Patient>(model);
-            await _patientRepository.UpdateAsync(patient);
+            await _patientRepository.UpdateAsync(patient, id);
         }
 
         public async Task DeleteAsync(int id)
