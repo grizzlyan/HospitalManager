@@ -26,7 +26,7 @@ namespace HospitalManager.Data.DataAccess.Configs
                 {
                     Id = 2,
                     SpecializationName = "Урология",
-                    Description = "Мужская и женская урология.Лечение проблем с потенцией.Консультация андролога."
+                    Description = "Мужская и женская урология.Лечение проблем с потенцией. Консультация андролога."
                 },
                 new Specialization
                 {
