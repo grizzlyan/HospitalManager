@@ -3,6 +3,7 @@ using HospitalManager.Data.Abstractions;
 using HospitalManager.Data.Entities;
 using HospitalManager.Data.Repositories;
 using HospitalManager.Services.Abstractions;
+using HospitalManager.Services.Helpers;
 using HospitalManager.Services.Models;
 using HospitalManager.Services.Models.Pagination;
 using System;
@@ -18,26 +19,20 @@ namespace HospitalManager.Services.Services
     {
         private readonly IAppointmentsRepository _appointmentRepository;
         private readonly IMapper _mapper;
-        private readonly SemaphoreSlim _semaphoreSlim;
+        private readonly ModelListMapper<AppointmentModel, Appointment> _modelListMapper;
 
         public AppointmentsService(IAppointmentsRepository appointmentRepository, IMapper mapper)
         {
             _appointmentRepository = appointmentRepository;
             _mapper = mapper;
-            _semaphoreSlim = new SemaphoreSlim(1);
+            _modelListMapper = new ModelListMapper<AppointmentModel, Appointment>(_mapper);
         }
 
         public async Task<AppointmentModel> CreateAsync(AppointmentModel model)
         {
             var entity = _mapper.Map<Appointment>(model);
 
-            bool isConainsAppointment;
-
-            await _semaphoreSlim.WaitAsync();
-
-            isConainsAppointment = await _appointmentRepository.IsContainsAppointmentAsync(entity);
-
-            _semaphoreSlim.Release();
+            var isConainsAppointment = await _appointmentRepository.IsContainsAppointmentAsync(entity);
 
             if (!isConainsAppointment)
             {
@@ -54,7 +49,7 @@ namespace HospitalManager.Services.Services
         {
             var appointments = await _appointmentRepository.GetAllAsync();
 
-            var resultAppointmentsList = MapAppointmentList(appointments);
+            var resultAppointmentsList = _modelListMapper.MapModelList(appointments);
 
             return resultAppointmentsList;
         }
@@ -63,7 +58,7 @@ namespace HospitalManager.Services.Services
         {
             var appointments = await _appointmentRepository.GetAllByDoctorIdAsync(doctorId);
 
-            var appointmentsByDoctorId = MapAppointmentList(appointments);
+            var appointmentsByDoctorId = _modelListMapper.MapModelList(appointments);
 
             return appointmentsByDoctorId;
         }
@@ -72,7 +67,7 @@ namespace HospitalManager.Services.Services
         {
             var appointments = await _appointmentRepository.GetAllByPatientIdAsync(patientId);
 
-            var appointmentsByPatientId = MapAppointmentList(appointments);
+            var appointmentsByPatientId = _modelListMapper.MapModelList(appointments);
 
             return appointmentsByPatientId;
         }
@@ -84,28 +79,15 @@ namespace HospitalManager.Services.Services
             return _mapper.Map<AppointmentModel>(appointment);
         }
 
-        public async Task UpdateAsync(AppointmentModel model)
+        public async Task UpdateAsync(AppointmentModel model, int id)
         {
             var appointment = _mapper.Map<Appointment>(model);
-            await _appointmentRepository.UpdateAsync(appointment);
+            await _appointmentRepository.UpdateAsync(appointment, id);
         }
 
         public async Task DeleteAsync(int id)
         {
             await _appointmentRepository.DeleteAsync(id);
-        }
-
-        private IEnumerable<AppointmentModel> MapAppointmentList(IEnumerable<Appointment> appointments)
-        {
-            var resultAppointmentsList = new List<AppointmentModel>();
-
-            foreach (var item in appointments)
-            {
-                var appointment = _mapper.Map<AppointmentModel>(item);
-                resultAppointmentsList.Add(appointment);
-            }
-
-            return resultAppointmentsList;
         }
     }
 }
