@@ -52,6 +52,8 @@ export const getSpecializations = (pagePagination, sortFilterParametres) => asyn
             }
         })
 
+        console.log(res)
+        
         dispatch({
             type: GET_PAGINATIONSPECIALIZATIONS,
             payload: res.data, pagePagination
@@ -69,7 +71,7 @@ export const getAllSpecializations = () => async dispatch => {
 
     try {
         const res = await axios.get(`${host}Specializations/allSpecializations`)
-        console.log(res);
+        
         dispatch({
             type: GET_SPECIALIZATIONS,
             payload: res.data
@@ -105,8 +107,8 @@ export const updateSpecialization = (specializationData) => async dispatch => {
 
 export const deleteSpecialization = (id) => async (dispatch) => {
     try {
-        await axios.delete(`${host}Specializations/${id}`, axiosConfig)
-
+        const res = await axios.delete(`${host}Specializations/${id}`, axiosConfig)
+        console.log(res);
         dispatch({
             type: DELETE_SPECIALIZATION,
             payload: id

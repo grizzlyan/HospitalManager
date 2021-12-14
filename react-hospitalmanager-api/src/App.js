@@ -18,7 +18,9 @@ import {
   appointmentSuccess,
   appointmentError
 } from './component/registrationResult';
-import SpecializationsContainerPagination from './component/specializationsContainerPagination';
+import specializationsContainerPagination from './component/specializationsContainerPagination';
+import doctorsContainerPagination from './component/doctorsContainerPagination';
+
 
 function App() {
   return (
@@ -41,7 +43,8 @@ function App() {
             <Route path='/editError' component={editComponentError} />
             <Route path='/appointmentSuccess' component={appointmentSuccess} />
             <Route path='/appointmentError' component={appointmentError} />
-            <Route path='/test' component={SpecializationsContainerPagination}/>
+            <Route path='/pagSpec' component={specializationsContainerPagination}/>
+            <Route path='/pagDoc' component={doctorsContainerPagination}/>
           </Switch>
         </div>
       </div>

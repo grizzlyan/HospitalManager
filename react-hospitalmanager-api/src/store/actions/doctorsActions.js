@@ -1,4 +1,4 @@
-import { CREATE_DOCTOR, GET_DOCTORS, GET_DOCTORBYID, UPDATE_DOCTOR, DELETE_DOCTOR, DOCTORS_ERROR } from '../types'
+import { CREATE_DOCTOR, GET_DOCTORS, GET_PAGINATIONDOCTORS, GET_DOCTORBYID, UPDATE_DOCTOR, DELETE_DOCTOR, DOCTORS_ERROR } from '../types'
 import axios from 'axios'
 import { axiosConfig, axiosImageConfig } from '../getToken';
 const host = 'https://localhost:44333/api/';
@@ -19,7 +19,7 @@ export const createDoctor = (userDetails) => async dispatch => {
 
             res.data.doctor.pathToPhoto = imagePath;
         }
-        
+
         dispatch({
             type: CREATE_DOCTOR,
             payload: res.data
@@ -72,6 +72,33 @@ export const getDoctors = () => async dispatch => {
     }
 }
 
+export const getPaginDoctors = (pagePagination, sortFilterParametres, doctorFilterFieldsParametres ) => async dispatch => {
+
+    try {
+        const res = await axios.get(`${host}Doctors/paginGet`, {
+            params: {
+                page: pagePagination.page,
+                pageSize: pagePagination.pageSize,
+                sortDirection: sortFilterParametres.sortDirection,
+                sortField: sortFilterParametres.sortField,
+                filterDoctorField: doctorFilterFieldsParametres.filterDoctorField,
+                specializationId: doctorFilterFieldsParametres.specializationId
+            }
+            })
+        console.log(res)
+        dispatch({
+            type: GET_PAGINATIONDOCTORS,
+            payload: res.data
+        })
+    }
+    catch (e) {
+        dispatch({
+            type: DOCTORS_ERROR,
+            payload: console.log(e),
+        })
+    }
+}
+
 export const updateDoctor = (doctorData) => async dispatch => {
     const id = doctorData.id
     try {
@@ -81,14 +108,14 @@ export const updateDoctor = (doctorData) => async dispatch => {
             type: UPDATE_DOCTOR,
             payload: doctorData
         })
-        window.location.href ='/editSuccess';
+        window.location.href = '/editSuccess';
     }
     catch (e) {
         dispatch({
             type: DOCTORS_ERROR,
             payload: console.log(e),
         })
-        window.location.href ='/editError';
+        window.location.href = '/editError';
     }
 }
 

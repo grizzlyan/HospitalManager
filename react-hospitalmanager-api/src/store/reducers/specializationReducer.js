@@ -4,7 +4,6 @@ const initialState = {
     specializations: [],
     data: [],
     totalCount: 0,
-    page : 0
 }
 
 export default function (state = initialState, action) {
@@ -31,7 +30,6 @@ export default function (state = initialState, action) {
                 ...state,
                 data: action.payload.data,
                 totalCount: action.payload.totalCount,
-                page: action.page.pagePagination.page
             }
 
         case GET_SPECIALIZATIONBYID:
