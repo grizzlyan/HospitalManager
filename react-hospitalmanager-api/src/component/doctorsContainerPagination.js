@@ -2,7 +2,7 @@ import React from 'react'
 import Specialization from './specialization';
 import Doctor from './doctor';
 import { connect } from 'react-redux'
-import { getPaginDoctors } from '../store/actions/doctorsActions';
+import { getPaginDoctors, deleteDoctor } from '../store/actions/doctorsActions';
 import { getAllSpecializations } from '../store/actions/specializationsActions';
 import './specializationContainer.css'
 import { Pagination } from 'react-bootstrap';
@@ -87,7 +87,7 @@ class doctorsContainerPagination extends React.Component {
     }
 
     onDelete(id) {
-        this.props.deletePatient(id)
+        this.props.deleteDoctor(id)
     }
 
     render() {
@@ -167,4 +167,4 @@ class doctorsContainerPagination extends React.Component {
 
 const mapStateToProps = (state) => ({ doctors: state.doctors, specializations: state.specializations });
 
-export default connect(mapStateToProps, { getPaginDoctors, getAllSpecializations })(doctorsContainerPagination);
+export default connect(mapStateToProps, { getPaginDoctors, getAllSpecializations, deleteDoctor })(doctorsContainerPagination);
